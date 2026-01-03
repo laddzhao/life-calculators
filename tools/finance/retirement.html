@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>养老金计算 - 生活计算宝典</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../layout.css">
+    <link rel="stylesheet" href="../../components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+</head>
+<body class="app">
+    <header class="app-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-mobile">
+                    <a href="../../pages/finance.html" class="navbar-back">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div class="navbar-title">养老金计算</div>
+                    <div></div>
+                </div>
+                
+                <div class="navbar-desktop">
+                    <a href="../../index.html" class="logo">
+                        <i class="fas fa-calculator"></i>
+                        <span class="logo-text">生活计算宝典</span>
+                    </a>
+                    <div class="nav-links">
+                        <a href="../../index.html" class="nav-link">首页</a>
+                        <a href="../../pages/finance.html" class="nav-link active">理财金融</a>
+                        <a href="../../pages/shopping.html" class="nav-link">消费购物</a>
+                        <a href="../../pages/tools.html" class="nav-link">所有工具</a>
+                    </div>
+                    <div class="theme-toggle">
+                        <button class="theme-btn" aria-label="切换主题">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="section">
+            <div class="container">
+                <!-- 面包屑导航 -->
+                <nav class="breadcrumb">
+                    <a href="../../index.html" class="breadcrumb-link">首页</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <a href="../../pages/finance.html" class="breadcrumb-link">理财金融</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <span class="breadcrumb-current">养老金计算</span>
+                </nav>
+                
+                <!-- 计算器容器 -->
+                <div class="calculator-container">
+                    <div class="calculator-card">
+                        <div class="calculator-header">
+                            <h1 class="calculator-title">养老金计算器</h1>
+                            <p class="calculator-description">
+                                计算养老金需求，规划退休生活，确保晚年生活质量
+                            </p>
+                        </div>
+                        
+                        <!-- 计算类型选择 -->
+                        <div class="tabs" id="pensionTabs">
+                            <button class="tab active" data-type="need">养老金需求</button>
+                            <button class="tab" data-type="save">储蓄计划</button>
+                            <button class="tab" data-type="withdraw">提取策略</button>
+                        </div>
+                        
+                        <!-- 养老金需求计算 -->
+                        <div id="needSection">
+                            <div class="input-group">
+                                <label class="input-label">当前年龄</label>
+                                <input type="number" id="currentAge" class="input-field" placeholder="例如：35" value="35" min="20" max="70">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">计划退休年龄</label>
+                                <input type="number" id="retireAge" class="input-field" placeholder="例如：60" value="60" min="45" max="80">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">预期寿命</label>
+                                <input type="number" id="lifeExpectancy" class="input-field" placeholder="例如：85" value="85" min="70" max="120">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">当前年收入 (元)</label>
+                                <input type="number" id="currentIncome" class="input-field" placeholder="例如：150000" value="150000">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">退休后收入替代率 (%)</label>
+                                <input type="number" id="replacementRate" class="input-field" placeholder="例如：70" value="70" step="1">
+                                <small class="input-hint">通常为退休前收入的60%-80%</small>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">年通货膨胀率 (%)</label>
+                                <input type="number" id="inflationRate" class="input-field" placeholder="例如：3.0" value="3.0" step="0.1">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">预期投资回报率 (%)</label>
+                                <input type="number" id="returnRate" class="input-field" placeholder="例如：6.0" value="6.0" step="0.1">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">现有养老金储蓄 (元)</label>
+                                <input type="number" id="existingSavings" class="input-field" placeholder="例如：200000" value="200000">
+                            </div>
+                        </div>
+                        
+                        <!-- 储蓄计划计算 -->
+                        <div id="saveSection" style="display: none;">
+                            <div class="input-group">
+                                <label class="input-label">养老金总需求 (元)</label>
+                                <input type="number" id="totalNeed" class="input-field" placeholder="例如：3000000" value="3000000">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">现有储蓄 (元)</label>
+                                <input type="number" id="savingsNow" class="input-field" placeholder="例如：200000" value="200000">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">距离退休还有 (年)</label>
+                                <input type="number" id="yearsToRetire" class="input-field" placeholder="例如：25" value="25">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">预期年投资回报率 (%)</label>
+                                <input type="number" id="savingsReturnRate" class="input-field" placeholder="例如：6.0" value="6.0" step="0.1">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">已确定养老金收入 (元/年)</label>
+                                <input type="number" id="fixedPension" class="input-field" placeholder="例如：60000" value="60000">
+                                <small class="input-hint">如社保、企业年金等固定收入</small>
+                            </div>
+                        </div>
+                        
+                        <!-- 提取策略计算 -->
+                        <div id="withdrawSection" style="display: none;">
+                            <div class="input-group">
+                                <label class="input-label">养老金总额 (元)</label>
+                                <input type="number" id="totalPension" class="input-field" placeholder="例如：2000000" value="2000000">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">预期退休生活年限</label>
+                                <input type="number" id="retirementYears" class="input-field" placeholder="例如：25" value="25">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">年投资回报率 (%)</label>
+                                <input type="number" id="withdrawReturnRate" class="input-field" placeholder="例如：5.0" value="5.0" step="0.1">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">年通货膨胀率 (%)</label>
+                                <input type="number" id="withdrawInflationRate" class="input-field" placeholder="例如：3.0" value="3.0" step="0.1">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">提取策略</label>
+                                <select id="withdrawStrategy" class="input-field">
+                                    <option value="fixed">固定金额提取</option>
+                                    <option value="percentage">按比例提取</option>
+                                    <option value="inflation_adjusted">通货膨胀调整提取</option>
+                                </select>
+                            </div>
+                            
+                            <div id="fixedAmountGroup" class="input-group">
+                                <label class="input-label">年提取金额 (元)</label>
+                                <input type="number" id="annualWithdraw" class="input-field" placeholder="例如：100000" value="100000">
+                            </div>
+                            
+                            <div id="percentageGroup" class="input-group" style="display: none;">
+                                <label class="input-label">年提取比例 (%)</label>
+                                <input type="number" id="withdrawPercentage" class="input-field" placeholder="例如：4.0" value="4.0" step="0.1">
+                            </div>
+                        </div>
+                        
+                        <!-- 计算按钮 -->
+                        <button class="btn btn-primary btn-block calc-btn" id="calculateBtn">
+                            <i class="fas fa-calculator"></i> 计算养老金
+                        </button>
+                        
+                        <!-- 结果展示 -->
+                        <div class="result-display" id="resultSection" style="display: none;">
+                            <h3 class="result-title"><i class="fas fa-chart-bar"></i> 计算结果</h3>
+                            
+                            <!-- 养老金需求结果 -->
+                            <div id="needResult" style="display: block;">
+                                <div class="result-grid">
+                                    <div class="result-item">
+                                        <span class="result-label">退休后年生活费</span>
+                                        <span class="result-value" id="annualExpense">0.00 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">退休生活年限</span>
+                                        <span class="result-value" id="retirementDuration">0 年</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">养老金总需求</span>
+                                        <span class="result-value" id="totalNeeded">0.00 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">已有养老金</span>
+                                        <span class="result-value" id="existingTotal">0.00 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">还需准备资金</span>
+                                        <span class="result-value" id="additionalNeed">0.00 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">年储蓄目标</span>
+                                        <span class="result-value" id="annualSavingGoal">0.00 元</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- 时间线 -->
+                                <div style="margin-top: 1.5rem;">
+                                    <h4 class="result-title" style="font-size: 1rem;">养老金准备时间线</h4>
+                                    <div class="timeline">
+                                        <div class="timeline-item">
+                                            <div class="timeline-year">现在</div>
+                                            <div class="timeline-content">现有储蓄: <span id="timelineNow">0元</span></div>
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-year">10年后</div>
+                                            <div class="timeline-content">预计储蓄: <span id="timeline10Years">0元</span></div>
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-year">退休时</div>
+                                            <div class="timeline-content">总储蓄: <span id="timelineRetire">0元</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 储蓄计划结果 -->
+                            <div id="saveResult" style="display: none;">
+                                <div class="result-grid">
+                                    <div class="result-item">
+                                        <span class="result-label">养老金总需求</span>
+                                        <span class="result-value" id="savingsTotalNeed">0.00 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">现有储蓄未来值</span>
+                                        <span class="result-value" id="futureSavings">0.00 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">储蓄缺口</span>
+                                        <span class="result-value" id="savingsGap">0.00 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">年储蓄目标</span>
+                                        <span class="result-value" id="requiredAnnualSave">0.00 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">月储蓄目标</span>
+                                        <span class="result-value" id="requiredMonthlySave">0.00 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">储蓄占收入比</span>
+                                        <span class="result-value" id="savingsRatio">0.00%</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- 储蓄进度 -->
+                                <div style="margin-top: 1.5rem;">
+                                    <h4 class="result-title" style="font-size: 1rem;">储蓄进度</h4>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="savingsProgress" style="width: 0%"></div>
+                                    </div>
+                                    <div class="progress-text" id="progressText">0%</div>
+                                </div>
+                            </div>
+                            
+                            <!-- 提取策略结果 -->
+                            <div id="withdrawResult" style="display: none;">
+                                <div class="result-grid">
+                                    <div class="result-item">
+                                        <span class="result-label">养老金总额</span>
+                                        <span class="result-value" id="withdrawTotal">0.00 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">年提取金额</span>
+                                        <span class="result-value" id="yearlyWithdraw">0.00 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">可持续年限</span>
+                                        <span class="result-value" id="sustainableYears">0 年</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">安全提取率</span>
+                                        <span class="result-value" id="safeWithdrawRate">0.00%</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- 提取计划 -->
+                                <div style="margin-top: 1.5rem;">
+                                    <h4 class="result-title" style="font-size: 1rem;">提取计划模拟</h4>
+                                    <div style="overflow-x: auto;">
+                                        <table class="withdraw-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>年份</th>
+                                                    <th>年初余额</th>
+                                                    <th>年提取额</th>
+                                                    <th>投资收益</th>
+                                                    <th>年末余额</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="withdrawSchedule">
+                                                <!-- 提取计划将通过JS动态生成 -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 养老金知识 -->
+                    <div class="alert alert-info mt-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-lightbulb mr-3"></i>
+                            <div>
+                                <strong>养老金规划要点：</strong> 
+                                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                    <li><strong>尽早开始</strong>：时间是最好的朋友，越早规划压力越小</li>
+                                    <li><strong>多元投资</strong>：分散投资风险，平衡收益与安全</li>
+                                    <li><strong>考虑通胀</strong>：养老金规划必须考虑通货膨胀的影响</li>
+                                    <li><strong>定期检视</strong>：每年检查养老金计划，根据情况调整</li>
+                                    <li><strong>安全提取</strong>：4%法则（年提取不超过总额的4%）较为安全</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <a href="../../index.html" class="footer-logo">
+                        <i class="fas fa-calculator"></i>
+                        <span>生活计算宝典</span>
+                    </a>
+                    <p class="footer-description">
+                        一站式离线计算工具集合，为您的生活带来便利。
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">理财工具</h4>
+                    <a href="pension.html" class="footer-link">养老金计算</a>
+                    <a href="savings-plan.html" class="footer-link">储蓄计划</a>
+                    <a href="inflation.html" class="footer-link">通货膨胀计算</a>
+                    <a href="roi.html" class="footer-link">投资回报率</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">快速链接</h4>
+                    <a href="../../pages/finance.html" class="footer-link">返回理财金融</a>
+                    <a href="../../pages/tools.html" class="footer-link">所有工具</a>
+                    <a href="https://github.com/laddzhao/life-calculators" target="_blank" class="footer-link">GitHub项目</a>
+                    <a href="../../404.html" class="footer-link">404页面</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">其他工具</h4>
+                    <a href="../home/utility-bill.html" class="footer-link">水电费计算</a>
+                    <a href="../shopping/discount.html" class="footer-link">折扣计算器</a>
+                    <a href="../health/bmi.html" class="footer-link">BMI计算</a>
+                    <a href="../professional/tax.html" class="footer-link">个税计算器</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 生活计算宝典 · 养老金计算</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 移动端底部导航 -->
+    <nav class="mobile-bottom-nav">
+        <a href="../../index.html" class="nav-item">
+            <i class="fas fa-home nav-icon"></i>
+            <span class="nav-label">首页</span>
+        </a>
+        <a href="../../pages/shopping.html" class="nav-item">
+            <i class="fas fa-shopping-cart nav-icon"></i>
+            <span class="nav-label">购物</span>
+        </a>
+        <a href="../../pages/finance.html" class="nav-item active">
+            <i class="fas fa-chart-line nav-icon"></i>
+            <span class="nav-label">理财</span>
+        </a>
+        <a href="../../pages/tools.html" class="nav-item">
+            <i class="fas fa-th nav-icon"></i>
+            <span class="nav-label">全部</span>
+        </a>
+        <a href="#" class="nav-item" id="mobileMenuBtn">
+            <i class="fas fa-ellipsis-h nav-icon"></i>
+            <span class="nav-label">更多</span>
+        </a>
+    </nav>
+
+    <script>
+        // 标签页切换
+        document.querySelectorAll('#pensionTabs .tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // 移除所有active类
+                document.querySelectorAll('#pensionTabs .tab').forEach(t => {
+                    t.classList.remove('active');
+                });
+                
+                // 添加active类到当前标签
+                this.classList.add('active');
+                
+                const type = this.dataset.type;
+                
+                // 显示对应的内容区域
+                document.querySelectorAll('[id$="Section"]').forEach(section => {
+                    section.style.display = 'none';
+                });
+                
+                document.getElementById(type + 'Section').style.display = 'block';
+                
+                // 显示对应的结果区域
+                document.querySelectorAll('[id$="Result"]').forEach(result => {
+                    result.style.display = 'none';
+                });
+                
+                // 提取策略选项显示控制
+                if (type === 'withdraw') {
+                    updateWithdrawOptions();
+                }
+                
+                // 显示结果区域
+                document.getElementById('resultSection').style.display = 'block';
+                
+                // 重新计算
+                setTimeout(() => {
+                    document.getElementById('calculateBtn').click();
+                }, 100);
+            });
+        });
+        
+        // 提取策略选项切换
+        document.getElementById('withdrawStrategy').addEventListener('change', updateWithdrawOptions);
+        
+        function updateWithdrawOptions() {
+            const strategy = document.getElementById('withdrawStrategy').value;
+            
+            document.getElementById('fixedAmountGroup').style.display = 'none';
+            document.getElementById('percentageGroup').style.display = 'none';
+            
+            if (strategy === 'fixed') {
+                document.getElementById('fixedAmountGroup').style.display = 'block';
+            } else if (strategy === 'percentage') {
+                document.getElementById('percentageGroup').style.display = 'block';
+            }
+        }
+        
+        // 计算养老金
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            const activeTab = document.querySelector('#pensionTabs .tab.active').dataset.type;
+            
+            if (activeTab === 'need') {
+                calculatePensionNeed();
+            } else if (activeTab === 'save') {
+                calculateSavingsPlan();
+            } else if (activeTab === 'withdraw') {
+                calculateWithdrawStrategy();
+            }
+            
+            // 显示结果区域
+            document.getElementById('resultSection').style.display = 'block';
+        });
+        
+        // 计算养老金需求
+        function calculatePensionNeed() {
+            // 获取输入值
+            const currentAge = parseInt(document.getElementById('currentAge').value) || 35;
+            const retireAge = parseInt(document.getElementById('retireAge').value) || 60;
+            const lifeExpectancy = parseInt(document.getElementById('lifeExpectancy').value) || 85;
+            const currentIncome = parseFloat(document.getElementById('currentIncome').value) || 0;
+            const replacementRate = parseFloat(document.getElementById('replacementRate').value) || 0;
+            const inflationRate = parseFloat(document.getElementById('inflationRate').value) || 0;
+            const returnRate = parseFloat(document.getElementById('returnRate').value) || 0;
+            const existingSavings = parseFloat(document.getElementById('existingSavings').value) || 0;
+            
+            // 计算退休后年生活费（考虑通货膨胀）
+            const yearsToRetire = retireAge - currentAge;
+            const retirementYears = lifeExpectancy - retireAge;
+            
+            // 退休第一年所需生活费（按当前购买力）
+            const firstYearExpense = currentIncome * (replacementRate / 100);
+            
+            // 考虑通货膨胀，退休时所需的生活费
+            const retirementExpense = firstYearExpense * Math.pow(1 + inflationRate/100, yearsToRetire);
+            
+            // 养老金总需求（考虑退休期间通货膨胀和投资回报）
+            // 简化计算：假设生活费每年按通货膨胀增长，养老金按投资回报率增长
+            const realReturnRate = ((1 + returnRate/100) / (1 + inflationRate/100) - 1) * 100;
+            
+            let totalNeeded = 0;
+            if (realReturnRate !== 0) {
+                // 等比数列求和公式
+                totalNeeded = retirementExpense * (1 - Math.pow(1 + inflationRate/100, retirementYears) / 
+                               Math.pow(1 + returnRate/100, retirementYears)) / (returnRate/100 - inflationRate/100);
+            } else {
+                // 如果实际回报率为0，简单计算
+                totalNeeded = retirementExpense * retirementYears;
+            }
+            
+            // 现有储蓄到退休时的未来值
+            const futureSavings = existingSavings * Math.pow(1 + returnRate/100, yearsToRetire);
+            
+            // 还需准备的资金
+            const additionalNeed = Math.max(0, totalNeeded - futureSavings);
+            
+            // 年储蓄目标（假设每年末储蓄）
+            let annualSavingGoal = 0;
+            if (returnRate !== 0 && yearsToRetire > 0) {
+                annualSavingGoal = additionalNeed * (returnRate/100) / 
+                                  (Math.pow(1 + returnRate/100, yearsToRetire) - 1);
+            } else if (yearsToRetire > 0) {
+                annualSavingGoal = additionalNeed / yearsToRetire;
+            }
+            
+            // 显示结果
+            document.getElementById('annualExpense').textContent = 
+                retirementExpense.toFixed(2) + ' 元';
+            document.getElementById('retirementDuration').textContent = 
+                retirementYears + ' 年';
+            document.getElementById('totalNeeded').textContent = 
+                totalNeeded.toFixed(2) + ' 元';
+            document.getElementById('existingTotal').textContent = 
+                futureSavings.toFixed(2) + ' 元';
+            document.getElementById('additionalNeed').textContent = 
+                additionalNeed.toFixed(2) + ' 元';
+            document.getElementById('annualSavingGoal').textContent = 
+                annualSavingGoal.toFixed(2) + ' 元';
+            
+            // 更新时间线
+            document.getElementById('timelineNow').textContent = 
+                existingSavings.toFixed(0) + '元';
+            
+            // 10年后储蓄
+            const savingsIn10Years = existingSavings * Math.pow(1 + returnRate/100, 10) +
+                                   annualSavingGoal * (Math.pow(1 + returnRate/100, 10) - 1) / (returnRate/100);
+            document.getElementById('timeline10Years').textContent = 
+                savingsIn10Years.toFixed(0) + '元';
+            
+            // 退休时储蓄
+            document.getElementById('timelineRetire').textContent = 
+                futureSavings.toFixed(0) + '元';
+            
+            // 显示养老金需求结果区域
+            document.getElementById('needResult').style.display = 'block';
+            document.getElementById('saveResult').style.display = 'none';
+            document.getElementById('withdrawResult').style.display = 'none';
+        }
+        
+        // 计算储蓄计划
+        function calculateSavingsPlan() {
+            // 获取输入值
+            const totalNeed = parseFloat(document.getElementById('totalNeed').value) || 0;
+            const savingsNow = parseFloat(document.getElementById('savingsNow').value) || 0;
+            const yearsToRetire = parseInt(document.getElementById('yearsToRetire').value) || 0;
+            const returnRate = parseFloat(document.getElementById('savingsReturnRate').value) || 0;
+            const fixedPension = parseFloat(document.getElementById('fixedPension').value) || 0;
+            
+            // 现有储蓄的未来值
+            const futureSavings = savingsNow * Math.pow(1 + returnRate/100, yearsToRetire);
+            
+            // 计算固定养老金收入的总现值
+            let pensionPresentValue = 0;
+            if (fixedPension > 0) {
+                // 假设退休后生活25年，折现率为投资回报率
+                const retirementYears = 25;
+                if (returnRate !== 0) {
+                    pensionPresentValue = fixedPension * (1 - Math.pow(1 + returnRate/100, -retirementYears)) / (returnRate/100);
+                } else {
+                    pensionPresentValue = fixedPension * retirementYears;
+                }
+            }
+            
+            // 实际需要准备的资金
+            const actualNeed = Math.max(0, totalNeed - pensionPresentValue);
+            
+            // 储蓄缺口
+            const savingsGap = Math.max(0, actualNeed - futureSavings);
+            
+            // 年储蓄目标
+            let annualSave = 0;
+            if (returnRate !== 0 && yearsToRetire > 0) {
+                annualSave = savingsGap * (returnRate/100) / 
+                            (Math.pow(1 + returnRate/100, yearsToRetire) - 1);
+            } else if (yearsToRetire > 0) {
+                annualSave = savingsGap / yearsToRetire;
+            }
+            
+            // 月储蓄目标
+            const monthlySave = annualSave / 12;
+            
+            // 假设年收入为储蓄目标的参考（按储蓄占收入30%计算）
+            const estimatedIncome = annualSave / 0.3;
+            const savingsRatio = annualSave / estimatedIncome * 100;
+            
+            // 储蓄进度
+            const currentProgress = Math.min(100, (savingsNow / actualNeed * 100));
+            
+            // 显示结果
+            document.getElementById('savingsTotalNeed').textContent = 
+                totalNeed.toFixed(2) + ' 元';
+            document.getElementById('futureSavings').textContent = 
+                futureSavings.toFixed(2) + ' 元';
+            document.getElementById('savingsGap').textContent = 
+                savingsGap.toFixed(2) + ' 元';
+            document.getElementById('requiredAnnualSave').textContent = 
+                annualSave.toFixed(2) + ' 元';
+            document.getElementById('requiredMonthlySave').textContent = 
+                monthlySave.toFixed(2) + ' 元';
+            document.getElementById('savingsRatio').textContent = 
+                savingsRatio.toFixed(1) + '%';
+            
+            // 更新进度条
+            document.getElementById('savingsProgress').style.width = currentProgress + '%';
+            document.getElementById('progressText').textContent = currentProgress.toFixed(1) + '%';
+            
+            // 显示储蓄计划结果区域
+            document.getElementById('needResult').style.display = 'none';
+            document.getElementById('saveResult').style.display = 'block';
+            document.getElementById('withdrawResult').style.display = 'none';
+        }
+        
+        // 计算提取策略
+        function calculateWithdrawStrategy() {
+            // 获取输入值
+            const totalPension = parseFloat(document.getElementById('totalPension').value) || 0;
+            const retirementYears = parseInt(document.getElementById('retirementYears').value) || 0;
+            const returnRate = parseFloat(document.getElementById('withdrawReturnRate').value) || 0;
+            const inflationRate = parseFloat(document.getElementById('withdrawInflationRate').value) || 0;
+            const strategy = document.getElementById('withdrawStrategy').value;
+            
+            let annualWithdraw = 0;
+            
+            if (strategy === 'fixed') {
+                annualWithdraw = parseFloat(document.getElementById('annualWithdraw').value) || 0;
+            } else if (strategy === 'percentage') {
+                const percentage = parseFloat(document.getElementById('withdrawPercentage').value) || 0;
+                annualWithdraw = totalPension * (percentage / 100);
+            } else {
+                // 通货膨胀调整提取
+                annualWithdraw = totalPension * 0.04; // 初始按4%提取
+            }
+            
+            // 模拟提取计划
+            let balance = totalPension;
+            let yearsSustainable = 0;
+            const scheduleBody = document.getElementById('withdrawSchedule');
+            scheduleBody.innerHTML = '';
+            
+            // 安全提取率（4%法则）
+            const safeWithdrawRate = 4.0;
+            
+            for (let year = 1; year <= retirementYears; year++) {
+                if (balance <= 0) break;
+                
+                // 计算本年提取金额
+                let thisYearWithdraw = annualWithdraw;
+                if (strategy === 'inflation_adjusted' && year > 1) {
+                    // 每年按通货膨胀调整提取金额
+                    thisYearWithdraw *= Math.pow(1 + inflationRate/100, year - 1);
+                }
+                
+                // 不能提取超过余额
+                thisYearWithdraw = Math.min(thisYearWithdraw, balance);
+                
+                // 计算投资收益（提取前）
+                const investmentReturn = balance * (returnRate / 100);
+                
+                // 更新余额（先加收益，再减提取）
+                balance = balance + investmentReturn - thisYearWithdraw;
+                
+                // 如果余额为负，设为0
+                if (balance < 0) balance = 0;
+                
+                // 记录可持续年份
+                if (balance > 0) {
+                    yearsSustainable = year;
+                }
+                
+                // 只显示前5年和最后5年
+                if (year <= 5 || (year > retirementYears - 5 && year <= retirementYears)) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>第 ${year} 年</td>
+                        <td>${(balance + thisYearWithdraw - investmentReturn).toFixed(2)}</td>
+                        <td>${thisYearWithdraw.toFixed(2)}</td>
+                        <td>${investmentReturn.toFixed(2)}</td>
+                        <td>${balance.toFixed(2)}</td>
+                    `;
+                    scheduleBody.appendChild(row);
+                }
+                
+                // 添加省略行
+                if (year === 5 && retirementYears > 10) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td colspan="5" class="text-center" style="padding: 0.5rem; color: var(--text-tertiary); font-size: 0.875rem;">
+                            ... 省略 ${retirementYears - 10} 年 ...
+                        </td>
+                    `;
+                    scheduleBody.appendChild(row);
+                }
+            }
+            
+            // 显示结果
+            document.getElementById('withdrawTotal').textContent = 
+                totalPension.toFixed(2) + ' 元';
+            document.getElementById('yearlyWithdraw').textContent = 
+                annualWithdraw.toFixed(2) + ' 元';
+            document.getElementById('sustainableYears').textContent = 
+                yearsSustainable + ' 年';
+            document.getElementById('safeWithdrawRate').textContent = 
+                safeWithdrawRate.toFixed(1) + '%';
+            
+            // 显示提取策略结果区域
+            document.getElementById('needResult').style.display = 'none';
+            document.getElementById('saveResult').style.display = 'none';
+            document.getElementById('withdrawResult').style.display = 'block';
+        }
+        
+        // 主题切换
+        function initTheme() {
+            const themeBtn = document.querySelector('.theme-btn');
+            
+            // 检查本地存储的主题设置
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+            
+            // 切换主题函数
+            function toggleTheme() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                // 更新图标
+                if (themeBtn) {
+                    const icon = themeBtn.querySelector('i');
+                    icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+            }
+            
+            // 添加事件监听
+            if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            updateWithdrawOptions();
+            
+            // 页面加载时自动计算一次
+            document.getElementById('calculateBtn').click();
+        });
+    </script>
+    
+    <style>
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+        
+        .tab {
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border: none;
+            background: none;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        
+        .tab:hover {
+            color: var(--primary);
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .input-hint {
+            display: block;
+            margin-top: 0.25rem;
+            color: var(--text-tertiary);
+            font-size: 0.75rem;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 1rem;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+        
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -0.5rem;
+            top: 0.25rem;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background: var(--primary);
+        }
+        
+        .timeline-year {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .timeline-content {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 0.75rem;
+            background-color: var(--gray-200);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: var(--radius-full);
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.875rem;
+        }
+        
+        .withdraw-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        
+        .withdraw-table th,
+        .withdraw-table td {
+            padding: 0.5rem;
+            text-align: right;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .withdraw-table th {
+            font-weight: 600;
+            color: var(--text-primary);
+            background-color: var(--gray-50);
+        }
+        
+        .withdraw-table th:first-child,
+        .withdraw-table td:first-child {
+            text-align: left;
+        }
+        
+        .withdraw-table tr:hover {
+            background-color: var(--gray-50);
+        }
+        
+        @media (max-width: 640px) {
+            .tabs {
+                font-size: 0.875rem;
+            }
+            
+            .tab {
+                padding: 0.5rem 1rem;
+            }
+            
+            .withdraw-table {
+                font-size: 0.75rem;
+            }
+            
+            .withdraw-table th,
+            .withdraw-table td {
+                padding: 0.25rem;
+            }
+        }
+    </style>
+</body>
+</html>
