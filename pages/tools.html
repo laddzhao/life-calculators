@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>所有计算工具 - 生活计算宝典</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../layout.css">
+    <link rel="stylesheet" href="../components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+</head>
+<body class="app">
+    <header class="app-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-mobile">
+                    <a href="../index.html" class="navbar-back">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div class="navbar-title">所有工具</div>
+                    <div></div>
+                </div>
+                
+                <div class="navbar-desktop">
+                    <a href="../index.html" class="logo">
+                        <i class="fas fa-calculator"></i>
+                        <span class="logo-text">生活计算宝典</span>
+                    </a>
+                    <div class="nav-links">
+                        <a href="../index.html" class="nav-link">首页</a>
+                        <a href="shopping.html" class="nav-link">消费购物</a>
+                        <a href="home.html" class="nav-link">居家生活</a>
+                        <a href="finance.html" class="nav-link">理财金融</a>
+                        <a href="tools.html" class="nav-link active">所有工具</a>
+                    </div>
+                    <div class="theme-toggle">
+                        <button class="theme-btn" aria-label="切换主题">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="section">
+            <div class="container">
+                <!-- 面包屑导航 -->
+                <nav class="breadcrumb">
+                    <a href="../index.html" class="breadcrumb-link">首页</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <span class="breadcrumb-current">所有工具</span>
+                </nav>
+                
+                <!-- 页面标题 -->
+                <div class="section-header text-left">
+                    <h1 class="section-title">所有计算工具</h1>
+                    <p class="section-description">
+                        生活计算宝典包含8大分类，共40+个实用计算工具，满足您各种生活计算需求。
+                    </p>
+                </div>
+                
+                <!-- 搜索框 -->
+                <div class="search-box mb-8">
+                    <div class="input-group">
+                        <label class="input-label">搜索工具</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-search input-icon"></i>
+                            <input type="text" id="toolSearch" class="input-field" placeholder="输入工具名称或关键词...">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 工具分类标签 -->
+                <div class="tabs mb-6" id="categoryTabs">
+                    <button class="tab active" data-category="all">全部工具</button>
+                    <button class="tab" data-category="shopping">消费购物</button>
+                    <button class="tab" data-category="home">居家生活</button>
+                    <button class="tab" data-category="finance">理财金融</button>
+                    <button class="tab" data-category="travel">旅行出行</button>
+                    <button class="tab" data-category="health">健康运动</button>
+                    <button class="tab" data-category="study">学习工具</button>
+                    <button class="tab" data-category="fun">趣味工具</button>
+                    <button class="tab" data-category="professional">专业工具</button>
+                </div>
+                
+                <!-- 所有工具列表 -->
+                <div class="tools-grid" id="allToolsContainer">
+                    <!-- 工具卡片将通过JavaScript动态生成 -->
+                </div>
+                
+                <!-- 空状态 -->
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="empty-title">未找到相关工具</h3>
+                    <p class="empty-description">
+                        抱歉，没有找到与您的搜索匹配的工具。
+                        请尝试其他关键词，或浏览所有分类。
+                    </p>
+                </div>
+                
+                <!-- 统计信息 -->
+                <div class="alert alert-info mt-8">
+                    <div class="flex items-center">
+                        <i class="fas fa-chart-bar mr-3"></i>
+                        <div>
+                            <strong>统计信息：</strong> 
+                            共收录 <span id="totalToolsCount">0</span> 个计算工具，
+                            分为 <span id="totalCategoriesCount">8</span> 大分类。
+                            所有工具均可离线使用，保护您的隐私安全。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <a href="../index.html" class="footer-logo">
+                        <i class="fas fa-calculator"></i>
+                        <span>生活计算宝典</span>
+                    </a>
+                    <p class="footer-description">
+                        一站式离线计算工具集合，为您的生活带来便利。
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">热门分类</h4>
+                    <a href="shopping.html" class="footer-link">消费购物</a>
+                    <a href="finance.html" class="footer-link">理财金融</a>
+                    <a href="health.html" class="footer-link">健康运动</a>
+                    <a href="professional.html" class="footer-link">专业工具</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">热门工具</h4>
+                    <a href="../tools/shopping/discount.html" class="footer-link">折扣计算器</a>
+                    <a href="../tools/health/bmi.html" class="footer-link">BMI计算器</a>
+                    <a href="../tools/finance/interest.html" class="footer-link">利息计算器</a>
+                    <a href="../tools/professional/mortgage.html" class="footer-link">房贷计算器</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">快速链接</h4>
+                    <a href="../index.html" class="footer-link">返回首页</a>
+                    <a href="https://github.com/laddzhao/life-calculators" target="_blank" class="footer-link">GitHub项目</a>
+                    <a href="../404.html" class="footer-link">404页面</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 生活计算宝典 · 所有计算工具</p>
+                <p class="footer-note">
+                    持续更新中，欢迎提出宝贵意见和建议。
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 移动端底部导航 -->
+    <nav class="mobile-bottom-nav">
+        <a href="../index.html" class="nav-item">
+            <i class="fas fa-home nav-icon"></i>
+            <span class="nav-label">首页</span>
+        </a>
+        <a href="shopping.html" class="nav-item">
+            <i class="fas fa-shopping-cart nav-icon"></i>
+            <span class="nav-label">购物</span>
+        </a>
+        <a href="tools.html" class="nav-item active">
+            <i class="fas fa-th nav-icon"></i>
+            <span class="nav-label">全部</span>
+        </a>
+        <a href="professional.html" class="nav-item">
+            <i class="fas fa-briefcase nav-icon"></i>
+            <span class="nav-label">专业</span>
+        </a>
+        <a href="#" class="nav-item" id="mobileMenuBtn">
+            <i class="fas fa-ellipsis-h nav-icon"></i>
+            <span class="nav-label">更多</span>
+        </a>
+    </nav>
+
+    <!-- 移动端菜单 -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <h3>菜单</h3>
+            <button class="mobile-menu-close" id="mobileMenuClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-menu-content">
+            <a href="../index.html" class="mobile-menu-link">
+                <i class="fas fa-home"></i> 首页
+            </a>
+            <a href="home.html" class="mobile-menu-link">
+                <i class="fas fa-home"></i> 居家生活
+            </a>
+            <a href="finance.html" class="mobile-menu-link">
+                <i class="fas fa-chart-line"></i> 理财金融
+            </a>
+            <a href="travel.html" class="mobile-menu-link">
+                <i class="fas fa-plane"></i> 旅行出行
+            </a>
+            <a href="health.html" class="mobile-menu-link">
+                <i class="fas fa-heartbeat"></i> 健康运动
+            </a>
+            <a href="study.html" class="mobile-menu-link">
+                <i class="fas fa-graduation-cap"></i> 学习工具
+            </a>
+            <a href="fun.html" class="mobile-menu-link">
+                <i class="fas fa-gamepad"></i> 趣味工具
+            </a>
+            <a href="professional.html" class="mobile-menu-link">
+                <i class="fas fa-briefcase"></i> 专业工具
+            </a>
+            <hr class="mobile-menu-divider">
+            <button class="mobile-menu-link theme-toggle-btn">
+                <i class="fas fa-moon"></i> 切换主题
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 所有工具数据
+        const allTools = [
+            // 消费购物类工具
+            {id: 'discount', name: '折扣计算器', category: 'shopping', icon: 'fa-percentage', 
+             desc: '计算商品打折后的价格和节省金额', color: '#ef4444'},
+            {id: 'full-discount', name: '满减计算器', category: 'shopping', icon: 'fa-tags', 
+             desc: '计算满减优惠后的实际支付金额', color: '#ef4444'},
+            {id: 'price-compare', name: '单价对比器', category: 'shopping', icon: 'fa-balance-scale', 
+             desc: '比较不同包装商品的单位价格', color: '#ef4444'},
+            {id: 'split-bill', name: '分摊计算器', category: 'shopping', icon: 'fa-users', 
+             desc: '计算多人消费时的公平分摊金额', color: '#ef4444'},
+            {id: 'tax-calc', name: '税费计算器', category: 'shopping', icon: 'fa-receipt', 
+             desc: '计算商品含税价格和税额', color: '#ef4444'},
+            {id: 'member-discount', name: '会员折扣计算', category: 'shopping', icon: 'fa-crown', 
+             desc: '计算会员叠加优惠后的价格', color: '#ef4444'},
+            {id: 'coupon', name: '优惠券计算', category: 'shopping', icon: 'fa-ticket-alt', 
+             desc: '计算多张优惠券的最佳使用方案', color: '#ef4444'},
+            {id: 'installment', name: '分期付款计算', category: 'shopping', icon: 'fa-credit-card', 
+             desc: '计算分期付款的每期金额和总费用', color: '#ef4444'},
+            
+            // 居家生活类工具
+            {id: 'utility-bill', name: '水电费计算', category: 'home', icon: 'fa-bolt', 
+             desc: '计算水电燃气费用，支持阶梯电价', color: '#3b82f6'},
+            {id: 'area-volume', name: '面积体积计算', category: 'home', icon: 'fa-cube', 
+             desc: '计算房间面积、体积，支持多种几何图形', color: '#3b82f6'},
+            {id: 'paint-calc', name: '涂料用量计算', category: 'home', icon: 'fa-paint-roller', 
+             desc: '计算墙面油漆用量，根据房间尺寸', color: '#3b82f6'},
+            {id: 'cooking-convert', name: '食材换算', category: 'home', icon: 'fa-utensils', 
+             desc: '食材单位换算，调整菜谱份量', color: '#3b82f6'},
+            {id: 'cooking-time', name: '烹饪时间计算', category: 'home', icon: 'fa-clock', 
+             desc: '计算烹饪时间，协调多道菜同时完成', color: '#3b82f6'},
+            {id: 'furniture', name: '家具摆放计算', category: 'home', icon: 'fa-couch', 
+             desc: '计算家具摆放空间，检查尺寸是否合适', color: '#3b82f6'},
+            {id: 'energy', name: '能耗计算', category: 'home', icon: 'fa-sun', 
+             desc: '计算家用电器能耗，估算电费成本', color: '#3b82f6'},
+            
+            // 理财金融类工具
+            {id: 'interest', name: '利息计算器', category: 'finance', icon: 'fa-percentage', 
+             desc: '计算存款、贷款利息，支持简单利息和复利', color: '#10b981'},
+            {id: 'loan-compare', name: '贷款对比', category: 'finance', icon: 'fa-balance-scale', 
+             desc: '比较不同贷款方案，计算月供和总利息', color: '#10b981'},
+            {id: 'investment', name: '投资收益计算', category: 'finance', icon: 'fa-chart-line', 
+             desc: '计算投资收益率，评估投资项目', color: '#10b981'},
+            {id: 'compound', name: '复利计算', category: 'finance', icon: 'fa-chart-bar', 
+             desc: '计算复利收益，展示时间对财富增长的威力', color: '#10b981'},
+            {id: 'currency', name: '汇率换算', category: 'finance', icon: 'fa-exchange-alt', 
+             desc: '实时货币兑换计算，支持多种主流货币', color: '#10b981'},
+            {id: 'retirement', name: '养老金计算', category: 'finance', icon: 'fa-piggy-bank', 
+             desc: '计算养老金储备，规划退休生活所需资金', color: '#10b981'},
+            {id: 'saving', name: '储蓄计划计算', category: 'finance', icon: 'fa-coins', 
+             desc: '制定储蓄计划，计算达成目标所需时间和金额', color: '#10b981'},
+            {id: 'inflation', name: '通货膨胀计算', category: 'finance', icon: 'fa-money-bill-wave', 
+             desc: '计算通货膨胀对购买力的影响', color: '#10b981'},
+            {id: 'roi', name: '投资回报率(ROI)', category: 'finance', icon: 'fa-calculator', 
+             desc: '计算投资回报率，评估投资项目的效率', color: '#10b981'},
+            
+            // 旅行出行类工具
+            {id: 'mileage', name: '里程油耗计算', category: 'travel', icon: 'fa-gas-pump', 
+             desc: '计算行驶里程、油耗和油费', color: '#8b5cf6'},
+            {id: 'travel-time', name: '旅行时间计算', category: 'travel', icon: 'fa-clock', 
+             desc: '计算旅程所需时间，考虑平均速度和休息', color: '#8b5cf6'},
+            {id: 'travel-budget', name: '旅行预算规划', category: 'travel', icon: 'fa-money-bill-wave', 
+             desc: '规划旅行预算，分配交通、住宿、餐饮等费用', color: '#8b5cf6'},
+            {id: 'timezone', name: '时区转换计算', category: 'travel', icon: 'fa-globe', 
+             desc: '计算不同时区的时间差，避免时差困扰', color: '#8b5cf6'},
+            {id: 'luggage', name: '行李重量计算', category: 'travel', icon: 'fa-suitcase', 
+             desc: '计算行李重量，避免超重费用，合理打包', color: '#8b5cf6'},
+            {id: 'currency-travel', name: '旅行汇率换算', category: 'travel', icon: 'fa-exchange-alt', 
+             desc: '专为旅行设计的汇率换算，支持多种货币', color: '#8b5cf6'},
+            
+            // 健康运动类工具
+            {id: 'bmi', name: 'BMI计算器', category: 'health', icon: 'fa-weight', 
+             desc: '计算身体质量指数，评估体重健康状况', color: '#f59e0b'},
+            {id: 'calorie', name: '卡路里消耗计算', category: 'health', icon: 'fa-fire', 
+             desc: '计算运动消耗的卡路里，制定健身计划', color: '#f59e0b'},
+            {id: 'water', name: '饮水量计算', category: 'health', icon: 'fa-tint', 
+             desc: '计算每日建议饮水量，保持身体水分平衡', color: '#f59e0b'},
+            {id: 'heart-rate', name: '运动心率计算', category: 'health', icon: 'fa-heartbeat', 
+             desc: '计算最佳运动心率区间，安全高效锻炼', color: '#f59e0b'},
+            {id: 'medicine', name: '药物剂量计算', category: 'health', icon: 'fa-pills', 
+             desc: '根据体重计算药物剂量，确保用药安全', color: '#f59e0b'},
+            {id: 'body-fat', name: '体脂率计算', category: 'health', icon: 'fa-chart-pie', 
+             desc: '估算体脂率，评估身体脂肪含量', color: '#f59e0b'},
+            {id: 'bmr', name: '基础代谢率计算', category: 'health', icon: 'fa-battery-full', 
+             desc: '计算基础代谢率，制定个性化饮食计划', color: '#f59e0b'},
+            
+            // 学习工具类工具
+            {id: 'unit-convert', name: '单位换算器', category: 'study', icon: 'fa-ruler-combined', 
+             desc: '长度、重量、体积、温度等单位换算', color: '#06b6d4'},
+            {id: 'percentage', name: '百分比计算器', category: 'study', icon: 'fa-percentage', 
+             desc: '百分比计算、增长率和占比计算', color: '#06b6d4'},
+            {id: 'average', name: '平均数计算器', category: 'study', icon: 'fa-calculator', 
+             desc: '计算算术平均数、中位数和众数', color: '#06b6d4'},
+            {id: 'fraction', name: '分数计算器', category: 'study', icon: 'fa-divide', 
+             desc: '分数加减乘除、约分和通分计算', color: '#06b6d4'},
+            {id: 'equation', name: '简单方程求解', category: 'study', icon: 'fa-equals', 
+             desc: '解一元一次方程、二元一次方程组', color: '#06b6d4'},
+            {id: 'geometry', name: '几何图形计算', category: 'study', icon: 'fa-shapes', 
+             desc: '计算常见几何图形的面积和体积', color: '#06b6d4'},
+            {id: 'statistics', name: '基础统计计算', category: 'study', icon: 'fa-chart-bar', 
+             desc: '计算方差、标准差和相关系数', color: '#06b6d4'},
+            {id: 'prime', name: '质数判断器', category: 'study', icon: 'fa-superscript', 
+             desc: '判断数字是否为质数，分解质因数', color: '#06b6d4'},
+            
+            // 趣味工具类工具
+            {id: 'random', name: '随机数生成器', category: 'fun', icon: 'fa-dice', 
+             desc: '生成指定范围的随机数，支持整数和小数', color: '#ec4899'},
+            {id: 'date-calc', name: '日期计算器', category: 'fun', icon: 'fa-calendar-alt', 
+             desc: '计算日期差、添加天数、工作日计算', color: '#ec4899'},
+            {id: 'age-calc', name: '年龄计算器', category: 'fun', icon: 'fa-birthday-cake', 
+             desc: '计算精确年龄，包括年月日时分秒', color: '#ec4899'},
+            {id: 'password', name: '密码生成器', category: 'fun', icon: 'fa-key', 
+             desc: '生成安全随机密码，自定义长度和字符类型', color: '#ec4899'},
+            {id: 'color', name: '颜色代码转换', category: 'fun', icon: 'fa-palette', 
+             desc: 'RGB、HEX、HSL颜色代码相互转换', color: '#ec4899'},
+            {id: 'lottery', name: '幸运数字生成', category: 'fun', icon: 'fa-gem', 
+             desc: '生成幸运数字，支持多种算法和范围', color: '#ec4899'},
+            
+            // 专业工具类工具
+            {id: 'mortgage', name: '房贷计算器', category: 'professional', icon: 'fa-home', 
+             desc: '计算房贷月供、总利息，支持等额本息和等额本金', color: '#6366f1'},
+            {id: 'income-tax', name: '个人所得税计算', category: 'professional', icon: 'fa-file-invoice-dollar', 
+             desc: '计算个税应纳税额，支持最新个税政策', color: '#6366f1'},
+            {id: 'social-security', name: '社保公积金计算', category: 'professional', icon: 'fa-shield-alt', 
+             desc: '计算社保和公积金缴纳金额，支持各地政策', color: '#6366f1'},
+            {id: 'business-discount', name: '商业折扣模型', category: 'professional', icon: 'fa-chart-line', 
+             desc: '构建商业折扣模型，优化定价策略', color: '#6366f1'},
+            {id: 'roi-pro', name: '投资回报分析', category: 'professional', icon: 'fa-chart-bar', 
+             desc: '专业级投资回报率分析，支持多种投资场景', color: '#6366f1'},
+            {id: 'loan-pro', name: '商业贷款计算', category: 'professional', icon: 'fa-hand-holding-usd', 
+             desc: '计算商业贷款，支持复杂还款方式', color: '#6366f1'},
+            {id: 'tax-planning', name: '税务规划工具', category: 'professional', icon: 'fa-calculator', 
+             desc: '税务优化计算，合法降低税负', color: '#6366f1'}
+        ];
+        
+        // 分类信息
+        const categories = {
+            shopping: {name: '消费购物', count: 8},
+            home: {name: '居家生活', count: 7},
+            finance: {name: '理财金融', count: 9},
+            travel: {name: '旅行出行', count: 6},
+            health: {name: '健康运动', count: 7},
+            study: {name: '学习工具', count: 8},
+            fun: {name: '趣味工具', count: 6},
+            professional: {name: '专业工具', count: 7}
+        };
+        
+        // 渲染所有工具
+        function renderAllTools(filteredTools = allTools) {
+            const container = document.getElementById('allToolsContainer');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (filteredTools.length === 0) {
+                container.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            container.style.display = 'grid';
+            emptyState.style.display = 'none';
+            
+            container.innerHTML = filteredTools.map(tool => `
+                <a href="../tools/${tool.category}/${tool.id}.html" class="tool-card" data-category="${tool.category}">
+                    <div class="tool-card-header">
+                        <div class="tool-icon" style="background: ${tool.color}">
+                            <i class="fas ${tool.icon}"></i>
+                        </div>
+                        <span class="tool-badge">${categories[tool.category].name}</span>
+                    </div>
+                    <h4 class="tool-title">${tool.name}</h4>
+                    <p class="tool-description">${tool.desc}</p>
+                    <div class="tool-footer">
+                        <span class="tool-action">立即使用</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+            `).join('');
+            
+            // 更新统计信息
+            document.getElementById('totalToolsCount').textContent = allTools.length;
+            document.getElementById('totalCategoriesCount').textContent = Object.keys(categories).length;
+        }
+        
+        // 搜索工具
+        function searchTools() {
+            const searchTerm = document.getElementById('toolSearch').value.toLowerCase();
+            const activeCategory = document.querySelector('#categoryTabs .tab.active').dataset.category;
+            
+            let filteredTools = allTools;
+            
+            // 按类别过滤
+            if (activeCategory !== 'all') {
+                filteredTools = filteredTools.filter(tool => tool.category === activeCategory);
+            }
+            
+            // 按搜索词过滤
+            if (searchTerm) {
+                filteredTools = filteredTools.filter(tool => 
+                    tool.name.toLowerCase().includes(searchTerm) || 
+                    tool.desc.toLowerCase().includes(searchTerm) ||
+                    categories[tool.category].name.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            renderAllTools(filteredTools);
+        }
+        
+        // 标签页切换
+        function initCategoryTabs() {
+            document.querySelectorAll('#categoryTabs .tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 移除所有active类
+                    document.querySelectorAll('#categoryTabs .tab').forEach(t => {
+                        t.classList.remove('active');
+                    });
+                    
+                    // 添加active类到当前标签
+                    this.classList.add('active');
+                    
+                    // 重新搜索和渲染
+                    searchTools();
+                });
+            });
+        }
+        
+        // 主题切换
+        function initTheme() {
+            const themeBtn = document.querySelector('.theme-btn');
+            const mobileThemeBtn = document.querySelector('.theme-toggle-btn');
+            
+            // 检查本地存储的主题设置
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+            
+            // 切换主题函数
+            function toggleTheme() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                // 更新图标
+                if (themeBtn) {
+                    const icon = themeBtn.querySelector('i');
+                    icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+            }
+            
+            // 添加事件监听
+            if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+            if (mobileThemeBtn) mobileThemeBtn.addEventListener('click', toggleTheme);
+        }
+        
+        // 移动端菜单
+        function initMobileMenu() {
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            const closeBtn = document.getElementById('mobileMenuClose');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            if (menuBtn) {
+                menuBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    mobileMenu.classList.add('active');
+                });
+            }
+            
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                });
+            }
+            
+            // 点击菜单项关闭菜单
+            document.querySelectorAll('.mobile-menu-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                });
+            });
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            // 渲染所有工具
+            renderAllTools();
+            
+            // 初始化标签页
+            initCategoryTabs();
+            
+            // 初始化搜索功能
+            document.getElementById('toolSearch').addEventListener('input', searchTools);
+            
+            // 初始化主题和菜单
+            initTheme();
+            initMobileMenu();
+        });
+    </script>
+    
+    <style>
+        .search-box {
+            max-width: 500px;
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+        }
+        
+        .input-with-icon .input-field {
+            padding-left: 3rem;
+        }
+        
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            border-bottom: none;
+        }
+        
+        .tab {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--border);
+            background-color: var(--bg-primary);
+            color: var(--text-secondary);
+        }
+        
+        .tab.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .tab:hover:not(.active) {
+            background-color: var(--gray-100);
+        }
+        
+        .empty-state {
+            padding: 4rem 2rem;
+        }
+        
+        @media (max-width: 640px) {
+            .tabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 0.5rem;
+            }
+            
+            .tab {
+                white-space: nowrap;
+            }
+        }
+    </style>
+</body>
+</html>
