@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生活计算宝典 | 离线计算工具集</title>
+    <meta name="description" content="一站式离线计算解决方案，包含40+个实用计算工具，涵盖消费购物、理财金融、健康运动等8大分类。">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="layout.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body class="app">
+    <!-- 顶部导航 -->
+    <header class="app-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-mobile">
+                    <button class="navbar-menu-btn" aria-label="打开菜单">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <a href="index.html" class="logo">
+                        <i class="fas fa-calculator"></i>
+                        <span class="logo-text">生活计算宝典</span>
+                    </a>
+                    <div></div>
+                </div>
+                
+                <div class="navbar-desktop">
+                    <a href="index.html" class="logo">
+                        <i class="fas fa-calculator"></i>
+                        <span class="logo-text">生活计算宝典</span>
+                    </a>
+                    <div class="nav-links">
+                        <a href="index.html" class="nav-link active">首页</a>
+                        <a href="pages/tools.html" class="nav-link">所有工具</a>
+                        <a href="#features" class="nav-link">功能特色</a>
+                        <a href="#categories" class="nav-link">分类浏览</a>
+                        <a href="#about" class="nav-link">关于项目</a>
+                    </div>
+                    <div class="theme-toggle">
+                        <button class="theme-btn" aria-label="切换主题">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容 -->
+    <main class="app-main">
+        <!-- 英雄区域 -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">生活计算宝典</h1>
+                    <p class="hero-description">
+                        一站式离线计算解决方案 · 8大分类 · 40+工具<br>
+                        无需网络，随时随地解决您的计算难题
+                    </p>
+                    <div class="hero-actions">
+                        <a href="#categories" class="btn btn-primary btn-lg">
+                            <i class="fas fa-rocket"></i> 立即开始
+                        </a>
+                        <a href="pages/tools.html" class="btn btn-outline btn-lg">
+                            <i class="fas fa-list"></i> 查看所有工具
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <div class="stat-number">40+</div>
+                            <div class="stat-label">计算工具</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">功能分类</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">离线可用</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">网络依赖</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 功能特色 -->
+        <section id="features" class="section bg-gray-50">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">功能特色</h2>
+                    <p class="section-description">为什么选择生活计算宝典</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-wifi-slash"></i>
+                        </div>
+                        <h3 class="feature-title">完全离线</h3>
+                        <p class="feature-description">
+                            所有计算工具均在浏览器本地运行，无需网络连接，保护您的隐私安全。
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="feature-title">响应式设计</h3>
+                        <p class="feature-description">
+                            完美适配手机、平板和电脑，在任何设备上都能获得最佳使用体验。
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="feature-title">快速计算</h3>
+                        <p class="feature-description">
+                            实时计算，无需等待，输入即出结果，为您节省宝贵时间。
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="feature-title">隐私安全</h3>
+                        <p class="feature-description">
+                            所有计算数据仅存在于您的设备，不会上传到任何服务器，绝对安全。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 分类浏览 -->
+        <section id="categories" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">分类浏览</h2>
+                    <p class="section-description">8大分类，满足您所有计算需求</p>
+                </div>
+                <div class="categories-grid" id="categoriesContainer">
+                    <!-- 分类卡片通过JS动态生成 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 热门工具 -->
+        <section class="section bg-gray-50">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">热门工具</h2>
+                    <p class="section-description">最受欢迎的10个计算工具</p>
+                </div>
+                <div class="tools-grid" id="featuredTools">
+                    <!-- 热门工具通过JS动态生成 -->
+                </div>
+                <div class="text-center mt-8">
+                    <a href="pages/tools.html" class="btn btn-secondary">
+                        <i class="fas fa-arrow-right"></i> 查看所有工具
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 使用指南 -->
+        <section id="about" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">使用指南</h2>
+                    <p class="section-description">快速上手，轻松计算</p>
+                </div>
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">选择分类</h3>
+                        <p class="step-description">
+                            根据您的需求，点击相应的分类卡片进入工具列表。
+                        </p>
+                    </div>
+                    <div class="guide-step">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">选择工具</h3>
+                        <p class="step-description">
+                            在工具列表页面，点击您需要的具体计算工具。
+                        </p>
+                    </div>
+                    <div class="guide-step">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">输入数据</h3>
+                        <p class="step-description">
+                            在计算器页面输入相关数据，支持多种输入方式。
+                        </p>
+                    </div>
+                    <div class="guide-step">
+                        <div class="step-number">4</div>
+                        <h3 class="step-title">获取结果</h3>
+                        <p class="step-description">
+                            实时计算结果，并可复制或分享计算结果。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="app-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <a href="index.html" class="footer-logo">
+                        <i class="fas fa-calculator"></i>
+                        <span>生活计算宝典</span>
+                    </a>
+                    <p class="footer-description">
+                        一站式离线计算工具集合，为您的生活带来便利。
+                    </p>
+                    <div class="social-links">
+                        <a href="https://github.com" target="_blank" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" aria-label="Weibo">
+                            <i class="fab fa-weibo"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">主要分类</h4>
+                    <a href="pages/shopping.html" class="footer-link">消费购物</a>
+                    <a href="pages/finance.html" class="footer-link">理财金融</a>
+                    <a href="pages/health.html" class="footer-link">健康运动</a>
+                    <a href="pages/professional.html" class="footer-link">专业工具</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">热门工具</h4>
+                    <a href="tools/shopping/discount.html" class="footer-link">折扣计算器</a>
+                    <a href="tools/health/bmi.html" class="footer-link">BMI计算</a>
+                    <a href="tools/finance/currency.html" class="footer-link">汇率换算</a>
+                    <a href="tools/professional/mortgage.html" class="footer-link">房贷计算器</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">项目信息</h4>
+                    <a href="https://github.com/laddzhao/life-calculators" target="_blank" class="footer-link">
+                        <i class="fab fa-github"></i> GitHub仓库
+                    </a>
+                    <a href="#" class="footer-link">使用说明</a>
+                    <a href="#" class="footer-link">更新日志</a>
+                    <a href="404.html" class="footer-link">404页面</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 生活计算宝典 · 完全离线使用 · 响应式设计</p>
+                <p class="footer-note">
+                    本项目为开源项目，欢迎贡献代码。所有计算均在本地完成，不收集任何用户数据。
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 移动端底部导航 -->
+    <nav class="mobile-bottom-nav">
+        <a href="index.html" class="nav-item active">
+            <i class="fas fa-home nav-icon"></i>
+            <span class="nav-label">首页</span>
+        </a>
+        <a href="pages/tools.html" class="nav-item">
+            <i class="fas fa-th nav-icon"></i>
+            <span class="nav-label">工具</span>
+        </a>
+        <a href="pages/shopping.html" class="nav-item">
+            <i class="fas fa-shopping-cart nav-icon"></i>
+            <span class="nav-label">购物</span>
+        </a>
+        <a href="pages/finance.html" class="nav-item">
+            <i class="fas fa-chart-line nav-icon"></i>
+            <span class="nav-label">理财</span>
+        </a>
+        <a href="#" class="nav-item" id="mobileMenuBtn">
+            <i class="fas fa-ellipsis-h nav-icon"></i>
+            <span class="nav-label">更多</span>
+        </a>
+    </nav>
+
+    <!-- 移动端菜单 -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <h3>菜单</h3>
+            <button class="mobile-menu-close" id="mobileMenuClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-menu-content">
+            <a href="pages/home.html" class="mobile-menu-link">
+                <i class="fas fa-home"></i> 居家生活
+            </a>
+            <a href="pages/travel.html" class="mobile-menu-link">
+                <i class="fas fa-plane"></i> 旅行出行
+            </a>
+            <a href="pages/health.html" class="mobile-menu-link">
+                <i class="fas fa-heartbeat"></i> 健康运动
+            </a>
+            <a href="pages/study.html" class="mobile-menu-link">
+                <i class="fas fa-graduation-cap"></i> 学习工具
+            </a>
+            <a href="pages/fun.html" class="mobile-menu-link">
+                <i class="fas fa-gamepad"></i> 趣味工具
+            </a>
+            <a href="pages/professional.html" class="mobile-menu-link">
+                <i class="fas fa-briefcase"></i> 专业工具
+            </a>
+            <hr class="mobile-menu-divider">
+            <a href="#features" class="mobile-menu-link">
+                <i class="fas fa-star"></i> 功能特色
+            </a>
+            <a href="#about" class="mobile-menu-link">
+                <i class="fas fa-info-circle"></i> 关于项目
+            </a>
+            <button class="mobile-menu-link theme-toggle-btn">
+                <i class="fas fa-moon"></i> 切换主题
+            </button>
+        </div>
+    </div>
+
+    <script src="calculator.js"></script>
+    <script>
+        // 分类数据
+        const categories = [
+            {id: 'shopping', icon: 'fa-shopping-cart', title: '💰 消费购物', 
+             desc: '折扣、满减、分摊、比价等购物计算', tools: 8, color: '#ef4444'},
+            {id: 'home', icon: 'fa-home', title: '🏠 居家生活', 
+             desc: '水电费、面积、烹饪、装修等计算', tools: 7, color: '#3b82f6'},
+            {id: 'finance', icon: 'fa-chart-line', title: '📊 理财金融', 
+             desc: '利息、投资、汇率、贷款等计算', tools: 9, color: '#10b981'},
+            {id: 'travel', icon: 'fa-plane', title: '🚗 旅行出行', 
+             desc: '里程、时区、预算、行李等计算', tools: 6, color: '#8b5cf6'},
+            {id: 'health', icon: 'fa-heartbeat', title: '💪 健康运动', 
+             desc: 'BMI、卡路里、心率、用药等计算', tools: 7, color: '#f59e0b'},
+            {id: 'study', icon: 'fa-graduation-cap', title: '📐 学习工具', 
+             desc: '单位换算、百分比、方程等计算', tools: 8, color: '#06b6d4'},
+            {id: 'fun', icon: 'fa-gamepad', title: '🎯 趣味工具', 
+             desc: '随机数、密码、颜色、日期等工具', tools: 6, color: '#ec4899'},
+            {id: 'professional', icon: 'fa-briefcase', title: '🧮 专业工具', 
+             desc: '房贷、个税、社保、商业等计算', tools: 7, color: '#6366f1'}
+        ];
+
+        // 热门工具数据
+        const featuredTools = [
+            {id: 'discount', icon: 'fa-percentage', title: '折扣计算器', 
+             desc: '计算商品打折后的价格', category: 'shopping', categoryName: '消费购物'},
+            {id: 'bmi', icon: 'fa-weight', title: 'BMI计算', 
+             desc: '计算身体质量指数', category: 'health', categoryName: '健康运动'},
+            {id: 'currency', icon: 'fa-exchange-alt', title: '汇率换算', 
+             desc: '实时货币兑换计算', category: 'finance', categoryName: '理财金融'},
+            {id: 'mortgage', icon: 'fa-home', title: '房贷计算器', 
+             desc: '房屋贷款计算器', category: 'professional', categoryName: '专业工具'},
+            {id: 'unit-convert', icon: 'fa-ruler-combined', title: '单位换算', 
+             desc: '长度、重量、体积换算', category: 'study', categoryName: '学习工具'},
+            {id: 'tax-calc', icon: 'fa-file-invoice-dollar', title: '税费计算', 
+             desc: '计算商品含税价格', category: 'shopping', categoryName: '消费购物'},
+            {id: 'loan-compare', icon: 'fa-balance-scale', title: '贷款对比', 
+             desc: '比较不同贷款方案', category: 'finance', categoryName: '理财金融'},
+            {id: 'random', icon: 'fa-dice', title: '随机数生成', 
+             desc: '生成指定范围随机数', category: 'fun', categoryName: '趣味工具'},
+            {id: 'area-volume', icon: 'fa-cube', title: '面积体积计算', 
+             desc: '计算各种图形面积体积', category: 'home', categoryName: '居家生活'},
+            {id: 'income-tax', icon: 'fa-money-bill-wave', title: '个税计算', 
+             desc: '个人所得税计算器', category: 'professional', categoryName: '专业工具'}
+        ];
+
+        // 渲染分类卡片
+        function renderCategories() {
+            const container = document.getElementById('categoriesContainer');
+            container.innerHTML = categories.map(cat => `
+                <a href="pages/${cat.id}.html" class="category-card">
+                    <div class="category-icon" style="background: ${cat.color}">
+                        <i class="fas ${cat.icon}"></i>
+                    </div>
+                    <h3 class="category-title">${cat.title}</h3>
+                    <p class="category-description">${cat.desc}</p>
+                    <div class="category-tools">
+                        <span class="tool-count">${cat.tools}个工具</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        // 渲染热门工具
+        function renderFeaturedTools() {
+            const container = document.getElementById('featuredTools');
+            container.innerHTML = featuredTools.map(tool => `
+                <a href="tools/${tool.category}/${tool.id}.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <div class="tool-icon" style="background: ${categories.find(c => c.id === tool.category)?.color || '#6366f1'}">
+                            <i class="fas ${tool.icon}"></i>
+                        </div>
+                        <span class="tool-badge">${tool.categoryName}</span>
+                    </div>
+                    <h4 class="tool-title">${tool.title}</h4>
+                    <p class="tool-description">${tool.desc}</p>
+                    <div class="tool-footer">
+                        <span class="tool-action">立即使用</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        // 主题切换
+        function initTheme() {
+            const themeBtn = document.querySelector('.theme-btn');
+            const mobileThemeBtn = document.querySelector('.theme-toggle-btn');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+            
+            // 检查本地存储的主题设置
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+            
+            // 切换主题函数
+            function toggleTheme() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                // 更新图标
+                const icon = themeBtn.querySelector('i');
+                icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+            
+            // 添加事件监听
+            if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+            if (mobileThemeBtn) mobileThemeBtn.addEventListener('click', toggleTheme);
+            
+            // 监听系统主题变化
+            prefersDark.addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme')) {
+                    document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+                }
+            });
+        }
+
+        // 移动端菜单
+        function initMobileMenu() {
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            const closeBtn = document.getElementById('mobileMenuClose');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            if (menuBtn) {
+                menuBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    mobileMenu.classList.add('active');
+                });
+            }
+            
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                });
+            }
+            
+            // 点击菜单项关闭菜单
+            document.querySelectorAll('.mobile-menu-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                });
+            });
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCategories();
+            renderFeaturedTools();
+            initTheme();
+            initMobileMenu();
+            
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href === '#') return;
+                    
+                    const target = document.querySelector(href);
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
