@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>食材换算器 - 生活计算宝典</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../layout.css">
+    <link rel="stylesheet" href="../../components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+    <style>
+        .converter-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        @media (min-width: 768px) {
+            .converter-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        .converter-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            height: 100%;
+        }
+        .hand-guide {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin-top: 1rem;
+            background: var(--primary-light);
+            border-radius: var(--radius);
+            border-left: 4px solid var(--primary);
+        }
+        .hand-guide i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-right: 1rem;
+        }
+        .unit-group {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .unit-arrow {
+            font-size: 1.5rem;
+            color: var(--text-tertiary);
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="app">
+    <header class="app-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-mobile">
+                    <a href="../../pages/home.html" class="navbar-back"><i class="fas fa-arrow-left"></i></a>
+                    <div class="navbar-title">食材换算器</div>
+                    <div></div>
+                </div>
+                <div class="navbar-desktop">
+                    <a href="../../index.html" class="logo"><i class="fas fa-calculator"></i><span class="logo-text">生活计算宝典</span></a>
+                    <div class="nav-links">
+                        <a href="../../index.html" class="nav-link">首页</a>
+                        <a href="../../pages/home.html" class="nav-link">居家生活</a>
+                        <a href="../../pages/tools.html" class="nav-link">所有工具</a>
+                    </div>
+                    <div class="theme-toggle"><button class="theme-btn" aria-label="切换主题"><i class="fas fa-moon"></i></button></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="section">
+            <div class="container">
+                <nav class="breadcrumb">
+                    <a href="../../index.html" class="breadcrumb-link">首页</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <a href="../../pages/home.html" class="breadcrumb-link">居家生活</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <span class="breadcrumb-current">食材换算器</span>
+                </nav>
+                
+                <h1 class="calculator-title">食材换算器</h1>
+                <p class="calculator-description">支持精确单位换算与生活化“手量法”估算，让下厨更轻松。</p>
+                
+                <div class="converter-grid">
+                    <!-- 单位换算器 -->
+                    <div class="converter-card">
+                        <h3><i class="fas fa-balance-scale"></i> 精确单位换算</h3>
+                        <p>在常见烹饪单位间进行精确转换。</p>
+                        
+                        <div class="input-group">
+                            <label class="input-label">换算类型</label>
+                            <select id="conversionType" class="input-field">
+                                <option value="volume">体积换算 (毫升↔杯↔汤匙)</option>
+                                <option value="weight">重量换算 (克↔盎司↔磅)</option>
+                                <option value="temp">温度换算 (摄氏度↔华氏度)</option>
+                                <option value="dry">干性食材 (面粉、糖杯克换算)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="unit-group">
+                            <div class="input-group">
+                                <input type="number" id="inputValue" class="input-field" placeholder="输入数值" value="1" step="0.01">
+                                <select id="fromUnit" class="input-field mt-2"></select>
+                            </div>
+                            <div class="unit-arrow"><i class="fas fa-exchange-alt"></i></div>
+                            <div class="input-group">
+                                <input type="text" id="resultValue" class="input-field" placeholder="结果" readonly>
+                                <select id="toUnit" class="input-field mt-2"></select>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary btn-block" id="calculateUnit"><i class="fas fa-sync-alt"></i> 换算</button>
+                        
+                        <div class="hand-guide">
+                            <i class="fas fa-info-circle"></i>
+                            <div>
+                                <small><strong>生活小贴士：</strong> 1标准量杯 ≈ 240毫升。1汤匙 ≈ 15毫升，1茶匙 ≈ 5毫升。</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 手量法估算 -->
+                    <div class="converter-card">
+                        <h3><i class="fas fa-hand-paper"></i> 手量法估算[citation:1][citation:7]</h3>
+                        <p>没有秤？用手和常见物品快速估算食材分量。</p>
+                        
+                        <div class="input-group">
+                            <label class="input-label">选择食材</label>
+                            <select id="foodItem" class="input-field">
+                                <option value="salt">食盐</option>
+                                <option value="oil">烹调油</option>
+                                <option value="rice">大米 (生)</option>
+                                <option value="cooked_rice">米饭 (熟)</option>
+                                <option value="chicken">鸡胸肉 (生)</option>
+                                <option value="vegetable">绿叶蔬菜 (生)</option>
+                                <option value="flour">面粉</option>
+                                <option value="sugar">白砂糖</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">目标重量</label>
+                            <div class="input-row">
+                                <input type="number" id="targetWeight" class="input-field" placeholder="例如：5" value="5" step="0.1">
+                                <select id="weightUnit" class="input-field">
+                                    <option value="g">克 (g)</option>
+                                    <option value="kg">千克 (kg)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-secondary btn-block" id="calculateHand"><i class="fas fa-calculator"></i> 估算</button>
+                        
+                        <div class="result-display mt-4" id="handResult">
+                            <h4><i class="fas fa-lightbulb"></i> 估算结果</h4>
+                            <div class="result-grid">
+                                <div class="result-item">
+                                    <span class="result-label">大约等于</span>
+                                    <span class="result-value" id="handMeasure">--</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">可视化参照</span>
+                                    <span class="result-value" id="visualRef">--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 换算参照表 -->
+                <div class="calculator-card mt-6">
+                    <h3><i class="fas fa-table"></i> 常用食材手量参照表[citation:1]</h3>
+                    <div class="overflow-x-auto">
+                        <table style="width:100%; margin-top:1rem;">
+                            <thead>
+                                <tr style="background:var(--gray-100);">
+                                    <th style="padding:0.75rem; text-align:left;">食材</th>
+                                    <th style="padding:0.75rem; text-align:left;">分量</th>
+                                    <th style="padding:0.75rem; text-align:left;">手/物品参照</th>
+                                    <th style="padding:0.75rem; text-align:left;">备注</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>食盐</td><td>5克</td><td>1.5个一元硬币面积，3个硬币高</td><td>每日上限[citation:1]</td></tr>
+                                <tr><td>烹调油</td><td>30克</td><td>约4-5瓷勺 (1瓷勺≈6-7克)[citation:1]</td><td>每日推荐量[citation:1]</td></tr>
+                                <tr><td>生米</td><td>100克</td><td>约2把[citation:1]</td><td>可煮约250克米饭</td></tr>
+                                <tr><td>熟米饭</td><td>150克 (二两)</td><td>1个拳头大小[citation:1]</td><td>单餐主食分量</td></tr>
+                                <tr><td>鸡胸肉(生)</td><td>70克</td><td>2/3掌心大小[citation:1]</td><td>单餐蛋白质分量</td></tr>
+                                <tr><td>绿叶蔬菜(生)</td><td>500克</td><td>约5大捧[citation:1]</td><td>每日推荐量[citation:1]</td></tr>
+                                <tr><td>面粉</td><td>100克</td><td>约1杯 (压实)</td><td>可做馒头约150克</td></tr>
+                                <tr><td>白砂糖</td><td>50克</td><td>约5瓷勺 (1瓷勺≈10克)</td><td>烘焙常用量</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info mt-6">
+                    <div class="flex items-center">
+                        <i class="fas fa-lightbulb mr-3"></i>
+                        <div>
+                            <strong>使用提示</strong>
+                            <ul style="margin-top:0.5rem; padding-left:1.5rem;">
+                                <li><strong>精确换算</strong>：适合菜谱复制、烘焙等需要精确计量的场景。</li>
+                                <li><strong>手量估算</strong>：适合日常烹饪、健康饮食的快速分量控制，数据参考自营养科普[citation:1][citation:7]。</li>
+                                <li>不同食材密度不同（如面粉和糖），杯到克的换算会有差异。</li>
+                                <li>“手量法”存在个体差异，可作为便捷的估算参考。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <a href="../../index.html" class="footer-logo">
+                        <i class="fas fa-calculator"></i>
+                        <span>生活计算宝典</span>
+                    </a>
+                    <p class="footer-description">
+                        一站式离线计算工具集合，为您的生活带来便利。
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">居家工具</h4>
+                    <a href="utility-bill.html" class="footer-link">水电费计算</a>
+                    <a href="area-volume.html" class="footer-link">面积体积计算</a>
+                    <a href="paint-calc.html" class="footer-link active">涂料用量计算</a>
+                    <a href="cooking-convert.html" class="footer-link">食材换算</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">快速链接</h4>
+                    <a href="../../pages/home.html" class="footer-link">返回居家生活</a>
+                    <a href="../../pages/tools.html" class="footer-link">所有工具</a>
+                    <a href="https://github.com/laddzhao/life-calculators" target="_blank" class="footer-link">GitHub项目</a>
+                    <a href="../../404.html" class="footer-link">404页面</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">其他工具</h4>
+                    <a href="../shopping/discount.html" class="footer-link">折扣计算器</a>
+                    <a href="../finance/interest.html" class="footer-link">利息计算器</a>
+                    <a href="../health/bmi.html" class="footer-link">BMI计算</a>
+                    <a href="../professional/mortgage.html" class="footer-link">房贷计算器</a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 生活计算宝典 · 涂料用量计算器</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 移动端底部导航 -->
+    <nav class="mobile-bottom-nav">
+        <a href="../../index.html" class="nav-item">
+            <i class="fas fa-home nav-icon"></i>
+            <span class="nav-label">首页</span>
+        </a>
+        <a href="../../pages/shopping.html" class="nav-item">
+            <i class="fas fa-shopping-cart nav-icon"></i>
+            <span class="nav-label">购物</span>
+        </a>
+        <a href="../../pages/home.html" class="nav-item active">
+            <i class="fas fa-home nav-icon"></i>
+            <span class="nav-label">居家</span>
+        </a>
+        <a href="../../pages/tools.html" class="nav-item">
+            <i class="fas fa-th nav-icon"></i>
+            <span class="nav-label">全部</span>
+        </a>
+        <a href="#" class="nav-item" id="mobileMenuBtn">
+            <i class="fas fa-ellipsis-h nav-icon"></i>
+            <span class="nav-label">更多</span>
+        </a>
+    </nav>
+
+    <script src="../../calculator.js"></script>
+    <script>
+        // 单位换算配置
+        const unitConfigs = {
+            volume: {
+                name: '体积',
+                units: [
+                    {id: 'ml', name: '毫升 (mL)', factor: 1},
+                    {id: 'cup', name: '杯 (Cup)', factor: 240},
+                    {id: 'tbsp', name: '汤匙 (Tbsp)', factor: 15},
+                    {id: 'tsp', name: '茶匙 (Tsp)', factor: 5},
+                    {id: 'liter', name: '升 (L)', factor: 1000}
+                ]
+            },
+            weight: {
+                name: '重量',
+                units: [
+                    {id: 'g', name: '克 (g)', factor: 1},
+                    {id: 'kg', name: '千克 (kg)', factor: 1000},
+                    {id: 'oz', name: '盎司 (oz)', factor: 28.35},
+                    {id: 'lb', name: '磅 (lb)', factor: 453.6}
+                ]
+            },
+            temp: {
+                name: '温度',
+                units: [
+                    {id: 'c', name: '摄氏度 (°C)', factor: 1},
+                    {id: 'f', name: '华氏度 (°F)', factor: 1}
+                ],
+                convert: function(value, from, to) {
+                    if(from === 'c' && to === 'f') return (value * 9/5) + 32;
+                    if(from === 'f' && to === 'c') return (value - 32) * 5/9;
+                    return value;
+                }
+            },
+            dry: {
+                name: '干性食材',
+                units: [
+                    {id: 'g_flour', name: '克 (面粉)', factor: 1},
+                    {id: 'cup_flour', name: '杯 (面粉)', factor: 120},
+                    {id: 'g_sugar', name: '克 (糖)', factor: 1},
+                    {id: 'cup_sugar', name: '杯 (糖)', factor: 200}
+                ]
+            }
+        };
+
+        // 手量法数据[citation:1][citation:7]
+        const handMeasureData = {
+            salt: {
+                name: '食盐',
+                measures: [
+                    {weight: 5, measure: '约1.5个一元硬币面积，3个硬币高 / 1/7掌心大小[citation:1]', visual: '硬币参照'},
+                    {weight: 1, measure: '约1个一元硬币面积和高度[citation:1]', visual: '指甲盖大小'}
+                ]
+            },
+            oil: {
+                name: '烹调油',
+                measures: [
+                    {weight: 30, measure: '约4-5瓷勺 (1瓷勺≈6-7克油)[citation:1]', visual: '家用瓷勺'},
+                    {weight: 10, measure: '约1.5瓷勺', visual: '家用瓷勺'}
+                ]
+            },
+            rice: {
+                name: '生米',
+                measures: [
+                    {weight: 100, measure: '约2把[citation:1]', visual: '成人双手捧起量'},
+                    {weight: 50, measure: '约1把', visual: '成人单手握拳量'}
+                ]
+            },
+            cooked_rice: {
+                name: '熟米饭',
+                measures: [
+                    {weight: 150, measure: '约1个拳头大小[citation:1]', visual: '成人拳头'},
+                    {weight: 100, measure: '约2/3拳头大小', visual: '成人拳头'}
+                ]
+            },
+            chicken: {
+                name: '鸡胸肉',
+                measures: [
+                    {weight: 70, measure: '约2/3掌心大小 (生)[citation:1]', visual: '成人手掌(不含手指)'},
+                    {weight: 150, measure: '约1.2个掌心大小 (生)[citation:1]', visual: '成人手掌(不含手指)'}
+                ]
+            },
+            vegetable: {
+                name: '绿叶蔬菜',
+                measures: [
+                    {weight: 500, measure: '约5大捧 (生)[citation:1]', visual: '成人双手捧起'},
+                    {weight: 100, measure: '约1大捧 (生)', visual: '成人双手捧起'}
+                ]
+            },
+            flour: {
+                name: '面粉',
+                measures: [
+                    {weight: 100, measure: '约1量杯 (压实)', visual: '标准量杯'},
+                    {weight: 50, measure: '约1/2量杯', visual: '标准量杯'}
+                ]
+            },
+            sugar: {
+                name: '白砂糖',
+                measures: [
+                    {weight: 50, measure: '约5瓷勺', visual: '家用瓷勺'},
+                    {weight: 10, measure: '约1瓷勺', visual: '家用瓷勺'}
+                ]
+            }
+        };
+
+        // 初始化单位选择
+        function initUnitSelectors() {
+            const typeSelect = document.getElementById('conversionType');
+            const fromSelect = document.getElementById('fromUnit');
+            const toSelect = document.getElementById('toUnit');
+            
+            function updateUnits() {
+                const type = typeSelect.value;
+                const config = unitConfigs[type];
+                
+                fromSelect.innerHTML = '';
+                toSelect.innerHTML = '';
+                
+                config.units.forEach(unit => {
+                    const option1 = document.createElement('option');
+                    option1.value = unit.id;
+                    option1.textContent = unit.name;
+                    fromSelect.appendChild(option1);
+                    
+                    const option2 = document.createElement('option');
+                    option2.value = unit.id;
+                    option2.textContent = unit.name;
+                    toSelect.appendChild(option2);
+                });
+                
+                // 设置默认目标单位（不同类型的第二个单位）
+                if(config.units.length > 1) {
+                    toSelect.selectedIndex = 1;
+                }
+            }
+            
+            typeSelect.addEventListener('change', updateUnits);
+            updateUnits();
+        }
+
+        // 精确单位换算
+        function calculateUnitConversion() {
+            const type = document.getElementById('conversionType').value;
+            const input = parseFloat(document.getElementById('inputValue').value) || 0;
+            const fromUnit = document.getElementById('fromUnit').value;
+            const toUnit = document.getElementById('toUnit').value;
+            const config = unitConfigs[type];
+            
+            let result;
+            if(type === 'temp' && config.convert) {
+                result = config.convert(input, fromUnit, toUnit);
+            } else {
+                const fromFactor = config.units.find(u => u.id === fromUnit)?.factor || 1;
+                const toFactor = config.units.find(u => u.id === toUnit)?.factor || 1;
+                result = (input * fromFactor) / toFactor;
+            }
+            
+            document.getElementById('resultValue').value = result.toFixed(2);
+        }
+
+        // 手量法估算
+        function calculateHandMeasure() {
+            const foodId = document.getElementById('foodItem').value;
+            let targetWeight = parseFloat(document.getElementById('targetWeight').value) || 0;
+            const unit = document.getElementById('weightUnit').value;
+            
+            // 转换为克
+            if(unit === 'kg') targetWeight *= 1000;
+            
+            const food = handMeasureData[foodId];
+            const baseMeasure = food.measures[0]; // 使用第一个基准测量
+            
+            if(baseMeasure) {
+                // 计算比例
+                const ratio = targetWeight / baseMeasure.weight;
+                let measure = `约${ratio.toFixed(1)}份 (${baseMeasure.measure})`;
+                
+                // 简化描述
+                if(ratio >= 0.9 && ratio <= 1.1) {
+                    measure = baseMeasure.measure;
+                } else if(ratio <= 0.3) {
+                    measure = `很少的量，约${baseMeasure.measure.replace('约', '')}`;
+                }
+                
+                document.getElementById('handMeasure').textContent = measure;
+                document.getElementById('visualRef').textContent = baseMeasure.visual;
+            }
+        }
+
+        // 主题切换 (复用之前的函数)
+        function initTheme() {
+            const themeBtn = document.querySelector('.theme-btn');
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if(savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            
+            function toggleTheme() {
+                const current = document.documentElement.getAttribute('data-theme');
+                const newTheme = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                if(themeBtn) {
+                    const icon = themeBtn.querySelector('i');
+                    icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+            }
+            if(themeBtn) themeBtn.addEventListener('click', toggleTheme);
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initUnitSelectors();
+            initTheme();
+            
+            document.getElementById('calculateUnit').addEventListener('click', calculateUnitConversion);
+            document.getElementById('calculateHand').addEventListener('click', calculateHandMeasure);
+            
+            // 输入变化时实时计算
+            document.getElementById('inputValue').addEventListener('input', calculateUnitConversion);
+            document.getElementById('fromUnit').addEventListener('change', calculateUnitConversion);
+            document.getElementById('toUnit').addEventListener('change', calculateUnitConversion);
+            
+            // 初始计算
+            calculateUnitConversion();
+            calculateHandMeasure();
+        });
+    </script>
+</body>
+</html>
