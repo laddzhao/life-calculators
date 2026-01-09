@@ -131,7 +131,7 @@
                     
                     <!-- 手量法估算 -->
                     <div class="converter-card">
-                        <h3><i class="fas fa-hand-paper"></i> 手量法估算[citation:1][citation:7]</h3>
+                        <h3><i class="fas fa-hand-paper"></i> 手量法估算</h3>
                         <p>没有秤？用手和常见物品快速估算食材分量。</p>
                         
                         <div class="input-group">
@@ -179,7 +179,7 @@
                 
                 <!-- 换算参照表 -->
                 <div class="calculator-card mt-6">
-                    <h3><i class="fas fa-table"></i> 常用食材手量参照表[citation:1]</h3>
+                    <h3><i class="fas fa-table"></i> 常用食材手量参照表</h3>
                     <div class="overflow-x-auto">
                         <table style="width:100%; margin-top:1rem;">
                             <thead>
@@ -191,12 +191,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><td>食盐</td><td>5克</td><td>1.5个一元硬币面积，3个硬币高</td><td>每日上限[citation:1]</td></tr>
-                                <tr><td>烹调油</td><td>30克</td><td>约4-5瓷勺 (1瓷勺≈6-7克)[citation:1]</td><td>每日推荐量[citation:1]</td></tr>
-                                <tr><td>生米</td><td>100克</td><td>约2把[citation:1]</td><td>可煮约250克米饭</td></tr>
-                                <tr><td>熟米饭</td><td>150克 (二两)</td><td>1个拳头大小[citation:1]</td><td>单餐主食分量</td></tr>
-                                <tr><td>鸡胸肉(生)</td><td>70克</td><td>2/3掌心大小[citation:1]</td><td>单餐蛋白质分量</td></tr>
-                                <tr><td>绿叶蔬菜(生)</td><td>500克</td><td>约5大捧[citation:1]</td><td>每日推荐量[citation:1]</td></tr>
+                                <tr><td>食盐</td><td>5克</td><td>1.5个一元硬币面积，3个硬币高</td><td>每日上限</td></tr>
+                                <tr><td>烹调油</td><td>30克</td><td>约4-5瓷勺 (1瓷勺≈6-7克)</td><td>每日推荐量</td></tr>
+                                <tr><td>生米</td><td>100克</td><td>约2把</td><td>可煮约250克米饭</td></tr>
+                                <tr><td>熟米饭</td><td>150克 (二两)</td><td>1个拳头大小</td><td>单餐主食分量</td></tr>
+                                <tr><td>鸡胸肉(生)</td><td>70克</td><td>2/3掌心大小</td><td>单餐蛋白质分量</td></tr>
+                                <tr><td>绿叶蔬菜(生)</td><td>500克</td><td>约5大捧</td><td>每日推荐量</td></tr>
                                 <tr><td>面粉</td><td>100克</td><td>约1杯 (压实)</td><td>可做馒头约150克</td></tr>
                                 <tr><td>白砂糖</td><td>50克</td><td>约5瓷勺 (1瓷勺≈10克)</td><td>烘焙常用量</td></tr>
                             </tbody>
@@ -211,7 +211,7 @@
                             <strong>使用提示</strong>
                             <ul style="margin-top:0.5rem; padding-left:1.5rem;">
                                 <li><strong>精确换算</strong>：适合菜谱复制、烘焙等需要精确计量的场景。</li>
-                                <li><strong>手量估算</strong>：适合日常烹饪、健康饮食的快速分量控制，数据参考自营养科普[citation:1][citation:7]。</li>
+                                <li><strong>手量估算</strong>：适合日常烹饪、健康饮食的快速分量控制，数据参考自营养科普。</li>
                                 <li>不同食材密度不同（如面粉和糖），杯到克的换算会有差异。</li>
                                 <li>“手量法”存在个体差异，可作为便捷的估算参考。</li>
                             </ul>
@@ -335,47 +335,47 @@
             }
         };
 
-        // 手量法数据[citation:1][citation:7]
+        // 手量法数据
         const handMeasureData = {
             salt: {
                 name: '食盐',
                 measures: [
-                    {weight: 5, measure: '约1.5个一元硬币面积，3个硬币高 / 1/7掌心大小[citation:1]', visual: '硬币参照'},
-                    {weight: 1, measure: '约1个一元硬币面积和高度[citation:1]', visual: '指甲盖大小'}
+                    {weight: 5, measure: '约1.5个一元硬币面积，3个硬币高 / 1/7掌心大小', visual: '硬币参照'},
+                    {weight: 1, measure: '约1个一元硬币面积和高度', visual: '指甲盖大小'}
                 ]
             },
             oil: {
                 name: '烹调油',
                 measures: [
-                    {weight: 30, measure: '约4-5瓷勺 (1瓷勺≈6-7克油)[citation:1]', visual: '家用瓷勺'},
+                    {weight: 30, measure: '约4-5瓷勺 (1瓷勺≈6-7克油)', visual: '家用瓷勺'},
                     {weight: 10, measure: '约1.5瓷勺', visual: '家用瓷勺'}
                 ]
             },
             rice: {
                 name: '生米',
                 measures: [
-                    {weight: 100, measure: '约2把[citation:1]', visual: '成人双手捧起量'},
+                    {weight: 100, measure: '约2把', visual: '成人双手捧起量'},
                     {weight: 50, measure: '约1把', visual: '成人单手握拳量'}
                 ]
             },
             cooked_rice: {
                 name: '熟米饭',
                 measures: [
-                    {weight: 150, measure: '约1个拳头大小[citation:1]', visual: '成人拳头'},
+                    {weight: 150, measure: '约1个拳头大小', visual: '成人拳头'},
                     {weight: 100, measure: '约2/3拳头大小', visual: '成人拳头'}
                 ]
             },
             chicken: {
                 name: '鸡胸肉',
                 measures: [
-                    {weight: 70, measure: '约2/3掌心大小 (生)[citation:1]', visual: '成人手掌(不含手指)'},
-                    {weight: 150, measure: '约1.2个掌心大小 (生)[citation:1]', visual: '成人手掌(不含手指)'}
+                    {weight: 70, measure: '约2/3掌心大小 (生)', visual: '成人手掌(不含手指)'},
+                    {weight: 150, measure: '约1.2个掌心大小 (生)', visual: '成人手掌(不含手指)'}
                 ]
             },
             vegetable: {
                 name: '绿叶蔬菜',
                 measures: [
-                    {weight: 500, measure: '约5大捧 (生)[citation:1]', visual: '成人双手捧起'},
+                    {weight: 500, measure: '约5大捧 (生)', visual: '成人双手捧起'},
                     {weight: 100, measure: '约1大捧 (生)', visual: '成人双手捧起'}
                 ]
             },
