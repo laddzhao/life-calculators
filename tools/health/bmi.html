@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI计算器 - 生活计算宝典</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../layout.css">
+    <link rel="stylesheet" href="../../components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+</head>
+<body class="app">
+    <header class="app-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-mobile">
+                    <a href="../../pages/health.html" class="navbar-back">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div class="navbar-title">BMI计算器</div>
+                    <div></div>
+                </div>
+                
+                <div class="navbar-desktop">
+                    <a href="../../index.html" class="logo">
+                        <i class="fas fa-calculator"></i>
+                        <span class="logo-text">生活计算宝典</span>
+                    </a>
+                    <div class="nav-links">
+                        <a href="../../index.html" class="nav-link">首页</a>
+                        <a href="../../pages/health.html" class="nav-link active">健康运动</a>
+                        <a href="../../pages/finance.html" class="nav-link">理财金融</a>
+                        <a href="../../pages/tools.html" class="nav-link">所有工具</a>
+                    </div>
+                    <div class="theme-toggle">
+                        <button class="theme-btn" aria-label="切换主题">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="section">
+            <div class="container">
+                <!-- 面包屑导航 -->
+                <nav class="breadcrumb">
+                    <a href="../../index.html" class="breadcrumb-link">首页</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <a href="../../pages/health.html" class="breadcrumb-link">健康运动</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <span class="breadcrumb-current">BMI计算器</span>
+                </nav>
+                
+                <!-- 计算器容器 -->
+                <div class="calculator-container">
+                    <div class="calculator-card">
+                        <div class="calculator-header">
+                            <h1 class="calculator-title">BMI计算器</h1>
+                            <p class="calculator-description">
+                                计算身体质量指数(BMI)，评估体重健康状况。基于世界卫生组织(WHO)标准。
+                            </p>
+                        </div>
+                        
+                        <!-- 基本信息输入 -->
+                        <div class="input-group">
+                            <label class="input-label">身高 (厘米)</label>
+                            <input type="number" id="height" class="input-field" placeholder="例如：175" value="175" step="0.1" min="50" max="300">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">体重 (公斤)</label>
+                            <input type="number" id="weight" class="input-field" placeholder="例如：70" value="70" step="0.1" min="10" max="300">
+                        </div>
+                        
+                        <!-- 计算按钮 -->
+                        <button class="btn btn-primary btn-block calc-btn" id="calculateBtn">
+                            <i class="fas fa-calculator"></i> 计算BMI
+                        </button>
+                        
+                        <!-- 结果展示 -->
+                        <div class="result-display" id="resultSection">
+                            <h3 class="result-title"><i class="fas fa-chart-bar"></i> BMI计算结果</h3>
+                            
+                            <div class="result-grid">
+                                <div class="result-item">
+                                    <span class="result-label">身高</span>
+                                    <span class="result-value" id="resultHeight">175 厘米</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">体重</span>
+                                    <span class="result-value" id="resultWeight">70 公斤</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">BMI值</span>
+                                    <span class="result-value" id="resultBMI">0.0</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">健康状态</span>
+                                    <span class="result-value" id="resultStatus">-</span>
+                                </div>
+                            </div>
+                            
+                            <!-- BMI分类表 -->
+                            <div class="bmi-table mt-4">
+                                <h4 class="result-title" style="font-size: 1rem;">BMI分类标准 (WHO)</h4>
+                                <div class="table-container">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>BMI范围</th>
+                                                <th>分类</th>
+                                                <th>健康风险</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>&lt; 18.5</td>
+                                                <td>偏瘦</td>
+                                                <td>营养不足</td>
+                                            </tr>
+                                            <tr>
+                                                <td>18.5 - 24.9</td>
+                                                <td>正常</td>
+                                                <td>健康</td>
+                                            </tr>
+                                            <tr>
+                                                <td>25.0 - 29.9</td>
+                                                <td>超重</td>
+                                                <td>轻度升高</td>
+                                            </tr>
+                                            <tr>
+                                                <td>30.0 - 34.9</td>
+                                                <td>肥胖（I级）</td>
+                                                <td>中度升高</td>
+                                            </tr>
+                                            <tr>
+                                                <td>35.0 - 39.9</td>
+                                                <td>肥胖（II级）</td>
+                                                <td>重度升高</td>
+                                            </tr>
+                                            <tr>
+                                                <td>≥ 40.0</td>
+                                                <td>肥胖（III级）</td>
+                                                <td>极重度升高</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- 健康建议 -->
+                            <div class="health-advice mt-4" id="healthAdvice">
+                                <h4 class="result-title" style="font-size: 1rem;">健康建议</h4>
+                                <div class="advice-content" id="adviceContent">
+                                    请输入身高和体重以获取个性化建议。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 关于BMI -->
+                    <div class="coupon-tips mt-6">
+                        <h3 class="section-title" style="font-size: 1.25rem; text-align: center; margin-bottom: 1rem;">
+                            <i class="fas fa-info-circle"></i> 关于BMI
+                        </h3>
+                        <div class="tips-grid">
+                            <div class="tip-item">
+                                <div class="tip-icon">
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>计算公式</h4>
+                                    <p>BMI = 体重(kg) ÷ 身高²(m²)</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon">
+                                    <i class="fas fa-globe"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>国际标准</h4>
+                                    <p>世界卫生组织(WHO)制定，全球通用</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon">
+                                    <i class="fas fa-user-md"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>医学意义</h4>
+                                    <p>评估体重与身高比例，预测健康风险</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>注意事项</h4>
+                                    <p>不适用于运动员、孕妇和老年人</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 使用说明 -->
+                    <div class="alert alert-info mt-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-lightbulb mr-3"></i>
+                            <div>
+                                <strong>如何正确使用BMI计算器：</strong> 
+                                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                    <li><strong>准确测量</strong>：测量身高体重时请保持直立，脱鞋和厚重衣物</li>
+                                    <li><strong>标准单位</strong>：身高使用厘米(cm)，体重使用公斤(kg)</li>
+                                    <li><strong>适用范围</strong>：BMI适用于18-65岁的普通成年人</li>
+                                    <li><strong>结果解读</strong>：BMI是筛查工具，不能替代医学诊断</li>
+                                    <li><strong>特殊情况</strong>：运动员、孕妇和老年人需咨询专业人士</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <a href="../../index.html" class="footer-logo">
+                        <i class="fas fa-calculator"></i>
+                        <span>生活计算宝典</span>
+                    </a>
+                    <p class="footer-description">
+                        一站式离线计算工具集合，为您的生活带来便利。
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">健康工具</h4>
+                    <a href="bmi.html" class="footer-link">BMI计算器</a>
+                    <a href="calorie.html" class="footer-link">卡路里消耗计算</a>
+                    <a href="water.html" class="footer-link">饮水量计算</a>
+                    <a href="heart-rate.html" class="footer-link">运动心率计算</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">快速链接</h4>
+                    <a href="../../pages/health.html" class="footer-link">返回健康运动</a>
+                    <a href="../../pages/tools.html" class="footer-link">所有工具</a>
+                    <a href="https://github.com/laddzhao/life-calculators" target="_blank" class="footer-link">GitHub项目</a>
+                    <a href="../../404.html" class="footer-link">404页面</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">其他工具</h4>
+                    <a href="../shopping/discount.html" class="footer-link">折扣计算器</a>
+                    <a href="../finance/compound.html" class="footer-link">复利计算器</a>
+                    <a href="../home/utility-bill.html" class="footer-link">水电费计算</a>
+                    <a href="../professional/mortgage.html" class="footer-link">房贷计算器</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 生活计算宝典 · BMI计算器</p>
+                <p class="footer-note">
+                    计算结果仅供参考，不能替代专业医疗建议。如有健康问题，请咨询专业医生。
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 移动端底部导航 -->
+    <nav class="mobile-bottom-nav">
+        <a href="../../index.html" class="nav-item">
+            <i class="fas fa-home nav-icon"></i>
+            <span class="nav-label">首页</span>
+        </a>
+        <a href="../../pages/health.html" class="nav-item active">
+            <i class="fas fa-heartbeat nav-icon"></i>
+            <span class="nav-label">健康</span>
+        </a>
+        <a href="../../pages/finance.html" class="nav-item">
+            <i class="fas fa-chart-line nav-icon"></i>
+            <span class="nav-label">理财</span>
+        </a>
+        <a href="../../pages/tools.html" class="nav-item">
+            <i class="fas fa-th nav-icon"></i>
+            <span class="nav-label">全部</span>
+        </a>
+        <a href="#" class="nav-item" id="mobileMenuBtn">
+            <i class="fas fa-ellipsis-h nav-icon"></i>
+            <span class="nav-label">更多</span>
+        </a>
+    </nav>
+
+    <script>
+        // DOM元素
+        const heightInput = document.getElementById('height');
+        const weightInput = document.getElementById('weight');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resultSection = document.getElementById('resultSection');
+        const resultHeight = document.getElementById('resultHeight');
+        const resultWeight = document.getElementById('resultWeight');
+        const resultBMI = document.getElementById('resultBMI');
+        const resultStatus = document.getElementById('resultStatus');
+        const adviceContent = document.getElementById('adviceContent');
+        
+        // BMI分类标准 (WHO标准)
+        const bmiCategories = [
+            { min: 0, max: 18.5, category: '偏瘦', risk: '低体重', color: '#3b82f6', advice: '您的体重过轻，可能存在营养不足的风险。建议增加营养摄入，适当增加体重。' },
+            { min: 18.5, max: 25.0, category: '正常', risk: '健康', color: '#10b981', advice: '恭喜！您的体重在正常范围内。请继续保持健康的生活方式和饮食习惯。' },
+            { min: 25.0, max: 30.0, category: '超重', risk: '轻度升高', color: '#f59e0b', advice: '您的体重超出正常范围。建议增加体育锻炼，控制饮食热量，适当减轻体重。' },
+            { min: 30.0, max: 35.0, category: '肥胖(I级)', risk: '中度升高', color: '#ef4444', advice: '您的体重属于肥胖范围，健康风险增加。建议咨询医生或营养师，制定科学的减重计划。' },
+            { min: 35.0, max: 40.0, category: '肥胖(II级)', risk: '重度升高', color: '#dc2626', advice: '您的体重属于重度肥胖，健康风险显著增加。强烈建议咨询专业医生，制定医学监督下的减重计划。' },
+            { min: 40.0, max: 999, category: '肥胖(III级)', risk: '极重度升高', color: '#991b1b', advice: '您的体重属于极重度肥胖，存在严重的健康风险。请立即咨询专业医生，寻求医学干预和治疗。' }
+        ];
+        
+        // 计算BMI
+        function calculateBMI() {
+            const height = parseFloat(heightInput.value);
+            const weight = parseFloat(weightInput.value);
+            
+            // 验证输入
+            if (!height || !weight || height < 50 || height > 300 || weight < 10 || weight > 300) {
+                alert('请输入有效的数值：身高(50-300厘米)，体重(10-300公斤)');
+                return;
+            }
+            
+            // 计算BMI：BMI = 体重(kg) / 身高²(m²)
+            // 身高从厘米转换为米
+            const heightInMeters = height / 100;
+            const bmi = weight / (heightInMeters * heightInMeters);
+            
+            // 保留1位小数
+            const bmiRounded = Math.round(bmi * 10) / 10;
+            
+            // 显示结果
+            displayResults(height, weight, bmiRounded);
+        }
+        
+        // 显示计算结果
+        function displayResults(height, weight, bmi) {
+            // 更新基本信息
+            resultHeight.textContent = `${height} 厘米`;
+            resultWeight.textContent = `${weight} 公斤`;
+            resultBMI.textContent = bmi.toFixed(1);
+            
+            // 确定BMI分类
+            let category = bmiCategories[0]; // 默认偏瘦
+            for (const cat of bmiCategories) {
+                if (bmi >= cat.min && bmi < cat.max) {
+                    category = cat;
+                    break;
+                }
+            }
+            
+            // 更新状态
+            resultStatus.textContent = category.category;
+            resultStatus.style.color = category.color;
+            
+            // 更新建议
+            adviceContent.textContent = category.advice;
+            
+            // 显示结果区域
+            resultSection.style.display = 'block';
+        }
+        
+        // 事件监听
+        calculateBtn.addEventListener('click', calculateBMI);
+        
+        // 输入时自动计算
+        heightInput.addEventListener('input', calculateBMI);
+        weightInput.addEventListener('input', calculateBMI);
+        
+        // 主题切换
+        function initTheme() {
+            const themeBtn = document.querySelector('.theme-btn');
+            
+            // 检查本地存储的主题设置
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+            
+            // 切换主题函数
+            function toggleTheme() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                // 更新图标
+                if (themeBtn) {
+                    const icon = themeBtn.querySelector('i');
+                    icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+            }
+            
+            // 添加事件监听
+            if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            
+            // 移动端菜单
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            if (menuBtn) {
+                menuBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert('移动端菜单功能需要完整的菜单HTML结构');
+                });
+            }
+            
+            // 页面加载时自动计算一次
+            setTimeout(calculateBMI, 100);
+        });
+    </script>
+    
+    <style>
+        .bmi-table {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 1rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin-top: 0.5rem;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        
+        .data-table th {
+            background: var(--bg-primary);
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-light);
+        }
+        
+        .data-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        
+        [data-theme="dark"] .data-table tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .health-advice {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 1rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .advice-content {
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+            line-height: 1.6;
+        }
+        
+        .coupon-tips {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .tip-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+        }
+        
+        .tip-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .tip-content {
+            flex: 1;
+        }
+        
+        .tip-content h4 {
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+        
+        .tip-content p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        @media (min-width: 768px) {
+            .tips-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .data-table {
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-table {
+                font-size: 0.8rem;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</body>
+</html>

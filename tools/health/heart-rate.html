@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运动心率计算 - 生活计算宝典</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../layout.css">
+    <link rel="stylesheet" href="../../components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+</head>
+<body class="app">
+    <header class="app-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-mobile">
+                    <a href="../../pages/health.html" class="navbar-back">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div class="navbar-title">运动心率计算</div>
+                    <div></div>
+                </div>
+                
+                <div class="navbar-desktop">
+                    <a href="../../index.html" class="logo">
+                        <i class="fas fa-calculator"></i>
+                        <span class="logo-text">生活计算宝典</span>
+                    </a>
+                    <div class="nav-links">
+                        <a href="../../index.html" class="nav-link">首页</a>
+                        <a href="../../pages/health.html" class="nav-link active">健康运动</a>
+                        <a href="../../pages/finance.html" class="nav-link">理财金融</a>
+                        <a href="../../pages/tools.html" class="nav-link">所有工具</a>
+                    </div>
+                    <div class="theme-toggle">
+                        <button class="theme-btn" aria-label="切换主题">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="section">
+            <div class="container">
+                <!-- 面包屑导航 -->
+                <nav class="breadcrumb">
+                    <a href="../../index.html" class="breadcrumb-link">首页</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <a href="../../pages/health.html" class="breadcrumb-link">健康运动</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <span class="breadcrumb-current">运动心率计算</span>
+                </nav>
+                
+                <!-- 计算器容器 -->
+                <div class="calculator-container">
+                    <div class="calculator-card">
+                        <div class="calculator-header">
+                            <h1 class="calculator-title">运动心率计算</h1>
+                            <p class="calculator-description">
+                                计算最佳运动心率区间，帮助您安全有效地进行锻炼。
+                            </p>
+                        </div>
+                        
+                        <!-- 基本信息输入 -->
+                        <div class="input-group">
+                            <label class="input-label">年龄 (岁)</label>
+                            <input type="number" id="age" class="input-field" placeholder="例如：30" value="30" step="1" min="10" max="100">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">静息心率 (次/分钟)</label>
+                            <input type="number" id="restingHR" class="input-field" placeholder="例如：70" value="70" step="1" min="40" max="120">
+                            <small class="input-hint">早晨醒来后测量的心率</small>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">计算方式</label>
+                            <select id="calculationMethod" class="input-field">
+                                <option value="karvonen" selected>卡氏公式 (Karvonen)</option>
+                                <option value="simple">简易公式 (最大心率百分比)</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 目标运动强度 -->
+                        <div class="input-group">
+                            <label class="input-label">目标运动强度</label>
+                            <div class="intensity-slider-container">
+                                <div class="intensity-labels">
+                                    <span>热身区 (50-60%)</span>
+                                    <span>燃脂区 (60-70%)</span>
+                                    <span>有氧区 (70-80%)</span>
+                                    <span>无氧区 (80-90%)</span>
+                                    <span>极限区 (90-100%)</span>
+                                </div>
+                                <input type="range" id="intensitySlider" class="intensity-slider" min="50" max="100" step="5" value="70">
+                                <div class="intensity-value">
+                                    <span id="intensityValue">70%</span>
+                                    <small id="intensityLabel">有氧区</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 计算按钮 -->
+                        <button class="btn btn-primary btn-block calc-btn" id="calculateBtn">
+                            <i class="fas fa-heartbeat"></i> 计算运动心率
+                        </button>
+                        
+                        <!-- 结果展示 -->
+                        <div class="result-display" id="resultSection">
+                            <h3 class="result-title"><i class="fas fa-chart-line"></i> 运动心率计算结果</h3>
+                            
+                            <div class="result-grid">
+                                <div class="result-item">
+                                    <span class="result-label">年龄</span>
+                                    <span class="result-value" id="resultAge">30 岁</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">静息心率</span>
+                                    <span class="result-value" id="resultRestingHR">70 次/分钟</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">最大心率 (估计)</span>
+                                    <span class="result-value" id="resultMaxHR">190 次/分钟</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">目标强度</span>
+                                    <span class="result-value" id="resultIntensity">70% (有氧区)</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">目标心率</span>
+                                    <span class="result-value" id="resultTargetHR" style="color: var(--primary); font-weight: 600;">154 次/分钟</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">心率储备</span>
+                                    <span class="result-value" id="resultHRReserve">120 次/分钟</span>
+                                </div>
+                            </div>
+                            
+                            <!-- 心率区间表 -->
+                            <div class="heart-rate-zones mt-4">
+                                <h4 class="result-title" style="font-size: 1rem;">运动心率区间</h4>
+                                <div class="zones-container" id="zonesContainer">
+                                    <!-- 心率区间将动态生成 -->
+                                </div>
+                            </div>
+                            
+                            <!-- 运动建议 -->
+                            <div class="health-advice mt-4">
+                                <h4 class="result-title" style="font-size: 1rem;">运动建议</h4>
+                                <div class="advice-content" id="exerciseAdvice">
+                                    在目标心率区间内运动可以有效提高心肺功能，建议每周进行3-5次，每次20-60分钟。
+                                </div>
+                            </div>
+                            
+                            <!-- 安全提醒 -->
+                            <div class="health-advice mt-4">
+                                <h4 class="result-title" style="font-size: 1rem;">安全提醒</h4>
+                                <div class="advice-content" id="safetyReminder">
+                                    1. 运动前进行5-10分钟热身<br>
+                                    2. 运动中监测心率，避免超过最大心率<br>
+                                    3. 运动后进行5-10分钟整理活动<br>
+                                    4. 如有不适，立即停止运动并咨询医生
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 心率区间知识 -->
+                    <div class="coupon-tips mt-6">
+                        <h3 class="section-title" style="font-size: 1.25rem; text-align: center; margin-bottom: 1rem;">
+                            <i class="fas fa-info-circle"></i> 运动心率区间说明
+                        </h3>
+                        
+                        <div class="tips-grid">
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #3b82f6">
+                                    <i class="fas fa-walking"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>热身区 (50-60%)</h4>
+                                    <p>轻微运动，适合热身和恢复</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #10b981">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>燃脂区 (60-70%)</h4>
+                                    <p>脂肪燃烧效率最高，适合减脂</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #f59e0b">
+                                    <i class="fas fa-heartbeat"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>有氧区 (70-80%)</h4>
+                                    <p>提高心肺功能，增强耐力</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #ef4444">
+                                    <i class="fas fa-running"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>无氧区 (80-90%)</h4>
+                                    <p>提高运动表现，适合运动员</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 计算公式说明 -->
+                        <div class="table-container mt-4">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>计算方法</th>
+                                        <th>公式</th>
+                                        <th>特点</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>简易公式</td>
+                                        <td>最大心率 = 220 - 年龄<br>目标心率 = 最大心率 × 强度%</td>
+                                        <td>简单易用，适合大众</td>
+                                    </tr>
+                                    <tr>
+                                        <td>卡氏公式</td>
+                                        <td>最大心率 = 220 - 年龄<br>心率储备 = 最大心率 - 静息心率<br>目标心率 = (心率储备 × 强度%) + 静息心率</td>
+                                        <td>更精准，考虑个体差异</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- 使用说明 -->
+                    <div class="alert alert-info mt-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-lightbulb mr-3"></i>
+                            <div>
+                                <strong>如何正确使用运动心率计算器：</strong> 
+                                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                    <li><strong>年龄</strong>：输入您的实际年龄，用于估算最大心率</li>
+                                    <li><strong>静息心率</strong>：早晨醒来后测量的心率，反映心肺功能水平</li>
+                                    <li><strong>计算方式</strong>：卡氏公式更精准，简易公式更简单</li>
+                                    <li><strong>运动强度</strong>：根据您的运动目标选择合适的强度区间</li>
+                                    <li><strong>适用人群</strong>：健康成年人，不适用于心脏病患者</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <a href="../../index.html" class="footer-logo">
+                        <i class="fas fa-calculator"></i>
+                        <span>生活计算宝典</span>
+                    </a>
+                    <p class="footer-description">
+                        一站式离线计算工具集合，为您的生活带来便利。
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">健康工具</h4>
+                    <a href="bmi.html" class="footer-link">BMI计算器</a>
+                    <a href="calorie.html" class="footer-link">卡路里消耗计算</a>
+                    <a href="water.html" class="footer-link">饮水量计算</a>
+                    <a href="heart-rate.html" class="footer-link">运动心率计算</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">快速链接</h4>
+                    <a href="../../pages/health.html" class="footer-link">返回健康运动</a>
+                    <a href="../../pages/tools.html" class="footer-link">所有工具</a>
+                    <a href="https://github.com/laddzhao/life-calculators" target="_blank" class="footer-link">GitHub项目</a>
+                    <a href="../../404.html" class="footer-link">404页面</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">其他工具</h4>
+                    <a href="../shopping/discount.html" class="footer-link">折扣计算器</a>
+                    <a href="../finance/compound.html" class="footer-link">复利计算器</a>
+                    <a href="../home/utility-bill.html" class="footer-link">水电费计算</a>
+                    <a href="../professional/mortgage.html" class="footer-link">房贷计算器</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 生活计算宝典 · 运动心率计算</p>
+                <p class="footer-note">
+                    计算结果仅供参考，不能替代专业医疗建议。如有心脏病史或健康问题，请咨询医生后再进行运动。
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 移动端底部导航 -->
+    <nav class="mobile-bottom-nav">
+        <a href="../../index.html" class="nav-item">
+            <i class="fas fa-home nav-icon"></i>
+            <span class="nav-label">首页</span>
+        </a>
+        <a href="../../pages/health.html" class="nav-item active">
+            <i class="fas fa-heartbeat nav-icon"></i>
+            <span class="nav-label">健康</span>
+        </a>
+        <a href="../../pages/finance.html" class="nav-item">
+            <i class="fas fa-chart-line nav-icon"></i>
+            <span class="nav-label">理财</span>
+        </a>
+        <a href="../../pages/tools.html" class="nav-item">
+            <i class="fas fa-th nav-icon"></i>
+            <span class="nav-label">全部</span>
+        </a>
+        <a href="#" class="nav-item" id="mobileMenuBtn">
+            <i class="fas fa-ellipsis-h nav-icon"></i>
+            <span class="nav-label">更多</span>
+        </a>
+    </nav>
+
+    <script>
+        // DOM元素
+        const ageInput = document.getElementById('age');
+        const restingHRInput = document.getElementById('restingHR');
+        const calculationMethodSelect = document.getElementById('calculationMethod');
+        const intensitySlider = document.getElementById('intensitySlider');
+        const intensityValue = document.getElementById('intensityValue');
+        const intensityLabel = document.getElementById('intensityLabel');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resultSection = document.getElementById('resultSection');
+        const resultAge = document.getElementById('resultAge');
+        const resultRestingHR = document.getElementById('resultRestingHR');
+        const resultMaxHR = document.getElementById('resultMaxHR');
+        const resultIntensity = document.getElementById('resultIntensity');
+        const resultTargetHR = document.getElementById('resultTargetHR');
+        const resultHRReserve = document.getElementById('resultHRReserve');
+        const zonesContainer = document.getElementById('zonesContainer');
+        const exerciseAdvice = document.getElementById('exerciseAdvice');
+        const safetyReminder = document.getElementById('safetyReminder');
+        
+        // 强度区间定义
+        const intensityZones = [
+            { min: 50, max: 60, label: "热身区", color: "#3b82f6", description: "轻微运动，适合热身和恢复训练" },
+            { min: 60, max: 70, label: "燃脂区", color: "#10b981", description: "脂肪燃烧效率最高，适合减脂" },
+            { min: 70, max: 80, label: "有氧区", color: "#f59e0b", description: "提高心肺功能，增强耐力" },
+            { min: 80, max: 90, label: "无氧区", color: "#ef4444", description: "提高运动表现，适合运动员" },
+            { min: 90, max: 100, label: "极限区", color: "#dc2626", description: "最大努力，短期高强度训练" }
+        ];
+        
+        // 强度滑块变化
+        intensitySlider.addEventListener('input', function() {
+            const value = parseInt(this.value);
+            intensityValue.textContent = `${value}%`;
+            
+            // 确定当前所在的区间
+            let currentZone = intensityZones[0];
+            for (const zone of intensityZones) {
+                if (value >= zone.min && value <= zone.max) {
+                    currentZone = zone;
+                    break;
+                }
+            }
+            
+            intensityLabel.textContent = currentZone.label;
+            intensityLabel.style.color = currentZone.color;
+            
+            // 重新计算
+            calculateHeartRate();
+        });
+        
+        // 计算运动心率
+        function calculateHeartRate() {
+            const age = parseInt(ageInput.value);
+            const restingHR = parseInt(restingHRInput.value);
+            const method = calculationMethodSelect.value;
+            const intensity = parseInt(intensitySlider.value) / 100; // 转换为小数
+            
+            // 验证输入
+            if (!age || !restingHR || age < 10 || age > 100 || restingHR < 40 || restingHR > 120) {
+                // 输入无效时隐藏结果区域
+                resultSection.style.display = 'none';
+                return;
+            }
+            
+            // 估算最大心率 (常用公式：220 - 年龄)
+            const maxHR = 220 - age;
+            
+            let targetHR = 0;
+            let hrReserve = 0;
+            
+            if (method === 'simple') {
+                // 简易公式：目标心率 = 最大心率 × 强度
+                targetHR = Math.round(maxHR * intensity);
+            } else {
+                // 卡氏公式：目标心率 = (心率储备 × 强度) + 静息心率
+                // 心率储备 = 最大心率 - 静息心率
+                hrReserve = maxHR - restingHR;
+                targetHR = Math.round((hrReserve * intensity) + restingHR);
+            }
+            
+            // 显示结果
+            displayResults(age, restingHR, maxHR, intensity, targetHR, hrReserve, method);
+        }
+        
+        // 显示计算结果
+        function displayResults(age, restingHR, maxHR, intensity, targetHR, hrReserve, method) {
+            // 确定当前所在的区间
+            const intensityPercent = intensity * 100;
+            let currentZone = intensityZones[0];
+            for (const zone of intensityZones) {
+                if (intensityPercent >= zone.min && intensityPercent <= zone.max) {
+                    currentZone = zone;
+                    break;
+                }
+            }
+            
+            // 更新基本信息
+            resultAge.textContent = `${age} 岁`;
+            resultRestingHR.textContent = `${restingHR} 次/分钟`;
+            resultMaxHR.textContent = `${maxHR} 次/分钟`;
+            resultIntensity.textContent = `${intensityPercent}% (${currentZone.label})`;
+            resultTargetHR.textContent = `${targetHR} 次/分钟`;
+            resultHRReserve.textContent = `${hrReserve} 次/分钟`;
+            
+            // 生成心率区间表
+            generateHeartRateZones(age, restingHR, maxHR, method);
+            
+            // 更新运动建议
+            exerciseAdvice.textContent = 
+                `在${currentZone.label}(${intensityPercent}%强度)运动可以有效${currentZone.description}。` +
+                `建议每周进行3-5次，每次20-60分钟。`;
+            
+            // 显示结果区域
+            resultSection.style.display = 'block';
+        }
+        
+        // 生成心率区间表
+        function generateHeartRateZones(age, restingHR, maxHR, method) {
+            zonesContainer.innerHTML = '';
+            
+            intensityZones.forEach(zone => {
+                const zoneDiv = document.createElement('div');
+                zoneDiv.className = 'zone-item';
+                
+                // 计算该区间的心率范围
+                const minIntensity = zone.min / 100;
+                const maxIntensity = zone.max / 100;
+                
+                let minHR, maxHRValue;
+                
+                if (method === 'simple') {
+                    // 简易公式
+                    minHR = Math.round(maxHR * minIntensity);
+                    maxHRValue = Math.round(maxHR * maxIntensity);
+                } else {
+                    // 卡氏公式
+                    const hrReserve = maxHR - restingHR;
+                    minHR = Math.round((hrReserve * minIntensity) + restingHR);
+                    maxHRValue = Math.round((hrReserve * maxIntensity) + restingHR);
+                }
+                
+                zoneDiv.innerHTML = `
+                    <div class="zone-header" style="background: ${zone.color}">
+                        <span class="zone-label">${zone.label}</span>
+                        <span class="zone-percentage">${zone.min}-${zone.max}%</span>
+                    </div>
+                    <div class="zone-body">
+                        <div class="zone-heart-rate">${minHR} - ${maxHRValue} 次/分钟</div>
+                        <div class="zone-description">${zone.description}</div>
+                    </div>
+                `;
+                
+                zonesContainer.appendChild(zoneDiv);
+            });
+        }
+        
+        // 事件监听
+        calculateBtn.addEventListener('click', calculateHeartRate);
+        
+        // 输入时自动计算
+        ageInput.addEventListener('input', calculateHeartRate);
+        restingHRInput.addEventListener('input', calculateHeartRate);
+        calculationMethodSelect.addEventListener('change', calculateHeartRate);
+        
+        // 主题切换
+        function initTheme() {
+            const themeBtn = document.querySelector('.theme-btn');
+            
+            // 检查本地存储的主题设置
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+            
+            // 切换主题函数
+            function toggleTheme() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                // 更新图标
+                if (themeBtn) {
+                    const icon = themeBtn.querySelector('i');
+                    icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+            }
+            
+            // 添加事件监听
+            if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            
+            // 移动端菜单
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            if (menuBtn) {
+                menuBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert('移动端菜单功能需要完整的菜单HTML结构');
+                });
+            }
+            
+            // 页面加载时自动计算一次
+            setTimeout(calculateHeartRate, 100);
+        });
+    </script>
+    
+    <style>
+        .intensity-slider-container {
+            margin-top: 0.5rem;
+        }
+        
+        .intensity-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .intensity-slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(to right, #3b82f6, #10b981, #f59e0b, #ef4444, #dc2626);
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .intensity-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid var(--primary);
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .intensity-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid var(--primary);
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .intensity-value {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .heart-rate-zones {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 1rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .zones-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        
+        .zone-item {
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+        }
+        
+        .zone-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .zone-body {
+            padding: 1rem;
+            background: var(--bg-primary);
+        }
+        
+        .zone-heart-rate {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .zone-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .health-advice {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 1rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .advice-content {
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+            line-height: 1.6;
+        }
+        
+        .coupon-tips {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin-top: 1.5rem;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        
+        .data-table th {
+            background: var(--bg-primary);
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-light);
+        }
+        
+        .data-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        
+        [data-theme="dark"] .data-table tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .tip-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+        }
+        
+        .tip-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .tip-content {
+            flex: 1;
+        }
+        
+        .tip-content h4 {
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+        
+        .tip-content p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .input-hint {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        @media (min-width: 768px) {
+            .zones-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .tips-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .data-table {
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .zones-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-table {
+                font-size: 0.8rem;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 0.5rem;
+            }
+            
+            .intensity-labels {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</body>
+</html>

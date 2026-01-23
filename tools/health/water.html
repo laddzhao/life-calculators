@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>饮水量计算 - 生活计算宝典</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../layout.css">
+    <link rel="stylesheet" href="../../components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+</head>
+<body class="app">
+    <header class="app-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-mobile">
+                    <a href="../../pages/health.html" class="navbar-back">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div class="navbar-title">饮水量计算</div>
+                    <div></div>
+                </div>
+                
+                <div class="navbar-desktop">
+                    <a href="../../index.html" class="logo">
+                        <i class="fas fa-calculator"></i>
+                        <span class="logo-text">生活计算宝典</span>
+                    </a>
+                    <div class="nav-links">
+                        <a href="../../index.html" class="nav-link">首页</a>
+                        <a href="../../pages/health.html" class="nav-link active">健康运动</a>
+                        <a href="../../pages/finance.html" class="nav-link">理财金融</a>
+                        <a href="../../pages/tools.html" class="nav-link">所有工具</a>
+                    </div>
+                    <div class="theme-toggle">
+                        <button class="theme-btn" aria-label="切换主题">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="section">
+            <div class="container">
+                <!-- 面包屑导航 -->
+                <nav class="breadcrumb">
+                    <a href="../../index.html" class="breadcrumb-link">首页</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <a href="../../pages/health.html" class="breadcrumb-link">健康运动</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <span class="breadcrumb-current">饮水量计算</span>
+                </nav>
+                
+                <!-- 计算器容器 -->
+                <div class="calculator-container">
+                    <div class="calculator-card">
+                        <div class="calculator-header">
+                            <h1 class="calculator-title">饮水量计算</h1>
+                            <p class="calculator-description">
+                                计算每日建议饮水量，根据体重、活动水平和气候条件进行调整。
+                            </p>
+                        </div>
+                        
+                        <!-- 基本信息输入 -->
+                        <div class="input-group">
+                            <label class="input-label">体重 (公斤)</label>
+                            <input type="number" id="weight" class="input-field" placeholder="例如：70" value="70" step="0.1" min="30" max="200">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">活动水平</label>
+                            <select id="activityLevel" class="input-field">
+                                <option value="1.0">久坐 (办公室工作，很少运动)</option>
+                                <option value="1.1" selected>轻度活动 (每周1-3次轻度运动)</option>
+                                <option value="1.2">中度活动 (每周3-5次中等强度运动)</option>
+                                <option value="1.3">重度活动 (每天运动或体力劳动)</option>
+                                <option value="1.4">运动员 (高强度训练)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">气候条件</label>
+                            <select id="climate" class="input-field">
+                                <option value="1.0" selected>温和气候 (室温，湿度适中)</option>
+                                <option value="1.2">炎热/干燥气候 (高温、干燥或高海拔)</option>
+                                <option value="1.1">潮湿气候 (高温高湿)</option>
+                                <option value="0.9">寒冷气候 (低温环境)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">特殊状况</label>
+                            <select id="specialCondition" class="input-field">
+                                <option value="1.0" selected>无特殊状况</option>
+                                <option value="1.1">怀孕</option>
+                                <option value="1.2">哺乳期</option>
+                                <option value="1.15">患病/发烧</option>
+                                <option value="1.05">老年人 (65岁以上)</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 计算按钮 -->
+                        <button class="btn btn-primary btn-block calc-btn" id="calculateBtn">
+                            <i class="fas fa-tint"></i> 计算建议饮水量
+                        </button>
+                        
+                        <!-- 结果展示 -->
+                        <div class="result-display" id="resultSection">
+                            <h3 class="result-title"><i class="fas fa-glass-whiskey"></i> 饮水量计算结果</h3>
+                            
+                            <div class="result-grid">
+                                <div class="result-item">
+                                    <span class="result-label">体重</span>
+                                    <span class="result-value" id="resultWeight">70 公斤</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">活动水平</span>
+                                    <span class="result-value" id="resultActivity">轻度活动</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">气候条件</span>
+                                    <span class="result-value" id="resultClimate">温和气候</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">特殊状况</span>
+                                    <span class="result-value" id="resultSpecial">无特殊状况</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">基础饮水量</span>
+                                    <span class="result-value" id="resultBaseWater">2.3 升/天</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">建议饮水量</span>
+                                    <span class="result-value" id="resultTotalWater" style="color: var(--primary); font-weight: 600;">2.5 升/天</span>
+                                </div>
+                            </div>
+                            
+                            <!-- 饮水杯数换算 -->
+                            <div class="water-cups mt-4">
+                                <h4 class="result-title" style="font-size: 1rem;">饮水杯数换算</h4>
+                                <div class="cups-grid" id="cupsGrid">
+                                    <!-- 杯数显示将动态生成 -->
+                                </div>
+                            </div>
+                            
+                            <!-- 饮水时间表 -->
+                            <div class="health-advice mt-4">
+                                <h4 class="result-title" style="font-size: 1rem;">建议饮水时间表</h4>
+                                <div class="advice-content" id="waterSchedule">
+                                    早上起床: 1杯(250ml) | 上午: 2杯(500ml) | 午餐前: 1杯(250ml)<br>
+                                    下午: 3杯(750ml) | 晚餐前: 1杯(250ml) | 睡前1小时: 1杯(250ml)
+                                </div>
+                            </div>
+                            
+                            <!-- 饮水提醒 -->
+                            <div class="health-advice mt-4">
+                                <h4 class="result-title" style="font-size: 1rem;">健康饮水提醒</h4>
+                                <div class="advice-content" id="waterAdvice">
+                                    1. 不要等到口渴才喝水<br>
+                                    2. 少量多次，均匀分配在全天<br>
+                                    3. 运动前后要补充水分<br>
+                                    4. 避免一次性大量饮水
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 饮水知识 -->
+                    <div class="coupon-tips mt-6">
+                        <h3 class="section-title" style="font-size: 1.25rem; text-align: center; margin-bottom: 1rem;">
+                            <i class="fas fa-info-circle"></i> 健康饮水知识
+                        </h3>
+                        
+                        <div class="tips-grid">
+                            <div class="tip-item">
+                                <div class="tip-icon">
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>计算公式</h4>
+                                    <p>基础: 体重(kg) × 0.033 = 每日升数</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon">
+                                    <i class="fas fa-heartbeat"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>水分功能</h4>
+                                    <p>运输营养、调节体温、排毒</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>缺水信号</h4>
+                                    <p>口渴、尿黄、疲劳、头痛</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon">
+                                    <i class="fas fa-glass-whiskey"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>最佳水源</h4>
+                                    <p>白开水是最佳选择</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 饮水需求影响因素表 -->
+                        <div class="table-container mt-4">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>影响因素</th>
+                                        <th>饮水量调整</th>
+                                        <th>原因</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>运动/出汗</td>
+                                        <td>增加500-1000ml</td>
+                                        <td>补充水分流失</td>
+                                    </tr>
+                                    <tr>
+                                        <td>炎热气候</td>
+                                        <td>增加20-30%</td>
+                                        <td>汗液蒸发加快</td>
+                                    </tr>
+                                    <tr>
+                                        <td>怀孕</td>
+                                        <td>增加10-20%</td>
+                                        <td>支持胎儿发育</td>
+                                    </tr>
+                                    <tr>
+                                        <td>哺乳期</td>
+                                        <td>增加20-30%</td>
+                                        <td>产生乳汁需要</td>
+                                    </tr>
+                                    <tr>
+                                        <td>患病/发烧</td>
+                                        <td>增加15-20%</td>
+                                        <td>应对代谢增加</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- 使用说明 -->
+                    <div class="alert alert-info mt-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-lightbulb mr-3"></i>
+                            <div>
+                                <strong>如何正确使用饮水量计算器：</strong> 
+                                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                    <li><strong>基础公式</strong>：每日基础饮水量(升) = 体重(kg) × 0.033</li>
+                                    <li><strong>活动水平</strong>：运动量越大，水分需求越高</li>
+                                    <li><strong>气候条件</strong>：炎热干燥气候需要更多水分</li>
+                                    <li><strong>特殊状况</strong>：怀孕、哺乳、患病等情况需要调整饮水量</li>
+                                    <li><strong>饮水分布</strong>：建议将饮水平均分配到全天，不要集中饮用</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <a href="../../index.html" class="footer-logo">
+                        <i class="fas fa-calculator"></i>
+                        <span>生活计算宝典</span>
+                    </a>
+                    <p class="footer-description">
+                        一站式离线计算工具集合，为您的生活带来便利。
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">健康工具</h4>
+                    <a href="bmi.html" class="footer-link">BMI计算器</a>
+                    <a href="calorie.html" class="footer-link">卡路里消耗计算</a>
+                    <a href="water.html" class="footer-link">饮水量计算</a>
+                    <a href="heart-rate.html" class="footer-link">运动心率计算</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">快速链接</h4>
+                    <a href="../../pages/health.html" class="footer-link">返回健康运动</a>
+                    <a href="../../pages/tools.html" class="footer-link">所有工具</a>
+                    <a href="https://github.com/laddzhao/life-calculators" target="_blank" class="footer-link">GitHub项目</a>
+                    <a href="../../404.html" class="footer-link">404页面</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">其他工具</h4>
+                    <a href="../shopping/discount.html" class="footer-link">折扣计算器</a>
+                    <a href="../finance/compound.html" class="footer-link">复利计算器</a>
+                    <a href="../home/utility-bill.html" class="footer-link">水电费计算</a>
+                    <a href="../professional/mortgage.html" class="footer-link">房贷计算器</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 生活计算宝典 · 饮水量计算</p>
+                <p class="footer-note">
+                    计算结果仅供参考，实际饮水需求可能因个人健康状况、药物使用等因素而有所不同。
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 移动端底部导航 -->
+    <nav class="mobile-bottom-nav">
+        <a href="../../index.html" class="nav-item">
+            <i class="fas fa-home nav-icon"></i>
+            <span class="nav-label">首页</span>
+        </a>
+        <a href="../../pages/health.html" class="nav-item active">
+            <i class="fas fa-heartbeat nav-icon"></i>
+            <span class="nav-label">健康</span>
+        </a>
+        <a href="../../pages/finance.html" class="nav-item">
+            <i class="fas fa-chart-line nav-icon"></i>
+            <span class="nav-label">理财</span>
+        </a>
+        <a href="../../pages/tools.html" class="nav-item">
+            <i class="fas fa-th nav-icon"></i>
+            <span class="nav-label">全部</span>
+        </a>
+        <a href="#" class="nav-item" id="mobileMenuBtn">
+            <i class="fas fa-ellipsis-h nav-icon"></i>
+            <span class="nav-label">更多</span>
+        </a>
+    </nav>
+
+    <script>
+        // DOM元素
+        const weightInput = document.getElementById('weight');
+        const activityLevelSelect = document.getElementById('activityLevel');
+        const climateSelect = document.getElementById('climate');
+        const specialConditionSelect = document.getElementById('specialCondition');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resultSection = document.getElementById('resultSection');
+        const resultWeight = document.getElementById('resultWeight');
+        const resultActivity = document.getElementById('resultActivity');
+        const resultClimate = document.getElementById('resultClimate');
+        const resultSpecial = document.getElementById('resultSpecial');
+        const resultBaseWater = document.getElementById('resultBaseWater');
+        const resultTotalWater = document.getElementById('resultTotalWater');
+        const cupsGrid = document.getElementById('cupsGrid');
+        const waterSchedule = document.getElementById('waterSchedule');
+        const waterAdvice = document.getElementById('waterAdvice');
+        
+        // 活动水平描述
+        const activityDescriptions = {
+            '1.0': '久坐',
+            '1.1': '轻度活动',
+            '1.2': '中度活动',
+            '1.3': '重度活动',
+            '1.4': '运动员'
+        };
+        
+        // 气候条件描述
+        const climateDescriptions = {
+            '1.0': '温和气候',
+            '1.2': '炎热/干燥气候',
+            '1.1': '潮湿气候',
+            '0.9': '寒冷气候'
+        };
+        
+        // 特殊状况描述
+        const specialDescriptions = {
+            '1.0': '无特殊状况',
+            '1.1': '怀孕',
+            '1.2': '哺乳期',
+            '1.15': '患病/发烧',
+            '1.05': '老年人'
+        };
+        
+        // 计算饮水量
+        function calculateWater() {
+            const weight = parseFloat(weightInput.value);
+            const activityFactor = parseFloat(activityLevelSelect.value);
+            const climateFactor = parseFloat(climateSelect.value);
+            const specialFactor = parseFloat(specialConditionSelect.value);
+            
+            // 验证输入
+            if (!weight || weight < 30 || weight > 200) {
+                // 输入无效时隐藏结果区域
+                resultSection.style.display = 'none';
+                return;
+            }
+            
+            // 基础公式：每日饮水量(升) = 体重(kg) × 0.033
+            const baseWater = weight * 0.033;
+            
+            // 调整后的总饮水量
+            const totalWater = baseWater * activityFactor * climateFactor * specialFactor;
+            
+            // 显示结果
+            displayResults(weight, baseWater, totalWater, activityFactor, climateFactor, specialFactor);
+        }
+        
+        // 显示计算结果
+        function displayResults(weight, baseWater, totalWater, activityFactor, climateFactor, specialFactor) {
+            // 更新基本信息
+            resultWeight.textContent = `${weight} 公斤`;
+            resultActivity.textContent = activityDescriptions[activityFactor];
+            resultClimate.textContent = climateDescriptions[climateFactor];
+            resultSpecial.textContent = specialDescriptions[specialFactor];
+            resultBaseWater.textContent = `${baseWater.toFixed(1)} 升/天`;
+            resultTotalWater.textContent = `${totalWater.toFixed(1)} 升/天`;
+            
+            // 计算并显示杯数换算
+            displayCups(totalWater);
+            
+            // 生成饮水时间表
+            generateWaterSchedule(totalWater);
+            
+            // 显示结果区域
+            resultSection.style.display = 'block';
+        }
+        
+        // 显示杯数换算
+        function displayCups(totalWater) {
+            // 不同杯型的容量(升)
+            const cupTypes = [
+                { name: '小杯', size: 0.2, color: '#3b82f6' },
+                { name: '标准杯', size: 0.25, color: '#10b981' },
+                { name: '大杯', size: 0.3, color: '#f59e0b' },
+                { name: '水瓶', size: 0.5, color: '#ef4444' }
+            ];
+            
+            cupsGrid.innerHTML = '';
+            
+            cupTypes.forEach(cup => {
+                const cupCount = Math.ceil(totalWater / cup.size);
+                
+                const cupDiv = document.createElement('div');
+                cupDiv.className = 'cup-item';
+                cupDiv.innerHTML = `
+                    <div class="cup-icon" style="background: ${cup.color}">
+                        <i class="fas fa-glass-whiskey"></i>
+                    </div>
+                    <div class="cup-info">
+                        <div class="cup-name">${cup.name}</div>
+                        <div class="cup-details">${cup.size * 1000}ml × ${cupCount}杯</div>
+                    </div>
+                `;
+                
+                cupsGrid.appendChild(cupDiv);
+            });
+        }
+        
+        // 生成饮水时间表
+        function generateWaterSchedule(totalWater) {
+            // 将总水量转换为毫升
+            const totalMl = totalWater * 1000;
+            
+            // 分配比例
+            const schedule = [
+                { time: '早上起床', proportion: 0.1 },
+                { time: '上午', proportion: 0.2 },
+                { time: '午餐前', proportion: 0.1 },
+                { time: '下午', proportion: 0.3 },
+                { time: '晚餐前', proportion: 0.1 },
+                { time: '睡前1小时', proportion: 0.1 },
+                { time: '夜间(如需)', proportion: 0.1 }
+            ];
+            
+            let scheduleText = '';
+            schedule.forEach(item => {
+                const ml = Math.round(totalMl * item.proportion);
+                scheduleText += `${item.time}: ${ml}ml | `;
+            });
+            
+            // 移除最后的" | "
+            scheduleText = scheduleText.slice(0, -3);
+            waterSchedule.textContent = scheduleText;
+            
+            // 根据总水量给出建议
+            let advice = '';
+            if (totalWater < 1.5) {
+                advice = '您的饮水量偏低，请确保每天喝足够的水以维持身体正常功能。';
+            } else if (totalWater > 4) {
+                advice = '您的饮水量较高，请确保肾功能正常，避免水中毒。';
+            } else {
+                advice = '您的饮水量在正常范围内，请继续保持良好的饮水习惯。';
+            }
+            
+            waterAdvice.innerHTML = `
+                1. 不要等到口渴才喝水<br>
+                2. 少量多次，均匀分配在全天<br>
+                3. 运动前后要补充水分<br>
+                4. 避免一次性大量饮水<br>
+                <br>
+                <strong>特别提醒：</strong>${advice}
+            `;
+        }
+        
+        // 事件监听
+        calculateBtn.addEventListener('click', calculateWater);
+        
+        // 输入时自动计算
+        weightInput.addEventListener('input', calculateWater);
+        activityLevelSelect.addEventListener('change', calculateWater);
+        climateSelect.addEventListener('change', calculateWater);
+        specialConditionSelect.addEventListener('change', calculateWater);
+        
+        // 主题切换
+        function initTheme() {
+            const themeBtn = document.querySelector('.theme-btn');
+            
+            // 检查本地存储的主题设置
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+            
+            // 切换主题函数
+            function toggleTheme() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                // 更新图标
+                if (themeBtn) {
+                    const icon = themeBtn.querySelector('i');
+                    icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+            }
+            
+            // 添加事件监听
+            if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            
+            // 移动端菜单
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            if (menuBtn) {
+                menuBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert('移动端菜单功能需要完整的菜单HTML结构');
+                });
+            }
+            
+            // 页面加载时自动计算一次
+            setTimeout(calculateWater, 100);
+        });
+    </script>
+    
+    <style>
+        .water-cups {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 1rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .cups-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .cup-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+        }
+        
+        .cup-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        
+        .cup-info {
+            flex: 1;
+        }
+        
+        .cup-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .cup-details {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .health-advice {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 1rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .advice-content {
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+            line-height: 1.6;
+        }
+        
+        .coupon-tips {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin-top: 1.5rem;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        
+        .data-table th {
+            background: var(--bg-primary);
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-light);
+        }
+        
+        .data-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        
+        [data-theme="dark"] .data-table tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .tip-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+        }
+        
+        .tip-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .tip-content {
+            flex: 1;
+        }
+        
+        .tip-content h4 {
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+        
+        .tip-content p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        @media (min-width: 768px) {
+            .cups-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .tips-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .data-table {
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .cups-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-table {
+                font-size: 0.8rem;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</body>
+</html>

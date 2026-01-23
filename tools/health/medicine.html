@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>药物剂量计算 - 生活计算宝典</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../layout.css">
+    <link rel="stylesheet" href="../../components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+</head>
+<body class="app">
+    <header class="app-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-mobile">
+                    <a href="../../pages/health.html" class="navbar-back">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div class="navbar-title">药物剂量计算</div>
+                    <div></div>
+                </div>
+                
+                <div class="navbar-desktop">
+                    <a href="../../index.html" class="logo">
+                        <i class="fas fa-calculator"></i>
+                        <span class="logo-text">生活计算宝典</span>
+                    </a>
+                    <div class="nav-links">
+                        <a href="../../index.html" class="nav-link">首页</a>
+                        <a href="../../pages/health.html" class="nav-link active">健康运动</a>
+                        <a href="../../pages/finance.html" class="nav-link">理财金融</a>
+                        <a href="../../pages/tools.html" class="nav-link">所有工具</a>
+                    </div>
+                    <div class="theme-toggle">
+                        <button class="theme-btn" aria-label="切换主题">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="section">
+            <div class="container">
+                <!-- 面包屑导航 -->
+                <nav class="breadcrumb">
+                    <a href="../../index.html" class="breadcrumb-link">首页</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <a href="../../pages/health.html" class="breadcrumb-link">健康运动</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <span class="breadcrumb-current">药物剂量计算</span>
+                </nav>
+                
+                <!-- 计算器容器 -->
+                <div class="calculator-container">
+                    <div class="calculator-card">
+                        <div class="calculator-header">
+                            <h1 class="calculator-title">药物剂量计算</h1>
+                            <p class="calculator-description">
+                                根据体重计算药物剂量，确保用药安全。计算结果仅供参考，请遵医嘱。
+                            </p>
+                        </div>
+                        
+                        <!-- 基本信息输入 -->
+                        <div class="input-group">
+                            <label class="input-label">体重 (公斤)</label>
+                            <input type="number" id="weight" class="input-field" placeholder="例如：70" value="70" step="0.1" min="5" max="200">
+                        </div>
+                        
+                        <!-- 药物信息 -->
+                        <div class="input-group">
+                            <label class="input-label">药物剂量类型</label>
+                            <select id="doseType" class="input-field">
+                                <option value="standard">标准剂量 (mg/kg)</option>
+                                <option value="daily">每日总量 (mg/天)</option>
+                                <option value="single">单次剂量 (mg/次)</option>
+                                <option value="pediatric">儿科剂量 (根据体重计算)</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 标准剂量选项 -->
+                        <div id="standardOptions">
+                            <div class="input-group">
+                                <label class="input-label">剂量标准 (mg/kg)</label>
+                                <input type="number" id="dosePerKg" class="input-field" placeholder="例如：10" value="10" step="0.1" min="0.1" max="100">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">给药频率</label>
+                                <select id="frequency" class="input-field">
+                                    <option value="1">每天1次</option>
+                                    <option value="2" selected>每天2次</option>
+                                    <option value="3">每天3次</option>
+                                    <option value="4">每天4次</option>
+                                    <option value="6">每6小时1次</option>
+                                    <option value="8">每8小时1次</option>
+                                    <option value="12">每12小时1次</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- 每日总量选项 -->
+                        <div id="dailyOptions" style="display: none;">
+                            <div class="input-group">
+                                <label class="input-label">每日总剂量 (mg/天)</label>
+                                <input type="number" id="dailyDose" class="input-field" placeholder="例如：500" value="500" step="1" min="1" max="10000">
+                            </div>
+                        </div>
+                        
+                        <!-- 单次剂量选项 -->
+                        <div id="singleOptions" style="display: none;">
+                            <div class="input-group">
+                                <label class="input-label">单次剂量 (mg/次)</label>
+                                <input type="number" id="singleDose" class="input-field" placeholder="例如：250" value="250" step="1" min="1" max="5000">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">每日次数</label>
+                                <input type="number" id="timesPerDay" class="input-field" placeholder="例如：2" value="2" step="1" min="1" max="12">
+                            </div>
+                        </div>
+                        
+                        <!-- 儿科剂量选项 -->
+                        <div id="pediatricOptions" style="display: none;">
+                            <div class="input-group">
+                                <label class="input-label">成人剂量 (mg)</label>
+                                <input type="number" id="adultDose" class="input-field" placeholder="例如：500" value="500" step="1" min="1" max="5000">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">成人标准体重 (kg)</label>
+                                <input type="number" id="adultWeight" class="input-field" placeholder="例如：70" value="70" step="1" min="40" max="120">
+                            </div>
+                        </div>
+                        
+                        <!-- 药物浓度 -->
+                        <div class="input-group">
+                            <label class="input-label">药物浓度 (可选)</label>
+                            <div class="concentration-input">
+                                <input type="number" id="concentration" class="input-field" placeholder="例如：100" value="100" step="1" min="1" max="10000">
+                                <select id="concentrationUnit" class="input-field" style="width: 100px; margin-left: 0.5rem;">
+                                    <option value="mg/ml">mg/ml</option>
+                                    <option value="mg/tablet">mg/片</option>
+                                    <option value="mg/capsule">mg/粒</option>
+                                    <option value="mg/5ml">mg/5ml</option>
+                                    <option value="mg/10ml">mg/10ml</option>
+                                </select>
+                            </div>
+                            <small class="input-hint">用于计算药片数量或液体体积</small>
+                        </div>
+                        
+                        <!-- 计算按钮 -->
+                        <button class="btn btn-primary btn-block calc-btn" id="calculateBtn">
+                            <i class="fas fa-pills"></i> 计算药物剂量
+                        </button>
+                        
+                        <!-- 结果展示 -->
+                        <div class="result-display" id="resultSection">
+                            <h3 class="result-title"><i class="fas fa-prescription"></i> 药物剂量计算结果</h3>
+                            
+                            <div class="result-grid">
+                                <div class="result-item">
+                                    <span class="result-label">体重</span>
+                                    <span class="result-value" id="resultWeight">70 公斤</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">剂量类型</span>
+                                    <span class="result-value" id="resultDoseType">标准剂量</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">单次剂量</span>
+                                    <span class="result-value" id="resultSingleDose">700 mg</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">每日总剂量</span>
+                                    <span class="result-value" id="resultDailyDose">1400 mg</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">给药频率</span>
+                                    <span class="result-value" id="resultFrequency">每天2次</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">药物浓度</span>
+                                    <span class="result-value" id="resultConcentration">100 mg/ml</span>
+                                </div>
+                            </div>
+                            
+                            <!-- 剂量详细计算 -->
+                            <div class="dose-details mt-4">
+                                <h4 class="result-title" style="font-size: 1rem;">剂量详细计算</h4>
+                                <div class="details-container" id="detailsContainer">
+                                    <!-- 剂量详情将动态生成 -->
+                                </div>
+                            </div>
+                            
+                            <!-- 药物配置 -->
+                            <div class="health-advice mt-4" id="preparationSection">
+                                <h4 class="result-title" style="font-size: 1rem;">药物配置</h4>
+                                <div class="advice-content" id="preparationContent">
+                                    根据药物浓度，每次需要 7 ml 或 7 片/粒。
+                                </div>
+                            </div>
+                            
+                            <!-- 安全提醒 -->
+                            <div class="health-advice mt-4">
+                                <h4 class="result-title" style="font-size: 1rem;">安全提醒</h4>
+                                <div class="advice-content" id="safetyReminder">
+                                    1. 计算结果仅供参考，必须遵医嘱使用<br>
+                                    2. 儿童、老人、肝肾功能不全者需调整剂量<br>
+                                    3. 注意药物相互作用和禁忌症<br>
+                                    4. 如有疑问，请咨询医生或药师
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 常用药物剂量参考 -->
+                    <div class="coupon-tips mt-6">
+                        <h3 class="section-title" style="font-size: 1.25rem; text-align: center; margin-bottom: 1rem;">
+                            <i class="fas fa-table"></i> 常用药物剂量参考
+                        </h3>
+                        
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>药物类型</th>
+                                        <th>成人剂量</th>
+                                        <th>儿童剂量</th>
+                                        <th>注意事项</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>对乙酰氨基酚</td>
+                                        <td>500mg 每6小时</td>
+                                        <td>10-15mg/kg 每6小时</td>
+                                        <td>每日不超过4g</td>
+                                    </tr>
+                                    <tr>
+                                        <td>布洛芬</td>
+                                        <td>400mg 每6-8小时</td>
+                                        <td>5-10mg/kg 每6-8小时</td>
+                                        <td>饭后服用</td>
+                                    </tr>
+                                    <tr>
+                                        <td>阿莫西林</td>
+                                        <td>500mg 每8小时</td>
+                                        <td>20-40mg/kg/天</td>
+                                        <td>分2-3次服用</td>
+                                    </tr>
+                                    <tr>
+                                        <td>头孢克肟</td>
+                                        <td>400mg 每天1次</td>
+                                        <td>8mg/kg/天</td>
+                                        <td>分1-2次服用</td>
+                                    </tr>
+                                    <tr>
+                                        <td>氯雷他定</td>
+                                        <td>10mg 每天1次</td>
+                                        <td>2.5-5mg 每天1次</td>
+                                        <td>根据年龄调整</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="tips-grid mt-4">
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #3b82f6">
+                                    <i class="fas fa-weight"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>体重计算</h4>
+                                    <p>剂量常按体重(kg)计算</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #10b981">
+                                    <i class="fas fa-user-md"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>遵医嘱</h4>
+                                    <p>必须遵医嘱使用</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #f59e0b">
+                                    <i class="fas fa-child"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>儿童剂量</h4>
+                                    <p>需根据体重精确计算</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #ef4444">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>安全第一</h4>
+                                    <p>注意剂量上限</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 使用说明 -->
+                    <div class="alert alert-warning mt-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-triangle mr-3"></i>
+                            <div>
+                                <strong>重要声明：</strong> 
+                                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                    <li><strong>非医疗建议</strong>：本工具计算结果仅供参考，不能替代专业医疗建议</li>
+                                    <li><strong>必须遵医嘱</strong>：所有药物使用必须遵医嘱，不可自行决定</li>
+                                    <li><strong>个体差异</strong>：剂量需根据年龄、肝肾功能、病情等调整</li>
+                                    <li><strong>药物相互作用</strong>：注意不同药物之间的相互作用</li>
+                                    <li><strong>紧急情况</strong>：如出现不良反应，立即停药并就医</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 使用说明 -->
+                    <div class="alert alert-info mt-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-lightbulb mr-3"></i>
+                            <div>
+                                <strong>如何使用药物剂量计算器：</strong> 
+                                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                    <li><strong>准确体重</strong>：使用当前实际体重以获得准确结果</li>
+                                    <li><strong>剂量类型</strong>：根据药物说明选择适当的剂量计算方式</li>
+                                    <li><strong>药物浓度</strong>：输入药物浓度可计算药片数量或液体体积</li>
+                                    <li><strong>儿科剂量</strong>：儿童用药需根据体重精确计算</li>
+                                    <li><strong>验证结果</strong>：计算结果必须与医生处方核对</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <a href="../../index.html" class="footer-logo">
+                        <i class="fas fa-calculator"></i>
+                        <span>生活计算宝典</span>
+                    </a>
+                    <p class="footer-description">
+                        一站式离线计算工具集合，为您的生活带来便利。
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">健康工具</h4>
+                    <a href="bmi.html" class="footer-link">BMI计算器</a>
+                    <a href="calorie.html" class="footer-link">卡路里消耗计算</a>
+                    <a href="water.html" class="footer-link">饮水量计算</a>
+                    <a href="heart-rate.html" class="footer-link">运动心率计算</a>
+                    <a href="medicine.html" class="footer-link">药物剂量计算</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">快速链接</h4>
+                    <a href="../../pages/health.html" class="footer-link">返回健康运动</a>
+                    <a href="../../pages/tools.html" class="footer-link">所有工具</a>
+                    <a href="https://github.com/laddzhao/life-calculators" target="_blank" class="footer-link">GitHub项目</a>
+                    <a href="../../404.html" class="footer-link">404页面</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">其他工具</h4>
+                    <a href="../shopping/discount.html" class="footer-link">折扣计算器</a>
+                    <a href="../finance/compound.html" class="footer-link">复利计算器</a>
+                    <a href="../home/utility-bill.html" class="footer-link">水电费计算</a>
+                    <a href="../professional/mortgage.html" class="footer-link">房贷计算器</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 生活计算宝典 · 药物剂量计算</p>
+                <p class="footer-note">
+                    <strong>重要提醒：</strong> 本工具计算结果仅供参考，不能替代专业医疗建议。所有药物使用必须遵医嘱，不可自行决定。
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 移动端底部导航 -->
+    <nav class="mobile-bottom-nav">
+        <a href="../../index.html" class="nav-item">
+            <i class="fas fa-home nav-icon"></i>
+            <span class="nav-label">首页</span>
+        </a>
+        <a href="../../pages/health.html" class="nav-item active">
+            <i class="fas fa-heartbeat nav-icon"></i>
+            <span class="nav-label">健康</span>
+        </a>
+        <a href="../../pages/finance.html" class="nav-item">
+            <i class="fas fa-chart-line nav-icon"></i>
+            <span class="nav-label">理财</span>
+        </a>
+        <a href="../../pages/tools.html" class="nav-item">
+            <i class="fas fa-th nav-icon"></i>
+            <span class="nav-label">全部</span>
+        </a>
+        <a href="#" class="nav-item" id="mobileMenuBtn">
+            <i class="fas fa-ellipsis-h nav-icon"></i>
+            <span class="nav-label">更多</span>
+        </a>
+    </nav>
+
+    <script>
+        // DOM元素
+        const weightInput = document.getElementById('weight');
+        const doseTypeSelect = document.getElementById('doseType');
+        const standardOptions = document.getElementById('standardOptions');
+        const dailyOptions = document.getElementById('dailyOptions');
+        const singleOptions = document.getElementById('singleOptions');
+        const pediatricOptions = document.getElementById('pediatricOptions');
+        const dosePerKgInput = document.getElementById('dosePerKg');
+        const frequencySelect = document.getElementById('frequency');
+        const dailyDoseInput = document.getElementById('dailyDose');
+        const singleDoseInput = document.getElementById('singleDose');
+        const timesPerDayInput = document.getElementById('timesPerDay');
+        const adultDoseInput = document.getElementById('adultDose');
+        const adultWeightInput = document.getElementById('adultWeight');
+        const concentrationInput = document.getElementById('concentration');
+        const concentrationUnitSelect = document.getElementById('concentrationUnit');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resultSection = document.getElementById('resultSection');
+        const resultWeight = document.getElementById('resultWeight');
+        const resultDoseType = document.getElementById('resultDoseType');
+        const resultSingleDose = document.getElementById('resultSingleDose');
+        const resultDailyDose = document.getElementById('resultDailyDose');
+        const resultFrequency = document.getElementById('resultFrequency');
+        const resultConcentration = document.getElementById('resultConcentration');
+        const detailsContainer = document.getElementById('detailsContainer');
+        const preparationContent = document.getElementById('preparationContent');
+        const safetyReminder = document.getElementById('safetyReminder');
+        const preparationSection = document.getElementById('preparationSection');
+        
+        // 频率描述
+        const frequencyDescriptions = {
+            '1': '每天1次',
+            '2': '每天2次',
+            '3': '每天3次',
+            '4': '每天4次',
+            '6': '每6小时1次',
+            '8': '每8小时1次',
+            '12': '每12小时1次'
+        };
+        
+        // 剂量类型变化
+        doseTypeSelect.addEventListener('change', function() {
+            const type = this.value;
+            
+            // 隐藏所有选项
+            standardOptions.style.display = 'none';
+            dailyOptions.style.display = 'none';
+            singleOptions.style.display = 'none';
+            pediatricOptions.style.display = 'none';
+            
+            // 显示对应的选项
+            if (type === 'standard') {
+                standardOptions.style.display = 'block';
+            } else if (type === 'daily') {
+                dailyOptions.style.display = 'block';
+            } else if (type === 'single') {
+                singleOptions.style.display = 'block';
+            } else if (type === 'pediatric') {
+                pediatricOptions.style.display = 'block';
+            }
+            
+            // 重新计算
+            calculateDose();
+        });
+        
+        // 计算药物剂量
+        function calculateDose() {
+            const weight = parseFloat(weightInput.value);
+            const type = doseTypeSelect.value;
+            const concentration = parseFloat(concentrationInput.value) || 0;
+            const concentrationUnit = concentrationUnitSelect.value;
+            
+            // 验证输入
+            if (!weight || weight < 5 || weight > 200) {
+                // 输入无效时隐藏结果区域
+                resultSection.style.display = 'none';
+                return;
+            }
+            
+            let singleDose = 0;
+            let dailyDose = 0;
+            let frequency = '每天2次';
+            let doseTypeName = '';
+            let calculationDetails = '';
+            
+            if (type === 'standard') {
+                // 标准剂量：单次剂量 = 体重 × 剂量/公斤
+                const dosePerKg = parseFloat(dosePerKgInput.value) || 0;
+                const freqValue = frequencySelect.value;
+                
+                singleDose = weight * dosePerKg;
+                dailyDose = singleDose * parseInt(freqValue);
+                frequency = frequencyDescriptions[freqValue];
+                doseTypeName = '标准剂量';
+                
+                calculationDetails = `单次剂量 = 体重(${weight}kg) × 剂量标准(${dosePerKg}mg/kg) = ${singleDose.toFixed(1)}mg`;
+                calculationDetails += `<br>每日总剂量 = 单次剂量(${singleDose.toFixed(1)}mg) × 每日次数(${freqValue}) = ${dailyDose.toFixed(1)}mg`;
+                
+            } else if (type === 'daily') {
+                // 每日总量
+                const dailyTotal = parseFloat(dailyDoseInput.value) || 0;
+                
+                dailyDose = dailyTotal;
+                singleDose = dailyTotal; // 假设每天1次
+                frequency = '每天1次';
+                doseTypeName = '每日总量';
+                
+                calculationDetails = `每日总剂量 = ${dailyTotal}mg/天`;
+                calculationDetails += `<br>单次剂量 = ${dailyTotal}mg (每天1次)`;
+                
+            } else if (type === 'single') {
+                // 单次剂量
+                const single = parseFloat(singleDoseInput.value) || 0;
+                const timesPerDay = parseInt(timesPerDayInput.value) || 1;
+                
+                singleDose = single;
+                dailyDose = single * timesPerDay;
+                frequency = `每天${timesPerDay}次`;
+                doseTypeName = '单次剂量';
+                
+                calculationDetails = `单次剂量 = ${single}mg/次`;
+                calculationDetails += `<br>每日总剂量 = 单次剂量(${single}mg) × 每日次数(${timesPerDay}) = ${dailyDose}mg`;
+                
+            } else if (type === 'pediatric') {
+                // 儿科剂量：根据成人剂量按体重比例计算
+                const adultDose = parseFloat(adultDoseInput.value) || 0;
+                const adultWeight = parseFloat(adultWeightInput.value) || 70;
+                const freqValue = frequencySelect.value;
+                
+                // 按体重比例计算
+                singleDose = (weight / adultWeight) * adultDose;
+                dailyDose = singleDose * parseInt(freqValue);
+                frequency = frequencyDescriptions[freqValue];
+                doseTypeName = '儿科剂量';
+                
+                calculationDetails = `单次剂量 = (体重(${weight}kg) ÷ 成人标准体重(${adultWeight}kg)) × 成人剂量(${adultDose}mg) = ${singleDose.toFixed(1)}mg`;
+                calculationDetails += `<br>每日总剂量 = 单次剂量(${singleDose.toFixed(1)}mg) × 每日次数(${freqValue}) = ${dailyDose.toFixed(1)}mg`;
+            }
+            
+            // 显示结果
+            displayResults(weight, doseTypeName, singleDose, dailyDose, frequency, concentration, concentrationUnit, calculationDetails);
+        }
+        
+        // 显示计算结果
+        function displayResults(weight, doseTypeName, singleDose, dailyDose, frequency, concentration, concentrationUnit, calculationDetails) {
+            // 更新基本信息
+            resultWeight.textContent = `${weight} 公斤`;
+            resultDoseType.textContent = doseTypeName;
+            resultSingleDose.textContent = `${singleDose.toFixed(1)} mg`;
+            resultDailyDose.textContent = `${dailyDose.toFixed(1)} mg`;
+            resultFrequency.textContent = frequency;
+            resultConcentration.textContent = concentration > 0 ? `${concentration} ${concentrationUnit}` : '未指定';
+            
+            // 显示计算详情
+            detailsContainer.innerHTML = calculationDetails;
+            
+            // 显示药物配置（如果有浓度）
+            if (concentration > 0) {
+                let preparationText = '';
+                let amount = 0;
+                
+                if (concentrationUnit === 'mg/ml') {
+                    amount = singleDose / concentration;
+                    preparationText = `每次需要 ${amount.toFixed(2)} ml`;
+                } else if (concentrationUnit === 'mg/tablet') {
+                    amount = singleDose / concentration;
+                    preparationText = `每次需要 ${amount.toFixed(2)} 片`;
+                } else if (concentrationUnit === 'mg/capsule') {
+                    amount = singleDose / concentration;
+                    preparationText = `每次需要 ${amount.toFixed(2)} 粒`;
+                } else if (concentrationUnit === 'mg/5ml') {
+                    amount = (singleDose / concentration) * 5;
+                    preparationText = `每次需要 ${amount.toFixed(2)} ml (基于${concentration}mg/5ml)`;
+                } else if (concentrationUnit === 'mg/10ml') {
+                    amount = (singleDose / concentration) * 10;
+                    preparationText = `每次需要 ${amount.toFixed(2)} ml (基于${concentration}mg/10ml)`;
+                }
+                
+                preparationContent.textContent = `根据药物浓度${concentration} ${concentrationUnit}，${preparationText}。`;
+                preparationSection.style.display = 'block';
+            } else {
+                preparationSection.style.display = 'none';
+            }
+            
+            // 显示结果区域
+            resultSection.style.display = 'block';
+        }
+        
+        // 事件监听
+        calculateBtn.addEventListener('click', calculateDose);
+        
+        // 输入时自动计算
+        weightInput.addEventListener('input', calculateDose);
+        dosePerKgInput.addEventListener('input', calculateDose);
+        frequencySelect.addEventListener('change', calculateDose);
+        dailyDoseInput.addEventListener('input', calculateDose);
+        singleDoseInput.addEventListener('input', calculateDose);
+        timesPerDayInput.addEventListener('input', calculateDose);
+        adultDoseInput.addEventListener('input', calculateDose);
+        adultWeightInput.addEventListener('input', calculateDose);
+        concentrationInput.addEventListener('input', calculateDose);
+        concentrationUnitSelect.addEventListener('change', calculateDose);
+        
+        // 主题切换
+        function initTheme() {
+            const themeBtn = document.querySelector('.theme-btn');
+            
+            // 检查本地存储的主题设置
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+            
+            // 切换主题函数
+            function toggleTheme() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                // 更新图标
+                if (themeBtn) {
+                    const icon = themeBtn.querySelector('i');
+                    icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+            }
+            
+            // 添加事件监听
+            if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            
+            // 移动端菜单
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            if (menuBtn) {
+                menuBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert('移动端菜单功能需要完整的菜单HTML结构');
+                });
+            }
+            
+            // 页面加载时自动计算一次
+            setTimeout(calculateDose, 100);
+        });
+    </script>
+    
+    <style>
+        .concentration-input {
+            display: flex;
+            align-items: center;
+        }
+        
+        .concentration-input .input-field {
+            flex: 1;
+        }
+        
+        .dose-details {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 1rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .details-container {
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+            line-height: 1.6;
+        }
+        
+        .health-advice {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 1rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .advice-content {
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+            line-height: 1.6;
+        }
+        
+        .coupon-tips {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin-top: 1.5rem;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        
+        .data-table th {
+            background: var(--bg-primary);
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-light);
+        }
+        
+        .data-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        
+        [data-theme="dark"] .data-table tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .tip-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+        }
+        
+        .tip-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .tip-content {
+            flex: 1;
+        }
+        
+        .tip-content h4 {
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+        
+        .tip-content p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .input-hint {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        @media (min-width: 768px) {
+            .tips-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .data-table {
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-table {
+                font-size: 0.8rem;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 0.5rem;
+            }
+            
+            .concentration-input {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .concentration-input .input-field {
+                width: 100%;
+                margin-left: 0;
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
+</body>
+</html>

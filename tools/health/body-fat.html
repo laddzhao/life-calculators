@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>体脂率计算 - 生活计算宝典</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../layout.css">
+    <link rel="stylesheet" href="../../components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+</head>
+<body class="app">
+    <header class="app-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-mobile">
+                    <a href="../../pages/health.html" class="navbar-back">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div class="navbar-title">体脂率计算</div>
+                    <div></div>
+                </div>
+                
+                <div class="navbar-desktop">
+                    <a href="../../index.html" class="logo">
+                        <i class="fas fa-calculator"></i>
+                        <span class="logo-text">生活计算宝典</span>
+                    </a>
+                    <div class="nav-links">
+                        <a href="../../index.html" class="nav-link">首页</a>
+                        <a href="../../pages/health.html" class="nav-link active">健康运动</a>
+                        <a href="../../pages/finance.html" class="nav-link">理财金融</a>
+                        <a href="../../pages/tools.html" class="nav-link">所有工具</a>
+                    </div>
+                    <div class="theme-toggle">
+                        <button class="theme-btn" aria-label="切换主题">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="section">
+            <div class="container">
+                <!-- 面包屑导航 -->
+                <nav class="breadcrumb">
+                    <a href="../../index.html" class="breadcrumb-link">首页</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <a href="../../pages/health.html" class="breadcrumb-link">健康运动</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <span class="breadcrumb-current">体脂率计算</span>
+                </nav>
+                
+                <!-- 计算器容器 -->
+                <div class="calculator-container">
+                    <div class="calculator-card">
+                        <div class="calculator-header">
+                            <h1 class="calculator-title">体脂率计算</h1>
+                            <p class="calculator-description">
+                                估算身体脂肪百分比，基于美国海军测量法和BMI公式的综合估算。
+                            </p>
+                        </div>
+                        
+                        <!-- 基本信息输入 -->
+                        <div class="input-group">
+                            <label class="input-label">性别</label>
+                            <div class="gender-selection">
+                                <label class="gender-option">
+                                    <input type="radio" name="gender" value="male" checked>
+                                    <span class="gender-icon"><i class="fas fa-male"></i></span>
+                                    <span class="gender-label">男性</span>
+                                </label>
+                                <label class="gender-option">
+                                    <input type="radio" name="gender" value="female">
+                                    <span class="gender-icon"><i class="fas fa-female"></i></span>
+                                    <span class="gender-label">女性</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">年龄 (岁)</label>
+                            <input type="number" id="age" class="input-field" placeholder="例如：30" value="30" step="1" min="18" max="100">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">身高 (厘米)</label>
+                            <input type="number" id="height" class="input-field" placeholder="例如：175" value="175" step="0.1" min="100" max="250">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">体重 (公斤)</label>
+                            <input type="number" id="weight" class="input-field" placeholder="例如：70" value="70" step="0.1" min="30" max="300">
+                        </div>
+                        
+                        <!-- 测量方法选择 -->
+                        <div class="input-group">
+                            <label class="input-label">计算方法</label>
+                            <select id="calculationMethod" class="input-field">
+                                <option value="navy">美国海军测量法 (推荐)</option>
+                                <option value="bmi">BMI公式法</option>
+                                <option value="simple">简易估算</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 海军测量法额外输入 -->
+                        <div id="navyMethodOptions">
+                            <div class="input-group">
+                                <label class="input-label">腰围 (厘米)</label>
+                                <input type="number" id="waist" class="input-field" placeholder="例如：85" value="85" step="0.1" min="50" max="200">
+                            </div>
+                            
+                            <div class="input-group" id="neckGroup">
+                                <label class="input-label">颈围 (厘米)</label>
+                                <input type="number" id="neck" class="input-field" placeholder="例如：38" value="38" step="0.1" min="20" max="80">
+                            </div>
+                            
+                            <div class="input-group" id="hipGroup" style="display: none;">
+                                <label class="input-label">臀围 (厘米)</label>
+                                <input type="number" id="hip" class="input-field" placeholder="例如：95" value="95" step="0.1" min="50" max="200">
+                            </div>
+                        </div>
+                        
+                        <!-- 计算按钮 -->
+                        <button class="btn btn-primary btn-block calc-btn" id="calculateBtn">
+                            <i class="fas fa-percentage"></i> 计算体脂率
+                        </button>
+                        
+                        <!-- 结果展示 -->
+                        <div class="result-display" id="resultSection">
+                            <h3 class="result-title"><i class="fas fa-chart-pie"></i> 体脂率计算结果</h3>
+                            
+                            <div class="result-grid">
+                                <div class="result-item">
+                                    <span class="result-label">性别</span>
+                                    <span class="result-value" id="resultGender">男性</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">年龄</span>
+                                    <span class="result-value" id="resultAge">30 岁</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">BMI</span>
+                                    <span class="result-value" id="resultBMI">22.9</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">体脂率</span>
+                                    <span class="result-value" id="resultBodyFat" style="color: var(--primary); font-weight: 600;">18.5%</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">体脂分类</span>
+                                    <span class="result-value" id="resultCategory">健康</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">脂肪重量</span>
+                                    <span class="result-value" id="resultFatWeight">13.0 公斤</span>
+                                </div>
+                            </div>
+                            
+                            <!-- 体脂率进度条 -->
+                            <div class="body-fat-progress mt-4">
+                                <div class="progress-header">
+                                    <span class="progress-label">体脂率范围</span>
+                                    <span class="progress-value" id="progressValue">18.5%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="progressFill" style="width: 46.25%; background: #10b981;"></div>
+                                    </div>
+                                    <div class="progress-markers">
+                                        <span style="left: 0;">必需脂肪</span>
+                                        <span style="left: 20%;">运动员</span>
+                                        <span style="left: 40%;">健康</span>
+                                        <span style="left: 60%;">一般</span>
+                                        <span style="left: 80%;">肥胖</span>
+                                        <span style="left: 100%;">病态肥胖</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 体脂率分类表 -->
+                            <div class="body-fat-table mt-4">
+                                <h4 class="result-title" style="font-size: 1rem;">体脂率分类标准</h4>
+                                <div class="table-container">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>分类</th>
+                                                <th>男性 (%)</th>
+                                                <th>女性 (%)</th>
+                                                <th>描述</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>必需脂肪</td>
+                                                <td>2-5%</td>
+                                                <td>10-13%</td>
+                                                <td>维持生命所需最低脂肪</td>
+                                            </tr>
+                                            <tr>
+                                                <td>运动员</td>
+                                                <td>6-13%</td>
+                                                <td>14-20%</td>
+                                                <td>专业运动员水平</td>
+                                            </tr>
+                                            <tr>
+                                                <td>健康</td>
+                                                <td>14-17%</td>
+                                                <td>21-24%</td>
+                                                <td>健康、健身水平良好</td>
+                                            </tr>
+                                            <tr>
+                                                <td>一般</td>
+                                                <td>18-24%</td>
+                                                <td>25-31%</td>
+                                                <td>普通人群平均水平</td>
+                                            </tr>
+                                            <tr>
+                                                <td>肥胖</td>
+                                                <td>25%+</td>
+                                                <td>32%+</td>
+                                                <td>超重，健康风险增加</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- 健康建议 -->
+                            <div class="health-advice mt-4">
+                                <h4 class="result-title" style="font-size: 1rem;">健康建议</h4>
+                                <div class="advice-content" id="healthAdvice">
+                                    您的体脂率处于健康范围，继续保持均衡饮食和规律运动。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 体脂率知识 -->
+                    <div class="coupon-tips mt-6">
+                        <h3 class="section-title" style="font-size: 1.25rem; text-align: center; margin-bottom: 1rem;">
+                            <i class="fas fa-info-circle"></i> 体脂率知识
+                        </h3>
+                        
+                        <div class="tips-grid">
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #3b82f6">
+                                    <i class="fas fa-weight"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>体脂率定义</h4>
+                                    <p>身体脂肪重量占总体重的百分比</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #10b981">
+                                    <i class="fas fa-heartbeat"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>健康意义</h4>
+                                    <p>比BMI更能反映健康状况</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #f59e0b">
+                                    <i class="fas fa-ruler"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>测量方法</h4>
+                                    <p>皮褶测量、生物电阻抗等</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #ef4444">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>健康风险</h4>
+                                    <p>过高或过低都有健康风险</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 计算公式说明 -->
+                        <div class="table-container mt-4">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>计算方法</th>
+                                        <th>公式</th>
+                                        <th>特点</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>美国海军测量法</td>
+                                        <td>基于腰围、颈围、臀围计算</td>
+                                        <td>较为准确，需要测量数据</td>
+                                    </tr>
+                                    <tr>
+                                        <td>BMI公式法</td>
+                                        <td>体脂率 = 1.20 × BMI + 0.23 × 年龄 - 16.2(男) / 5.4(女)</td>
+                                        <td>简单，只需身高体重年龄</td>
+                                    </tr>
+                                    <tr>
+                                        <td>简易估算</td>
+                                        <td>基于BMI和性别的经验公式</td>
+                                        <td>快速估算，准确度一般</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- 使用说明 -->
+                    <div class="alert alert-info mt-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-lightbulb mr-3"></i>
+                            <div>
+                                <strong>如何正确使用体脂率计算器：</strong> 
+                                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                    <li><strong>测量方法</strong>：美国海军测量法最准确，需要测量腰围、颈围（女性还需臀围）</li>
+                                    <li><strong>准确测量</strong>：测量时保持自然站立，呼气时测量腰围最细处</li>
+                                    <li><strong>性别差异</strong>：女性体脂率通常比男性高8-10个百分点</li>
+                                    <li><strong>年龄因素</strong>：随着年龄增长，体脂率会自然上升</li>
+                                    <li><strong>估算性质</strong>：所有公式法均为估算，精确测量需专业设备</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <a href="../../index.html" class="footer-logo">
+                        <i class="fas fa-calculator"></i>
+                        <span>生活计算宝典</span>
+                    </a>
+                    <p class="footer-description">
+                        一站式离线计算工具集合，为您的生活带来便利。
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">健康工具</h4>
+                    <a href="bmi.html" class="footer-link">BMI计算器</a>
+                    <a href="calorie.html" class="footer-link">卡路里消耗计算</a>
+                    <a href="water.html" class="footer-link">饮水量计算</a>
+                    <a href="heart-rate.html" class="footer-link">运动心率计算</a>
+                    <a href="medicine.html" class="footer-link">药物剂量计算</a>
+                    <a href="body-fat.html" class="footer-link">体脂率计算</a>
+                    <a href="bmr.html" class="footer-link">基础代谢率计算</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">快速链接</h4>
+                    <a href="../../pages/health.html" class="footer-link">返回健康运动</a>
+                    <a href="../../pages/tools.html" class="footer-link">所有工具</a>
+                    <a href="https://github.com/laddzhao/life-calculators" target="_blank" class="footer-link">GitHub项目</a>
+                    <a href="../../404.html" class="footer-link">404页面</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">其他工具</h4>
+                    <a href="../shopping/discount.html" class="footer-link">折扣计算器</a>
+                    <a href="../finance/compound.html" class="footer-link">复利计算器</a>
+                    <a href="../home/utility-bill.html" class="footer-link">水电费计算</a>
+                    <a href="../professional/mortgage.html" class="footer-link">房贷计算器</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 生活计算宝典 · 体脂率计算</p>
+                <p class="footer-note">
+                    体脂率计算结果为估算值，不能替代专业医疗检测。如需精确测量，请使用专业体脂测量设备。
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 移动端底部导航 -->
+    <nav class="mobile-bottom-nav">
+        <a href="../../index.html" class="nav-item">
+            <i class="fas fa-home nav-icon"></i>
+            <span class="nav-label">首页</span>
+        </a>
+        <a href="../../pages/health.html" class="nav-item active">
+            <i class="fas fa-heartbeat nav-icon"></i>
+            <span class="nav-label">健康</span>
+        </a>
+        <a href="../../pages/finance.html" class="nav-item">
+            <i class="fas fa-chart-line nav-icon"></i>
+            <span class="nav-label">理财</span>
+        </a>
+        <a href="../../pages/tools.html" class="nav-item">
+            <i class="fas fa-th nav-icon"></i>
+            <span class="nav-label">全部</span>
+        </a>
+        <a href="#" class="nav-item" id="mobileMenuBtn">
+            <i class="fas fa-ellipsis-h nav-icon"></i>
+            <span class="nav-label">更多</span>
+        </a>
+    </nav>
+
+    <script>
+        // DOM元素
+        const genderOptions = document.querySelectorAll('input[name="gender"]');
+        const ageInput = document.getElementById('age');
+        const heightInput = document.getElementById('height');
+        const weightInput = document.getElementById('weight');
+        const calculationMethodSelect = document.getElementById('calculationMethod');
+        const navyMethodOptions = document.getElementById('navyMethodOptions');
+        const waistInput = document.getElementById('waist');
+        const neckInput = document.getElementById('neck');
+        const hipGroup = document.getElementById('hipGroup');
+        const hipInput = document.getElementById('hip');
+        const neckGroup = document.getElementById('neckGroup');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resultSection = document.getElementById('resultSection');
+        const resultGender = document.getElementById('resultGender');
+        const resultAge = document.getElementById('resultAge');
+        const resultBMI = document.getElementById('resultBMI');
+        const resultBodyFat = document.getElementById('resultBodyFat');
+        const resultCategory = document.getElementById('resultCategory');
+        const resultFatWeight = document.getElementById('resultFatWeight');
+        const progressValue = document.getElementById('progressValue');
+        const progressFill = document.getElementById('progressFill');
+        const healthAdvice = document.getElementById('healthAdvice');
+        
+        let currentGender = 'male';
+        
+        // 体脂率分类标准 (男性和女性)
+        const bodyFatCategories = {
+            male: [
+                { min: 0, max: 5, category: "必需脂肪", color: "#3b82f6", advice: "体脂率过低，可能影响生理功能，请咨询专业人士。" },
+                { min: 6, max: 13, category: "运动员", color: "#10b981", advice: "运动员水平，体脂率非常低，保持规律训练和营养摄入。" },
+                { min: 14, max: 17, category: "健康", color: "#10b981", advice: "健康水平，继续保持均衡饮食和规律运动。" },
+                { min: 18, max: 24, category: "一般", color: "#f59e0b", advice: "普通人群平均水平，建议增加运动量，改善饮食结构。" },
+                { min: 25, max: 100, category: "肥胖", color: "#ef4444", advice: "体脂率偏高，健康风险增加，建议制定减脂计划并咨询专业人士。" }
+            ],
+            female: [
+                { min: 0, max: 13, category: "必需脂肪", color: "#3b82f6", advice: "体脂率过低，可能影响生理功能，请咨询专业人士。" },
+                { min: 14, max: 20, category: "运动员", color: "#10b981", advice: "运动员水平，体脂率非常低，保持规律训练和营养摄入。" },
+                { min: 21, max: 24, category: "健康", color: "#10b981", advice: "健康水平，继续保持均衡饮食和规律运动。" },
+                { min: 25, max: 31, category: "一般", color: "#f59e0b", advice: "普通人群平均水平，建议增加运动量，改善饮食结构。" },
+                { min: 32, max: 100, category: "肥胖", color: "#ef4444", advice: "体脂率偏高，健康风险增加，建议制定减脂计划并咨询专业人士。" }
+            ]
+        };
+        
+        // 性别选择变化
+        genderOptions.forEach(option => {
+            option.addEventListener('change', function() {
+                currentGender = this.value;
+                
+                // 显示或隐藏臀围输入（女性需要）
+                if (currentGender === 'female') {
+                    hipGroup.style.display = 'block';
+                } else {
+                    hipGroup.style.display = 'none';
+                }
+                
+                calculateBodyFat();
+            });
+        });
+        
+        // 计算方法变化
+        calculationMethodSelect.addEventListener('change', function() {
+            const method = this.value;
+            
+            if (method === 'navy') {
+                navyMethodOptions.style.display = 'block';
+            } else {
+                navyMethodOptions.style.display = 'none';
+            }
+            
+            calculateBodyFat();
+        });
+        
+        // 计算体脂率
+        function calculateBodyFat() {
+            const age = parseInt(ageInput.value);
+            const height = parseFloat(heightInput.value);
+            const weight = parseFloat(weightInput.value);
+            const method = calculationMethodSelect.value;
+            
+            // 验证输入
+            if (!age || !height || !weight || age < 18 || height < 100 || height > 250 || weight < 30 || weight > 300) {
+                // 输入无效时隐藏结果区域
+                resultSection.style.display = 'none';
+                return;
+            }
+            
+            // 计算BMI
+            const heightInMeters = height / 100;
+            const bmi = weight / (heightInMeters * heightInMeters);
+            
+            let bodyFatPercentage = 0;
+            let calculationDetails = '';
+            
+            if (method === 'navy') {
+                // 美国海军测量法
+                const waist = parseFloat(waistInput.value) || 0;
+                const neck = parseFloat(neckInput.value) || 0;
+                
+                if (currentGender === 'male') {
+                    // 男性公式：体脂率 = 495 / (1.0324 - 0.19077 * log10(腰围-颈围) + 0.15456 * log10(身高)) - 450
+                    if (waist > 0 && neck > 0 && waist > neck) {
+                        const waistNeckDiff = waist - neck;
+                        bodyFatPercentage = 495 / (1.0324 - 0.19077 * Math.log10(waistNeckDiff) + 0.15456 * Math.log10(height)) - 450;
+                        calculationDetails = `美国海军测量法：基于腰围(${waist}cm)、颈围(${neck}cm)、身高(${height}cm)计算`;
+                    } else {
+                        // 如果测量数据无效，使用BMI法
+                        bodyFatPercentage = calculateBodyFatFromBMI(bmi, age, currentGender);
+                        calculationDetails = `测量数据不完整，使用BMI公式法估算`;
+                    }
+                } else {
+                    // 女性公式：需要腰围、颈围、臀围、身高
+                    const hip = parseFloat(hipInput.value) || 0;
+                    if (waist > 0 && neck > 0 && hip > 0 && waist > neck) {
+                        const waistNeckHipDiff = waist + hip - neck;
+                        bodyFatPercentage = 495 / (1.29579 - 0.35004 * Math.log10(waistNeckHipDiff) + 0.22100 * Math.log10(height)) - 450;
+                        calculationDetails = `美国海军测量法：基于腰围(${waist}cm)、颈围(${neck}cm)、臀围(${hip}cm)、身高(${height}cm)计算`;
+                    } else {
+                        // 如果测量数据无效，使用BMI法
+                        bodyFatPercentage = calculateBodyFatFromBMI(bmi, age, currentGender);
+                        calculationDetails = `测量数据不完整，使用BMI公式法估算`;
+                    }
+                }
+            } else if (method === 'bmi') {
+                // BMI公式法
+                bodyFatPercentage = calculateBodyFatFromBMI(bmi, age, currentGender);
+                calculationDetails = `BMI公式法：基于BMI(${bmi.toFixed(1)})、年龄(${age}岁)、性别(${currentGender === 'male' ? '男' : '女'})计算`;
+            } else if (method === 'simple') {
+                // 简易估算：基于BMI和性别
+                if (currentGender === 'male') {
+                    bodyFatPercentage = (1.20 * bmi) + (0.23 * age) - 16.2;
+                } else {
+                    bodyFatPercentage = (1.20 * bmi) + (0.23 * age) - 5.4;
+                }
+                calculationDetails = `简易估算法：基于BMI(${bmi.toFixed(1)})、年龄(${age}岁)、性别(${currentGender === 'male' ? '男' : '女'})计算`;
+            }
+            
+            // 确保体脂率在合理范围内
+            bodyFatPercentage = Math.max(3, Math.min(bodyFatPercentage, 50));
+            
+            // 显示结果
+            displayResults(age, height, weight, bmi, bodyFatPercentage, calculationDetails);
+        }
+        
+        // 从BMI计算体脂率
+        function calculateBodyFatFromBMI(bmi, age, gender) {
+            if (gender === 'male') {
+                return (1.20 * bmi) + (0.23 * age) - 16.2;
+            } else {
+                return (1.20 * bmi) + (0.23 * age) - 5.4;
+            }
+        }
+        
+        // 显示计算结果
+        function displayResults(age, height, weight, bmi, bodyFatPercentage, calculationDetails) {
+            // 确定体脂分类
+            const categories = currentGender === 'male' ? bodyFatCategories.male : bodyFatCategories.female;
+            let category = categories[0];
+            for (const cat of categories) {
+                if (bodyFatPercentage >= cat.min && bodyFatPercentage <= cat.max) {
+                    category = cat;
+                    break;
+                }
+            }
+            
+            // 计算脂肪重量
+            const fatWeight = (bodyFatPercentage / 100) * weight;
+            
+            // 更新基本信息
+            resultGender.textContent = currentGender === 'male' ? '男性' : '女性';
+            resultAge.textContent = `${age} 岁`;
+            resultBMI.textContent = bmi.toFixed(1);
+            resultBodyFat.textContent = `${bodyFatPercentage.toFixed(1)}%`;
+            resultCategory.textContent = category.category;
+            resultCategory.style.color = category.color;
+            resultFatWeight.textContent = `${fatWeight.toFixed(1)} 公斤`;
+            
+            // 更新进度条
+            progressValue.textContent = `${bodyFatPercentage.toFixed(1)}%`;
+            
+            // 计算进度条位置（体脂率0-50%对应0-100%）
+            const progressPercent = Math.min((bodyFatPercentage / 50) * 100, 100);
+            progressFill.style.width = `${progressPercent}%`;
+            progressFill.style.background = category.color;
+            
+            // 更新健康建议
+            healthAdvice.textContent = category.advice + ' ' + calculationDetails;
+            
+            // 显示结果区域
+            resultSection.style.display = 'block';
+        }
+        
+        // 事件监听
+        calculateBtn.addEventListener('click', calculateBodyFat);
+        
+        // 输入时自动计算
+        ageInput.addEventListener('input', calculateBodyFat);
+        heightInput.addEventListener('input', calculateBodyFat);
+        weightInput.addEventListener('input', calculateBodyFat);
+        waistInput.addEventListener('input', calculateBodyFat);
+        neckInput.addEventListener('input', calculateBodyFat);
+        hipInput.addEventListener('input', calculateBodyFat);
+        
+        // 主题切换
+        function initTheme() {
+            const themeBtn = document.querySelector('.theme-btn');
+            
+            // 检查本地存储的主题设置
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+            
+            // 切换主题函数
+            function toggleTheme() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                // 更新图标
+                if (themeBtn) {
+                    const icon = themeBtn.querySelector('i');
+                    icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+            }
+            
+            // 添加事件监听
+            if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            
+            // 移动端菜单
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            if (menuBtn) {
+                menuBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert('移动端菜单功能需要完整的菜单HTML结构');
+                });
+            }
+            
+            // 页面加载时自动计算一次
+            setTimeout(calculateBodyFat, 100);
+        });
+    </script>
+    
+    <style>
+        .gender-selection {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .gender-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all var(--transition);
+            flex: 1;
+        }
+        
+        .gender-option input {
+            display: none;
+        }
+        
+        .gender-option input:checked + .gender-icon {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+        
+        .gender-option input:checked ~ .gender-label {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .gender-option input:checked {
+            border-color: var(--primary);
+        }
+        
+        .gender-option:has(input:checked) {
+            border-color: var(--primary);
+            background: rgba(var(--primary-rgb), 0.1);
+        }
+        
+        .gender-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+        }
+        
+        .gender-label {
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: all var(--transition);
+        }
+        
+        .body-fat-progress {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 1rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .progress-value {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+        
+        .progress-bar-container {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background: var(--bg-primary);
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.5s ease, background 0.5s ease;
+        }
+        
+        .progress-markers {
+            position: relative;
+            height: 20px;
+            margin-top: 0.25rem;
+        }
+        
+        .progress-markers span {
+            position: absolute;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        
+        .body-fat-table {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 1rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin-top: 0.5rem;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        
+        .data-table th {
+            background: var(--bg-primary);
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-light);
+        }
+        
+        .data-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        
+        [data-theme="dark"] .data-table tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .health-advice {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 1rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .advice-content {
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+            line-height: 1.6;
+        }
+        
+        .coupon-tips {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .tip-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+        }
+        
+        .tip-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .tip-content {
+            flex: 1;
+        }
+        
+        .tip-content h4 {
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+        
+        .tip-content p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        @media (min-width: 768px) {
+            .tips-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .data-table {
+                font-size: 0.9rem;
+            }
+            
+            .gender-selection {
+                gap: 2rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-table {
+                font-size: 0.8rem;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 0.5rem;
+            }
+            
+            .progress-markers span {
+                font-size: 0.6rem;
+            }
+        }
+    </style>
+</body>
+</html>

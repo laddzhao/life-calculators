@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卡路里消耗计算 - 生活计算宝典</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../layout.css">
+    <link rel="stylesheet" href="../../components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+</head>
+<body class="app">
+    <header class="app-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-mobile">
+                    <a href="../../pages/health.html" class="navbar-back">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div class="navbar-title">卡路里消耗计算</div>
+                    <div></div>
+                </div>
+                
+                <div class="navbar-desktop">
+                    <a href="../../index.html" class="logo">
+                        <i class="fas fa-calculator"></i>
+                        <span class="logo-text">生活计算宝典</span>
+                    </a>
+                    <div class="nav-links">
+                        <a href="../../index.html" class="nav-link">首页</a>
+                        <a href="../../pages/health.html" class="nav-link active">健康运动</a>
+                        <a href="../../pages/finance.html" class="nav-link">理财金融</a>
+                        <a href="../../pages/tools.html" class="nav-link">所有工具</a>
+                    </div>
+                    <div class="theme-toggle">
+                        <button class="theme-btn" aria-label="切换主题">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="section">
+            <div class="container">
+                <!-- 面包屑导航 -->
+                <nav class="breadcrumb">
+                    <a href="../../index.html" class="breadcrumb-link">首页</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <a href="../../pages/health.html" class="breadcrumb-link">健康运动</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <span class="breadcrumb-current">卡路里消耗计算</span>
+                </nav>
+                
+                <!-- 计算器容器 -->
+                <div class="calculator-container">
+                    <div class="calculator-card">
+                        <div class="calculator-header">
+                            <h1 class="calculator-title">卡路里消耗计算</h1>
+                            <p class="calculator-description">
+                                计算运动消耗的热量（卡路里），基于MET（代谢当量）方法。
+                            </p>
+                        </div>
+                        
+                        <!-- 基本信息输入 -->
+                        <div class="input-group">
+                            <label class="input-label">体重 (公斤)</label>
+                            <input type="number" id="weight" class="input-field" placeholder="例如：70" value="70" step="0.1" min="30" max="200">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">运动时长 (分钟)</label>
+                            <input type="number" id="duration" class="input-field" placeholder="例如：60" value="60" step="1" min="1" max="300">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">运动类型</label>
+                            <select id="activityType" class="input-field">
+                                <option value="3.5">散步 (3.5 MET)</option>
+                                <option value="4.0">瑜伽 (4.0 MET)</option>
+                                <option value="5.0">太极拳 (5.0 MET)</option>
+                                <option value="6.0">游泳-慢速 (6.0 MET)</option>
+                                <option value="7.0">骑自行车-休闲 (7.0 MET)</option>
+                                <option value="8.0" selected>跑步-8公里/小时 (8.0 MET)</option>
+                                <option value="9.0">篮球-比赛 (9.0 MET)</option>
+                                <option value="10.0">跳绳-中速 (10.0 MET)</option>
+                                <option value="11.0">足球-比赛 (11.0 MET)</option>
+                                <option value="12.0">跑步-10公里/小时 (12.0 MET)</option>
+                                <option value="14.0">游泳-快速 (14.0 MET)</option>
+                                <option value="15.0">拳击-训练 (15.0 MET)</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 自定义MET值 -->
+                        <div class="input-group">
+                            <div class="flex justify-between items-center mb-1">
+                                <label class="input-label">自定义MET值</label>
+                                <button type="button" id="useCustomMetBtn" class="btn btn-sm btn-outline">
+                                    <i class="fas fa-pen"></i> 使用自定义
+                                </button>
+                            </div>
+                            <input type="number" id="customMet" class="input-field" placeholder="输入MET值 (1-20)" value="8.0" step="0.1" min="1" max="20" disabled>
+                        </div>
+                        
+                        <!-- 计算按钮 -->
+                        <button class="btn btn-primary btn-block calc-btn" id="calculateBtn">
+                            <i class="fas fa-fire"></i> 计算卡路里消耗
+                        </button>
+                        
+                        <!-- 结果展示 -->
+                        <div class="result-display" id="resultSection">
+                            <h3 class="result-title"><i class="fas fa-chart-line"></i> 卡路里消耗结果</h3>
+                            
+                            <div class="result-grid">
+                                <div class="result-item">
+                                    <span class="result-label">体重</span>
+                                    <span class="result-value" id="resultWeight">70 公斤</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">运动时长</span>
+                                    <span class="result-value" id="resultDuration">60 分钟</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">运动类型</span>
+                                    <span class="result-value" id="resultActivity">跑步-8公里/小时</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">MET值</span>
+                                    <span class="result-value" id="resultMet">8.0</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">消耗卡路里</span>
+                                    <span class="result-value" id="resultCalories" style="color: var(--primary); font-weight: 600;">560 大卡</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">运动强度</span>
+                                    <span class="result-value" id="resultIntensity">中等强度</span>
+                                </div>
+                            </div>
+                            
+                            <!-- 热量消耗解释 -->
+                            <div class="health-advice mt-4">
+                                <h4 class="result-title" style="font-size: 1rem;">热量消耗解释</h4>
+                                <div class="advice-content" id="calorieExplanation">
+                                    基于您的运动参数，您消耗了大约560大卡。这相当于1个汉堡或2碗米饭的热量。
+                                </div>
+                            </div>
+                            
+                            <!-- 运动建议 -->
+                            <div class="health-advice mt-4">
+                                <h4 class="result-title" style="font-size: 1rem;">运动建议</h4>
+                                <div class="advice-content" id="activityAdvice">
+                                    为了保持健康，建议每周进行至少150分钟中等强度有氧运动，或75分钟高强度有氧运动。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- MET值参考表 -->
+                    <div class="coupon-tips mt-6">
+                        <h3 class="section-title" style="font-size: 1.25rem; text-align: center; margin-bottom: 1rem;">
+                            <i class="fas fa-table"></i> 常见运动MET值参考
+                        </h3>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>MET值范围</th>
+                                        <th>运动强度</th>
+                                        <th>示例运动</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1.0-3.0</td>
+                                        <td>低强度</td>
+                                        <td>静坐、站立、慢走</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3.0-6.0</td>
+                                        <td>中等强度</td>
+                                        <td>快走、瑜伽、太极拳</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6.0-9.0</td>
+                                        <td>中高强度</td>
+                                        <td>跑步、游泳、骑自行车</td>
+                                    </tr>
+                                    <tr>
+                                        <td>9.0+</td>
+                                        <td>高强度</td>
+                                        <td>跳绳、篮球、足球、拳击</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="tips-grid mt-4">
+                            <div class="tip-item">
+                                <div class="tip-icon">
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>计算公式</h4>
+                                    <p>卡路里 = MET × 体重(kg) × 时间(小时)</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon">
+                                    <i class="fas fa-running"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>MET定义</h4>
+                                    <p>代谢当量，休息时代谢率的倍数</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon">
+                                    <i class="fas fa-balance-scale"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>准确性</h4>
+                                    <p>基于平均水平，个体差异可能存在</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon">
+                                    <i class="fas fa-heartbeat"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>健康目标</h4>
+                                    <p>每周消耗2000-3000大卡有益健康</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 使用说明 -->
+                    <div class="alert alert-info mt-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-lightbulb mr-3"></i>
+                            <div>
+                                <strong>如何使用卡路里消耗计算器：</strong> 
+                                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                    <li><strong>MET值</strong>：代谢当量，表示运动强度相对于静息代谢的倍数</li>
+                                    <li><strong>准确体重</strong>：使用当前实际体重以获得准确结果</li>
+                                    <li><strong>运动时长</strong>：计算单次运动的持续时间，不包括休息时间</li>
+                                    <li><strong>自定义MET</strong>：如果您知道特定运动的MET值，可使用自定义功能</li>
+                                    <li><strong>应用场景</strong>：适用于运动计划制定、减肥目标设定等</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <a href="../../index.html" class="footer-logo">
+                        <i class="fas fa-calculator"></i>
+                        <span>生活计算宝典</span>
+                    </a>
+                    <p class="footer-description">
+                        一站式离线计算工具集合，为您的生活带来便利。
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">健康工具</h4>
+                    <a href="bmi.html" class="footer-link">BMI计算器</a>
+                    <a href="calorie.html" class="footer-link">卡路里消耗计算</a>
+                    <a href="water.html" class="footer-link">饮水量计算</a>
+                    <a href="heart-rate.html" class="footer-link">运动心率计算</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">快速链接</h4>
+                    <a href="../../pages/health.html" class="footer-link">返回健康运动</a>
+                    <a href="../../pages/tools.html" class="footer-link">所有工具</a>
+                    <a href="https://github.com/laddzhao/life-calculators" target="_blank" class="footer-link">GitHub项目</a>
+                    <a href="../../404.html" class="footer-link">404页面</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">其他工具</h4>
+                    <a href="../shopping/discount.html" class="footer-link">折扣计算器</a>
+                    <a href="../finance/compound.html" class="footer-link">复利计算器</a>
+                    <a href="../home/utility-bill.html" class="footer-link">水电费计算</a>
+                    <a href="../professional/mortgage.html" class="footer-link">房贷计算器</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 生活计算宝典 · 卡路里消耗计算</p>
+                <p class="footer-note">
+                    计算结果仅供参考，实际消耗可能因个人代谢率、运动效率等因素而有所不同。
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 移动端底部导航 -->
+    <nav class="mobile-bottom-nav">
+        <a href="../../index.html" class="nav-item">
+            <i class="fas fa-home nav-icon"></i>
+            <span class="nav-label">首页</span>
+        </a>
+        <a href="../../pages/health.html" class="nav-item active">
+            <i class="fas fa-heartbeat nav-icon"></i>
+            <span class="nav-label">健康</span>
+        </a>
+        <a href="../../pages/finance.html" class="nav-item">
+            <i class="fas fa-chart-line nav-icon"></i>
+            <span class="nav-label">理财</span>
+        </a>
+        <a href="../../pages/tools.html" class="nav-item">
+            <i class="fas fa-th nav-icon"></i>
+            <span class="nav-label">全部</span>
+        </a>
+        <a href="#" class="nav-item" id="mobileMenuBtn">
+            <i class="fas fa-ellipsis-h nav-icon"></i>
+            <span class="nav-label">更多</span>
+        </a>
+    </nav>
+
+    <script>
+        // DOM元素
+        const weightInput = document.getElementById('weight');
+        const durationInput = document.getElementById('duration');
+        const activityTypeSelect = document.getElementById('activityType');
+        const customMetInput = document.getElementById('customMet');
+        const useCustomMetBtn = document.getElementById('useCustomMetBtn');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resultSection = document.getElementById('resultSection');
+        const resultWeight = document.getElementById('resultWeight');
+        const resultDuration = document.getElementById('resultDuration');
+        const resultActivity = document.getElementById('resultActivity');
+        const resultMet = document.getElementById('resultMet');
+        const resultCalories = document.getElementById('resultCalories');
+        const resultIntensity = document.getElementById('resultIntensity');
+        const calorieExplanation = document.getElementById('calorieExplanation');
+        const activityAdvice = document.getElementById('activityAdvice');
+        
+        let useCustomMet = false;
+        let currentMetValue = 8.0;
+        let currentActivityName = "跑步-8公里/小时";
+        
+        // 运动强度分类
+        const intensityLevels = [
+            { min: 0, max: 3.0, level: "低强度", advice: "适合初学者和恢复训练。" },
+            { min: 3.0, max: 6.0, level: "中等强度", advice: "适合大多数人的常规锻炼，有助于改善心肺功能。" },
+            { min: 6.0, max: 9.0, level: "中高强度", advice: "能有效提高体能和燃烧脂肪，适合有锻炼基础的人。" },
+            { min: 9.0, max: 999, level: "高强度", advice: "适合专业运动员和高水平锻炼者，能显著提高运动表现。" }
+        ];
+        
+        // 热量食物等价物
+        const foodEquivalents = [
+            { calories: 100, food: "1根香蕉" },
+            { calories: 150, food: "1杯牛奶" },
+            { calories: 200, food: "1碗米饭" },
+            { calories: 250, food: "1个苹果" },
+            { calories: 300, food: "1片披萨" },
+            { calories: 400, food: "1个汉堡" },
+            { calories: 500, food: "1份薯条" },
+            { calories: 600, food: "1份牛排" }
+        ];
+        
+        // 切换自定义MET
+        useCustomMetBtn.addEventListener('click', function() {
+            useCustomMet = !useCustomMet;
+            
+            if (useCustomMet) {
+                customMetInput.disabled = false;
+                activityTypeSelect.disabled = true;
+                this.innerHTML = '<i class="fas fa-times"></i> 使用预设';
+                this.classList.add('btn-secondary');
+                this.classList.remove('btn-outline');
+                
+                // 使用自定义MET值
+                currentMetValue = parseFloat(customMetInput.value) || 8.0;
+                currentActivityName = "自定义运动";
+            } else {
+                customMetInput.disabled = true;
+                activityTypeSelect.disabled = false;
+                this.innerHTML = '<i class="fas fa-pen"></i> 使用自定义';
+                this.classList.remove('btn-secondary');
+                this.classList.add('btn-outline');
+                
+                // 使用预设MET值
+                const selectedOption = activityTypeSelect.options[activityTypeSelect.selectedIndex];
+                currentMetValue = parseFloat(selectedOption.value);
+                currentActivityName = selectedOption.text.split(' (')[0];
+            }
+            
+            calculateCalories();
+        });
+        
+        // 运动类型选择变化
+        activityTypeSelect.addEventListener('change', function() {
+            if (!useCustomMet) {
+                const selectedOption = this.options[this.selectedIndex];
+                currentMetValue = parseFloat(selectedOption.value);
+                currentActivityName = selectedOption.text.split(' (')[0];
+                calculateCalories();
+            }
+        });
+        
+        // 自定义MET输入变化
+        customMetInput.addEventListener('input', function() {
+            if (useCustomMet) {
+                currentMetValue = parseFloat(this.value) || 0;
+                calculateCalories();
+            }
+        });
+        
+        // 计算卡路里
+        function calculateCalories() {
+            const weight = parseFloat(weightInput.value);
+            const duration = parseFloat(durationInput.value);
+            
+            // 验证输入
+            if (!weight || !duration || weight < 30 || weight > 200 || duration < 1 || duration > 300) {
+                // 输入无效时隐藏结果区域
+                resultSection.style.display = 'none';
+                return;
+            }
+            
+            // 计算卡路里：卡路里 = MET × 体重(kg) × 时间(小时)
+            const hours = duration / 60;
+            const calories = currentMetValue * weight * hours;
+            
+            // 确定运动强度
+            let intensity = intensityLevels[0];
+            for (const level of intensityLevels) {
+                if (currentMetValue >= level.min && currentMetValue < level.max) {
+                    intensity = level;
+                    break;
+                }
+            }
+            
+            // 找到最接近的食物等价物
+            let closestFood = foodEquivalents[0];
+            for (const food of foodEquivalents) {
+                if (Math.abs(calories - food.calories) < Math.abs(calories - closestFood.calories)) {
+                    closestFood = food;
+                }
+            }
+            
+            // 显示结果
+            displayResults(weight, duration, calories, intensity, closestFood);
+        }
+        
+        // 显示计算结果
+        function displayResults(weight, duration, calories, intensity, foodEquivalent) {
+            // 更新基本信息
+            resultWeight.textContent = `${weight} 公斤`;
+            resultDuration.textContent = `${duration} 分钟`;
+            resultActivity.textContent = currentActivityName;
+            resultMet.textContent = currentMetValue.toFixed(1);
+            resultCalories.textContent = `${Math.round(calories)} 大卡`;
+            resultIntensity.textContent = intensity.level;
+            resultIntensity.style.color = 
+                intensity.level === "低强度" ? "#3b82f6" :
+                intensity.level === "中等强度" ? "#10b981" :
+                intensity.level === "中高强度" ? "#f59e0b" : "#ef4444";
+            
+            // 更新热量解释
+            calorieExplanation.textContent = 
+                `基于您的运动参数，您消耗了大约${Math.round(calories)}大卡。这相当于${foodEquivalent.food}的热量。`;
+            
+            // 更新运动建议
+            activityAdvice.textContent = intensity.advice + 
+                ` 为了保持健康，建议每周进行至少150分钟中等强度有氧运动，或75分钟高强度有氧运动。`;
+            
+            // 显示结果区域
+            resultSection.style.display = 'block';
+        }
+        
+        // 事件监听
+        calculateBtn.addEventListener('click', calculateCalories);
+        
+        // 输入时自动计算
+        weightInput.addEventListener('input', calculateCalories);
+        durationInput.addEventListener('input', calculateCalories);
+        
+        // 主题切换
+        function initTheme() {
+            const themeBtn = document.querySelector('.theme-btn');
+            
+            // 检查本地存储的主题设置
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+            
+            // 切换主题函数
+            function toggleTheme() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                // 更新图标
+                if (themeBtn) {
+                    const icon = themeBtn.querySelector('i');
+                    icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+            }
+            
+            // 添加事件监听
+            if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            
+            // 移动端菜单
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            if (menuBtn) {
+                menuBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert('移动端菜单功能需要完整的菜单HTML结构');
+                });
+            }
+            
+            // 页面加载时自动计算一次
+            setTimeout(calculateCalories, 100);
+        });
+    </script>
+    
+    <style>
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        
+        .data-table th {
+            background: var(--bg-primary);
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-light);
+        }
+        
+        .data-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        
+        [data-theme="dark"] .data-table tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .health-advice {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 1rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .advice-content {
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+            line-height: 1.6;
+        }
+        
+        .coupon-tips {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .tip-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+        }
+        
+        .tip-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .tip-content {
+            flex: 1;
+        }
+        
+        .tip-content h4 {
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+        
+        .tip-content p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .btn-sm {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        @media (min-width: 768px) {
+            .tips-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .data-table {
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-table {
+                font-size: 0.8rem;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</body>
+</html>

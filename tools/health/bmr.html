@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基础代谢率计算 - 生活计算宝典</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../layout.css">
+    <link rel="stylesheet" href="../../components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+</head>
+<body class="app">
+    <header class="app-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-mobile">
+                    <a href="../../pages/health.html" class="navbar-back">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div class="navbar-title">基础代谢率计算</div>
+                    <div></div>
+                </div>
+                
+                <div class="navbar-desktop">
+                    <a href="../../index.html" class="logo">
+                        <i class="fas fa-calculator"></i>
+                        <span class="logo-text">生活计算宝典</span>
+                    </a>
+                    <div class="nav-links">
+                        <a href="../../index.html" class="nav-link">首页</a>
+                        <a href="../../pages/health.html" class="nav-link active">健康运动</a>
+                        <a href="../../pages/finance.html" class="nav-link">理财金融</a>
+                        <a href="../../pages/tools.html" class="nav-link">所有工具</a>
+                    </div>
+                    <div class="theme-toggle">
+                        <button class="theme-btn" aria-label="切换主题">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="section">
+            <div class="container">
+                <!-- 面包屑导航 -->
+                <nav class="breadcrumb">
+                    <a href="../../index.html" class="breadcrumb-link">首页</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <a href="../../pages/health.html" class="breadcrumb-link">健康运动</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <span class="breadcrumb-current">基础代谢率计算</span>
+                </nav>
+                
+                <!-- 计算器容器 -->
+                <div class="calculator-container">
+                    <div class="calculator-card">
+                        <div class="calculator-header">
+                            <h1 class="calculator-title">基础代谢率计算</h1>
+                            <p class="calculator-description">
+                                计算基础代谢率(BMR)和每日总热量需求，制定个性化饮食和运动计划。
+                            </p>
+                        </div>
+                        
+                        <!-- 基本信息输入 -->
+                        <div class="input-group">
+                            <label class="input-label">性别</label>
+                            <div class="gender-selection">
+                                <label class="gender-option">
+                                    <input type="radio" name="gender" value="male" checked>
+                                    <span class="gender-icon"><i class="fas fa-male"></i></span>
+                                    <span class="gender-label">男性</span>
+                                </label>
+                                <label class="gender-option">
+                                    <input type="radio" name="gender" value="female">
+                                    <span class="gender-icon"><i class="fas fa-female"></i></span>
+                                    <span class="gender-label">女性</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">年龄 (岁)</label>
+                            <input type="number" id="age" class="input-field" placeholder="例如：30" value="30" step="1" min="15" max="100">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">身高 (厘米)</label>
+                            <input type="number" id="height" class="input-field" placeholder="例如：175" value="175" step="0.1" min="100" max="250">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">体重 (公斤)</label>
+                            <input type="number" id="weight" class="input-field" placeholder="例如：70" value="70" step="0.1" min="30" max="300">
+                        </div>
+                        
+                        <!-- 计算公式选择 -->
+                        <div class="input-group">
+                            <label class="input-label">计算公式</label>
+                            <select id="formula" class="input-field">
+                                <option value="mifflin">Mifflin-St Jeor 公式 (推荐)</option>
+                                <option value="harris">Harris-Benedict 公式</option>
+                                <option value="simple">简易估算</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 活动水平选择 -->
+                        <div class="input-group">
+                            <label class="input-label">活动水平</label>
+                            <select id="activityLevel" class="input-field">
+                                <option value="1.2">久坐 (办公室工作，很少运动)</option>
+                                <option value="1.375" selected>轻度活动 (每周1-3次轻度运动)</option>
+                                <option value="1.55">中度活动 (每周3-5次中等强度运动)</option>
+                                <option value="1.725">重度活动 (每天运动或体力劳动)</option>
+                                <option value="1.9">运动员 (高强度训练)</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 目标选择 -->
+                        <div class="input-group">
+                            <label class="input-label">热量目标</label>
+                            <select id="calorieGoal" class="input-field">
+                                <option value="0" selected>维持体重</option>
+                                <option value="-500">轻度减重 (每周减0.5kg)</option>
+                                <option value="-1000">中度减重 (每周减1kg)</option>
+                                <option value="250">轻度增肌 (每周增0.25kg)</option>
+                                <option value="500">中度增肌 (每周增0.5kg)</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 计算按钮 -->
+                        <button class="btn btn-primary btn-block calc-btn" id="calculateBtn">
+                            <i class="fas fa-fire"></i> 计算代谢率和热量需求
+                        </button>
+                        
+                        <!-- 结果展示 -->
+                        <div class="result-display" id="resultSection">
+                            <h3 class="result-title"><i class="fas fa-battery-full"></i> 基础代谢率计算结果</h3>
+                            
+                            <div class="result-grid">
+                                <div class="result-item">
+                                    <span class="result-label">性别</span>
+                                    <span class="result-value" id="resultGender">男性</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">年龄</span>
+                                    <span class="result-value" id="resultAge">30 岁</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">活动水平</span>
+                                    <span class="result-value" id="resultActivity">轻度活动</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">基础代谢率</span>
+                                    <span class="result-value" id="resultBMR" style="color: var(--primary); font-weight: 600;">1660 大卡/天</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">每日总消耗</span>
+                                    <span class="result-value" id="resultTDEE">2283 大卡/天</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">建议摄入</span>
+                                    <span class="result-value" id="resultCalorieGoal">2283 大卡/天</span>
+                                </div>
+                            </div>
+                            
+                            <!-- 热量分配 -->
+                            <div class="calorie-distribution mt-4">
+                                <h4 class="result-title" style="font-size: 1rem;">宏量营养素分配建议</h4>
+                                <div class="distribution-container">
+                                    <div class="macro-item">
+                                        <div class="macro-header">
+                                            <span class="macro-name">蛋白质</span>
+                                            <span class="macro-percentage">30%</span>
+                                        </div>
+                                        <div class="macro-bar">
+                                            <div class="macro-fill" style="width: 30%; background: #3b82f6;"></div>
+                                        </div>
+                                        <div class="macro-details">
+                                            <span class="macro-grams" id="proteinGrams">171 克</span>
+                                            <span class="macro-calories">685 大卡</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="macro-item">
+                                        <div class="macro-header">
+                                            <span class="macro-name">碳水化合物</span>
+                                            <span class="macro-percentage">40%</span>
+                                        </div>
+                                        <div class="macro-bar">
+                                            <div class="macro-fill" style="width: 40%; background: #10b981;"></div>
+                                        </div>
+                                        <div class="macro-details">
+                                            <span class="macro-grams" id="carbGrams">228 克</span>
+                                            <span class="macro-calories">913 大卡</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="macro-item">
+                                        <div class="macro-header">
+                                            <span class="macro-name">脂肪</span>
+                                            <span class="macro-percentage">30%</span>
+                                        </div>
+                                        <div class="macro-bar">
+                                            <div class="macro-fill" style="width: 30%; background: #f59e0b;"></div>
+                                        </div>
+                                        <div class="macro-details">
+                                            <span class="macro-grams" id="fatGrams">76 克</span>
+                                            <span class="macro-calories">685 大卡</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 活动水平说明 -->
+                            <div class="activity-levels mt-4">
+                                <h4 class="result-title" style="font-size: 1rem;">活动水平说明</h4>
+                                <div class="table-container">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>活动水平</th>
+                                                <th>系数</th>
+                                                <th>描述</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>久坐</td>
+                                                <td>1.2</td>
+                                                <td>办公室工作，很少或没有运动</td>
+                                            </tr>
+                                            <tr>
+                                                <td>轻度活动</td>
+                                                <td>1.375</td>
+                                                <td>每周1-3次轻度运动或体育活动</td>
+                                            </tr>
+                                            <tr>
+                                                <td>中度活动</td>
+                                                <td>1.55</td>
+                                                <td>每周3-5次中等强度运动</td>
+                                            </tr>
+                                            <tr>
+                                                <td>重度活动</td>
+                                                <td>1.725</td>
+                                                <td>每天运动或重体力劳动</td>
+                                            </tr>
+                                            <tr>
+                                                <td>运动员</td>
+                                                <td>1.9</td>
+                                                <td>高强度训练，每天2次或体力劳动</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- 饮食建议 -->
+                            <div class="health-advice mt-4">
+                                <h4 class="result-title" style="font-size: 1rem;">饮食和运动建议</h4>
+                                <div class="advice-content" id="dietAdvice">
+                                    为了维持当前体重，建议每日摄入约2283大卡。分配为蛋白质30%、碳水化合物40%、脂肪30%。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- BMR知识 -->
+                    <div class="coupon-tips mt-6">
+                        <h3 class="section-title" style="font-size: 1.25rem; text-align: center; margin-bottom: 1rem;">
+                            <i class="fas fa-info-circle"></i> 基础代谢率知识
+                        </h3>
+                        
+                        <div class="tips-grid">
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #3b82f6">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>BMR定义</h4>
+                                    <p>维持生命所需的最低热量</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #10b981">
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>计算公式</h4>
+                                    <p>基于体重、身高、年龄、性别</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #f59e0b">
+                                    <i class="fas fa-running"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>TDEE</h4>
+                                    <p>每日总能量消耗 = BMR × 活动系数</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #ef4444">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <h4>应用场景</h4>
+                                    <p>制定减重、增肌或维持计划</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 计算公式说明 -->
+                        <div class="table-container mt-4">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>计算公式</th>
+                                        <th>男性公式</th>
+                                        <th>女性公式</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Mifflin-St Jeor</td>
+                                        <td>10×体重 + 6.25×身高 - 5×年龄 + 5</td>
+                                        <td>10×体重 + 6.25×身高 - 5×年龄 - 161</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Harris-Benedict</td>
+                                        <td>66.5 + 13.75×体重 + 5×身高 - 6.76×年龄</td>
+                                        <td>655 + 9.56×体重 + 1.85×身高 - 4.68×年龄</td>
+                                    </tr>
+                                    <tr>
+                                        <td>简易估算</td>
+                                        <td>体重(kg) × 24</td>
+                                        <td>体重(kg) × 23</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- 使用说明 -->
+                    <div class="alert alert-info mt-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-lightbulb mr-3"></i>
+                            <div>
+                                <strong>如何正确使用基础代谢率计算器：</strong> 
+                                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                    <li><strong>BMR</strong>：基础代谢率，维持生命所需的最低热量</li>
+                                    <li><strong>TDEE</strong>：每日总能量消耗 = BMR × 活动系数</li>
+                                    <li><strong>活动水平</strong>：根据您的日常活动量选择适当的系数</li>
+                                    <li><strong>热量目标</strong>：减重需摄入少于TDEE，增肌需摄入多于TDEE</li>
+                                    <li><strong>宏量营养素</strong>：蛋白质、碳水化合物、脂肪的合理分配比例</li>
+                                    <li><strong>定期调整</strong>：体重变化后需要重新计算</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <a href="../../index.html" class="footer-logo">
+                        <i class="fas fa-calculator"></i>
+                        <span>生活计算宝典</span>
+                    </a>
+                    <p class="footer-description">
+                        一站式离线计算工具集合，为您的生活带来便利。
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">健康工具</h4>
+                    <a href="bmi.html" class="footer-link">BMI计算器</a>
+                    <a href="calorie.html" class="footer-link">卡路里消耗计算</a>
+                    <a href="water.html" class="footer-link">饮水量计算</a>
+                    <a href="heart-rate.html" class="footer-link">运动心率计算</a>
+                    <a href="medicine.html" class="footer-link">药物剂量计算</a>
+                    <a href="body-fat.html" class="footer-link">体脂率计算</a>
+                    <a href="bmr.html" class="footer-link">基础代谢率计算</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">快速链接</h4>
+                    <a href="../../pages/health.html" class="footer-link">返回健康运动</a>
+                    <a href="../../pages/tools.html" class="footer-link">所有工具</a>
+                    <a href="https://github.com/laddzhao/life-calculators" target="_blank" class="footer-link">GitHub项目</a>
+                    <a href="../../404.html" class="footer-link">404页面</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">其他工具</h4>
+                    <a href="../shopping/discount.html" class="footer-link">折扣计算器</a>
+                    <a href="../finance/compound.html" class="footer-link">复利计算器</a>
+                    <a href="../home/utility-bill.html" class="footer-link">水电费计算</a>
+                    <a href="../professional/mortgage.html" class="footer-link">房贷计算器</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 生活计算宝典 · 基础代谢率计算</p>
+                <p class="footer-note">
+                    计算结果仅供参考，个体代谢率可能存在差异。如需精确测量，请咨询营养师或使用专业代谢检测设备。
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 移动端底部导航 -->
+    <nav class="mobile-bottom-nav">
+        <a href="../../index.html" class="nav-item">
+            <i class="fas fa-home nav-icon"></i>
+            <span class="nav-label">首页</span>
+        </a>
+        <a href="../../pages/health.html" class="nav-item active">
+            <i class="fas fa-heartbeat nav-icon"></i>
+            <span class="nav-label">健康</span>
+        </a>
+        <a href="../../pages/finance.html" class="nav-item">
+            <i class="fas fa-chart-line nav-icon"></i>
+            <span class="nav-label">理财</span>
+        </a>
+        <a href="../../pages/tools.html" class="nav-item">
+            <i class="fas fa-th nav-icon"></i>
+            <span class="nav-label">全部</span>
+        </a>
+        <a href="#" class="nav-item" id="mobileMenuBtn">
+            <i class="fas fa-ellipsis-h nav-icon"></i>
+            <span class="nav-label">更多</span>
+        </a>
+    </nav>
+
+    <script>
+        // DOM元素
+        const genderOptions = document.querySelectorAll('input[name="gender"]');
+        const ageInput = document.getElementById('age');
+        const heightInput = document.getElementById('height');
+        const weightInput = document.getElementById('weight');
+        const formulaSelect = document.getElementById('formula');
+        const activityLevelSelect = document.getElementById('activityLevel');
+        const calorieGoalSelect = document.getElementById('calorieGoal');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resultSection = document.getElementById('resultSection');
+        const resultGender = document.getElementById('resultGender');
+        const resultAge = document.getElementById('resultAge');
+        const resultActivity = document.getElementById('resultActivity');
+        const resultBMR = document.getElementById('resultBMR');
+        const resultTDEE = document.getElementById('resultTDEE');
+        const resultCalorieGoal = document.getElementById('resultCalorieGoal');
+        const proteinGrams = document.getElementById('proteinGrams');
+        const carbGrams = document.getElementById('carbGrams');
+        const fatGrams = document.getElementById('fatGrams');
+        const dietAdvice = document.getElementById('dietAdvice');
+        
+        // 活动水平描述
+        const activityDescriptions = {
+            '1.2': '久坐',
+            '1.375': '轻度活动',
+            '1.55': '中度活动',
+            '1.725': '重度活动',
+            '1.9': '运动员'
+        };
+        
+        // 热量目标描述
+        const calorieGoalDescriptions = {
+            '0': '维持体重',
+            '-500': '轻度减重',
+            '-1000': '中度减重',
+            '250': '轻度增肌',
+            '500': '中度增肌'
+        };
+        
+        // 宏量营养素比例（根据目标调整）
+        const macroRatios = {
+            '0': { protein: 0.3, carb: 0.4, fat: 0.3 }, // 维持体重
+            '-500': { protein: 0.35, carb: 0.4, fat: 0.25 }, // 减重（高蛋白）
+            '-1000': { protein: 0.4, carb: 0.35, fat: 0.25 }, // 快速减重（更高蛋白）
+            '250': { protein: 0.3, carb: 0.45, fat: 0.25 }, // 增肌（较高碳水）
+            '500': { protein: 0.3, carb: 0.5, fat: 0.2 } // 快速增肌（高碳水）
+        };
+        
+        // 计算BMR和热量需求
+        function calculateBMR() {
+            const age = parseInt(ageInput.value);
+            const height = parseFloat(heightInput.value);
+            const weight = parseFloat(weightInput.value);
+            const formula = formulaSelect.value;
+            const activityLevel = parseFloat(activityLevelSelect.value);
+            const calorieGoal = parseInt(calorieGoalSelect.value);
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            
+            // 验证输入
+            if (!age || !height || !weight || age < 15 || height < 100 || height > 250 || weight < 30 || weight > 300) {
+                // 输入无效时隐藏结果区域
+                resultSection.style.display = 'none';
+                return;
+            }
+            
+            let bmr = 0;
+            
+            // 根据选择的公式计算BMR
+            if (formula === 'mifflin') {
+                // Mifflin-St Jeor公式
+                if (gender === 'male') {
+                    bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+                } else {
+                    bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+                }
+            } else if (formula === 'harris') {
+                // Harris-Benedict公式
+                if (gender === 'male') {
+                    bmr = 66.5 + (13.75 * weight) + (5 * height) - (6.76 * age);
+                } else {
+                    bmr = 655 + (9.56 * weight) + (1.85 * height) - (4.68 * age);
+                }
+            } else if (formula === 'simple') {
+                // 简易估算
+                if (gender === 'male') {
+                    bmr = weight * 24;
+                } else {
+                    bmr = weight * 23;
+                }
+            }
+            
+            // 计算每日总能量消耗(TDEE)
+            const tdee = bmr * activityLevel;
+            
+            // 根据目标调整热量摄入
+            const calorieIntake = tdee + calorieGoal;
+            
+            // 获取宏量营养素比例
+            const macroRatio = macroRatios[calorieGoal.toString()] || macroRatios['0'];
+            
+            // 计算宏量营养素分配
+            const proteinCalories = calorieIntake * macroRatio.protein;
+            const carbCalories = calorieIntake * macroRatio.carb;
+            const fatCalories = calorieIntake * macroRatio.fat;
+            
+            // 转换为克数（1克蛋白质=4大卡，1克碳水化合物=4大卡，1克脂肪=9大卡）
+            const proteinGramsValue = proteinCalories / 4;
+            const carbGramsValue = carbCalories / 4;
+            const fatGramsValue = fatCalories / 9;
+            
+            // 显示结果
+            displayResults(age, gender, activityLevel, bmr, tdee, calorieIntake, 
+                         proteinGramsValue, carbGramsValue, fatGramsValue, macroRatio);
+        }
+        
+        // 显示计算结果
+        function displayResults(age, gender, activityLevel, bmr, tdee, calorieIntake,
+                               proteinGramsValue, carbGramsValue, fatGramsValue, macroRatio) {
+            // 更新基本信息
+            resultGender.textContent = gender === 'male' ? '男性' : '女性';
+            resultAge.textContent = `${age} 岁`;
+            resultActivity.textContent = activityDescriptions[activityLevel.toString()];
+            resultBMR.textContent = `${Math.round(bmr)} 大卡/天`;
+            resultTDEE.textContent = `${Math.round(tdee)} 大卡/天`;
+            resultCalorieGoal.textContent = `${Math.round(calorieIntake)} 大卡/天`;
+            
+            // 更新宏量营养素分配
+            proteinGrams.textContent = `${Math.round(proteinGramsValue)} 克`;
+            carbGrams.textContent = `${Math.round(carbGramsValue)} 克`;
+            fatGrams.textContent = `${Math.round(fatGramsValue)} 克`;
+            
+            // 更新宏量营养素进度条
+            document.querySelectorAll('.macro-fill')[0].style.width = `${macroRatio.protein * 100}%`;
+            document.querySelectorAll('.macro-fill')[1].style.width = `${macroRatio.carb * 100}%`;
+            document.querySelectorAll('.macro-fill')[2].style.width = `${macroRatio.fat * 100}%`;
+            
+            document.querySelectorAll('.macro-percentage')[0].textContent = `${Math.round(macroRatio.protein * 100)}%`;
+            document.querySelectorAll('.macro-percentage')[1].textContent = `${Math.round(macroRatio.carb * 100)}%`;
+            document.querySelectorAll('.macro-percentage')[2].textContent = `${Math.round(macroRatio.fat * 100)}%`;
+            
+            // 更新建议
+            const goalDescription = calorieGoalDescriptions[calorieGoalSelect.value];
+            let adviceText = '';
+            
+            if (calorieGoalSelect.value === '0') {
+                adviceText = `为了${goalDescription}，建议每日摄入约${Math.round(calorieIntake)}大卡。`;
+            } else if (calorieGoalSelect.value.startsWith('-')) {
+                adviceText = `为了${goalDescription}(每周减${Math.abs(calorieGoalSelect.value/500)}kg)，建议每日摄入约${Math.round(calorieIntake)}大卡，比消耗少${Math.abs(calorieGoalSelect.value)}大卡。`;
+            } else {
+                adviceText = `为了${goalDescription}(每周增${calorieGoalSelect.value/500}kg)，建议每日摄入约${Math.round(calorieIntake)}大卡，比消耗多${calorieGoalSelect.value}大卡。`;
+            }
+            
+            adviceText += ` 宏量营养素分配为蛋白质${Math.round(macroRatio.protein * 100)}%、碳水化合物${Math.round(macroRatio.carb * 100)}%、脂肪${Math.round(macroRatio.fat * 100)}%。`;
+            
+            dietAdvice.textContent = adviceText;
+            
+            // 显示结果区域
+            resultSection.style.display = 'block';
+        }
+        
+        // 事件监听
+        calculateBtn.addEventListener('click', calculateBMR);
+        
+        // 输入时自动计算
+        ageInput.addEventListener('input', calculateBMR);
+        heightInput.addEventListener('input', calculateBMR);
+        weightInput.addEventListener('input', calculateBMR);
+        formulaSelect.addEventListener('change', calculateBMR);
+        activityLevelSelect.addEventListener('change', calculateBMR);
+        calorieGoalSelect.addEventListener('change', calculateBMR);
+        
+        genderOptions.forEach(option => {
+            option.addEventListener('change', calculateBMR);
+        });
+        
+        // 主题切换
+        function initTheme() {
+            const themeBtn = document.querySelector('.theme-btn');
+            
+            // 检查本地存储的主题设置
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+            
+            // 切换主题函数
+            function toggleTheme() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                // 更新图标
+                if (themeBtn) {
+                    const icon = themeBtn.querySelector('i');
+                    icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+            }
+            
+            // 添加事件监听
+            if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            
+            // 移动端菜单
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            if (menuBtn) {
+                menuBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert('移动端菜单功能需要完整的菜单HTML结构');
+                });
+            }
+            
+            // 页面加载时自动计算一次
+            setTimeout(calculateBMR, 100);
+        });
+    </script>
+    
+    <style>
+        .gender-selection {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .gender-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all var(--transition);
+            flex: 1;
+        }
+        
+        .gender-option input {
+            display: none;
+        }
+        
+        .gender-option input:checked + .gender-icon {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+        
+        .gender-option input:checked ~ .gender-label {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .gender-option input:checked {
+            border-color: var(--primary);
+        }
+        
+        .gender-option:has(input:checked) {
+            border-color: var(--primary);
+            background: rgba(var(--primary-rgb), 0.1);
+        }
+        
+        .gender-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+        }
+        
+        .gender-label {
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: all var(--transition);
+        }
+        
+        .calorie-distribution {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 1rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .distribution-container {
+            margin-top: 1rem;
+        }
+        
+        .macro-item {
+            margin-bottom: 1rem;
+        }
+        
+        .macro-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .macro-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .macro-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .macro-percentage {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .macro-bar {
+            height: 10px;
+            background: var(--bg-primary);
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+        }
+        
+        .macro-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+        
+        .macro-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.25rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .activity-levels {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 1rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin-top: 0.5rem;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        
+        .data-table th {
+            background: var(--bg-primary);
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-light);
+        }
+        
+        .data-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        
+        [data-theme="dark"] .data-table tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .health-advice {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 1rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .advice-content {
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+            line-height: 1.6;
+        }
+        
+        .coupon-tips {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .tip-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+        }
+        
+        .tip-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .tip-content {
+            flex: 1;
+        }
+        
+        .tip-content h4 {
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+        
+        .tip-content p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        @media (min-width: 768px) {
+            .tips-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .data-table {
+                font-size: 0.9rem;
+            }
+            
+            .gender-selection {
+                gap: 2rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-table {
+                font-size: 0.8rem;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</body>
+</html>
