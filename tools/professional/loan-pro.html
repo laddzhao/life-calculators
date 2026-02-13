@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商业贷款计算 - 生活计算宝典</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../layout.css">
+    <link rel="stylesheet" href="../../components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+</head>
+<body class="app">
+    <header class="app-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-mobile">
+                    <a href="../../pages/professional.html" class="navbar-back">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div class="navbar-title">商业贷款计算</div>
+                    <div></div>
+                </div>
+                
+                <div class="navbar-desktop">
+                    <a href="../../index.html" class="logo">
+                        <i class="fas fa-calculator"></i>
+                        <span class="logo-text">生活计算宝典</span>
+                    </a>
+                    <div class="nav-links">
+                        <a href="../../index.html" class="nav-link">首页</a>
+                        <a href="../../pages/professional.html" class="nav-link active">专业工具</a>
+                        <a href="../../pages/tools.html" class="nav-link">所有工具</a>
+                    </div>
+                    <div class="theme-toggle">
+                        <button class="theme-btn" aria-label="切换主题">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="section">
+            <div class="container">
+                <!-- 面包屑导航 -->
+                <nav class="breadcrumb">
+                    <a href="../../index.html" class="breadcrumb-link">首页</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <a href="../../pages/professional.html" class="breadcrumb-link">专业工具</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <span class="breadcrumb-current">商业贷款计算</span>
+                </nav>
+                
+                <!-- 计算器容器 -->
+                <div class="calculator-container">
+                    <div class="calculator-card">
+                        <div class="calculator-header">
+                            <h1 class="calculator-title">商业贷款计算器</h1>
+                            <p class="calculator-description">
+                                企业贷款、经营贷、设备融资等多种商业贷款计算，支持等额本息、等额本金、先息后本。
+                            </p>
+                        </div>
+                        
+                        <!-- 还款方式切换 -->
+                        <div class="tabs" id="loanTabs">
+                            <button class="tab active" data-type="equal">等额本息</button>
+                            <button class="tab" data-type="principal">等额本金</button>
+                            <button class="tab" data-type="interest">先息后本</button>
+                        </div>
+                        
+                        <!-- 输入区域 -->
+                        <div class="input-group">
+                            <label class="input-label">贷款金额 (万元)</label>
+                            <input type="number" id="loanAmount" class="input-field" value="100" min="0" step="10">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">贷款期限</label>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <input type="number" id="loanTerm" class="input-field" value="3" min="0.5" step="0.5" style="flex: 1;">
+                                <select id="termUnit" class="input-field" style="width: 100px;">
+                                    <option value="years" selected>年</option>
+                                    <option value="months">月</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">年利率 (%)</label>
+                            <input type="number" id="interestRate" class="input-field" value="5.6" min="0" step="0.1">
+                        </div>
+                        
+                        <!-- 先息后本特有选项 -->
+                        <div id="interestOnlyOptions" style="display: none;">
+                            <div class="input-group">
+                                <label class="input-label">还款频率</label>
+                                <select id="paymentFrequency" class="input-field">
+                                    <option value="monthly">每月付息</option>
+                                    <option value="quarterly">每季付息</option>
+                                    <option value="yearly">每年付息</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">手续费 (元)</label>
+                            <input type="number" id="fees" class="input-field" value="0" min="0" step="1000">
+                        </div>
+                        
+                        <!-- 计算按钮 -->
+                        <button class="btn btn-primary btn-block calc-btn" id="calculateBtn">
+                            <i class="fas fa-calculator"></i> 计算贷款
+                        </button>
+                        
+                        <!-- 结果展示 -->
+                        <div class="result-display" id="resultSection" style="display: block;">
+                            <h3 class="result-title"><i class="fas fa-chart-bar"></i> 贷款分析结果</h3>
+                            
+                            <!-- 关键指标卡片 -->
+                            <div class="summary-cards">
+                                <div class="summary-card monthly">
+                                    <div class="summary-label" id="monthlyLabel">每月还款</div>
+                                    <div class="summary-amount" id="monthlyPayment">30,239 元</div>
+                                </div>
+                                <div class="summary-card interest">
+                                    <div class="summary-label">总利息</div>
+                                    <div class="summary-amount" id="totalInterest">88,604 元</div>
+                                </div>
+                                <div class="summary-card total">
+                                    <div class="summary-label">本息合计</div>
+                                    <div class="summary-amount" id="totalPayment">1,088,604 元</div>
+                                </div>
+                            </div>
+                            
+                            <!-- 详细指标 -->
+                            <div style="margin-top: 1.5rem;">
+                                <div class="result-grid">
+                                    <div class="result-item">
+                                        <span class="result-label">贷款总额</span>
+                                        <span class="result-value" id="totalLoan">1,000,000 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">年化利率</span>
+                                        <span class="result-value" id="annualRate">5.6%</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">贷款期限</span>
+                                        <span class="result-value" id="loanPeriod">3 年</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">还款期数</span>
+                                        <span class="result-value" id="paymentCount">36 期</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">手续费</span>
+                                        <span class="result-value" id="feeAmount">0 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">实际年化</span>
+                                        <span class="result-value" id="actualApr">5.60%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 等额本金特有信息 -->
+                            <div id="principalInfo" style="display: none; margin-top: 1rem;">
+                                <div class="result-grid">
+                                    <div class="result-item">
+                                        <span class="result-label">首月还款</span>
+                                        <span class="result-value" id="firstPayment">35,556 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">末月还款</span>
+                                        <span class="result-value" id="lastPayment">27,963 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">每月递减</span>
+                                        <span class="result-value" id="monthlyDecrease">13 元</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 先息后本特有信息 -->
+                            <div id="interestInfo" style="display: none; margin-top: 1rem;">
+                                <div class="result-grid">
+                                    <div class="result-item">
+                                        <span class="result-label">每期利息</span>
+                                        <span class="result-value" id="periodInterest">4,667 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">末次还本</span>
+                                        <span class="result-value" id="finalPrincipal">1,000,000 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">还款频率</span>
+                                        <span class="result-value" id="paymentFreq">每月</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 还款明细表 -->
+                            <div style="margin-top: 1.5rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                    <h4>还款计划表 (前12期)</h4>
+                                    <button class="btn btn-outline btn-sm" id="toggleSchedule">
+                                        <i class="fas fa-table"></i> 显示明细
+                                    </button>
+                                </div>
+                                <div id="scheduleTable" style="display: none; overflow-x: auto;">
+                                    <table class="schedule-table">
+                                        <thead>
+                                            <tr>
+                                                <th>期数</th>
+                                                <th>还款金额</th>
+                                                <th>偿还本金</th>
+                                                <th>偿还利息</th>
+                                                <th>剩余本金</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="scheduleBody">
+                                            <!-- 动态生成 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- 贷款方案对比 -->
+                            <div style="margin-top: 1.5rem; padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius);">
+                                <h4 style="margin-bottom: 0.5rem;">三种还款方式对比</h4>
+                                <div class="comparison-grid">
+                                    <div class="comparison-item">
+                                        <div class="comparison-label">等额本息</div>
+                                        <div class="comparison-value" id="compareEqual">88,604 元</div>
+                                        <div class="comparison-desc">月供固定</div>
+                                    </div>
+                                    <div class="comparison-item">
+                                        <div class="comparison-label">等额本金</div>
+                                        <div class="comparison-value" id="comparePrincipal">86,333 元</div>
+                                        <div class="comparison-desc">总利息最低</div>
+                                    </div>
+                                    <div class="comparison-item">
+                                        <div class="comparison-label">先息后本</div>
+                                        <div class="comparison-value" id="compareInterest">168,000 元</div>
+                                        <div class="comparison-desc">前期压力小</div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-secondary); text-align: center;" id="comparisonAdvice">
+                                    等额本金总利息最低，适合现金流充裕的企业
+                                </div>
+                            </div>
+                            
+                            <!-- 现金流分析 -->
+                            <div style="margin-top: 1.5rem;">
+                                <h4 style="margin-bottom: 0.5rem;">现金流压力分析</h4>
+                                <div class="cashflow-bars">
+                                    <div class="cashflow-item">
+                                        <span class="cashflow-label">月均还款</span>
+                                        <div class="cashflow-bar-container">
+                                            <div class="cashflow-bar" id="cashflowBar" style="width: 60%; background: var(--primary);">30,239元</div>
+                                        </div>
+                                    </div>
+                                    <div class="cashflow-item">
+                                        <span class="cashflow-label">月均收入建议</span>
+                                        <div class="cashflow-bar-container">
+                                            <div class="cashflow-bar" id="incomeBar" style="width: 100%; background: var(--success);">60,478元</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-warning" style="margin-top: 0.5rem; padding: 0.5rem;" id="cashflowWarning">
+                                    <i class="fas fa-exclamation-circle"></i> 建议月收入至少为月供的2倍
+                                </div>
+                            </div>
+                            
+                            <!-- 错误信息 -->
+                            <div class="alert alert-danger" id="errorMessage" style="display: none; margin-top: 1rem;">
+                                <i class="fas fa-exclamation-triangle"></i> <span id="errorText">请输入有效的贷款信息</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 利率参考 -->
+                    <div class="coupon-tips mt-6">
+                        <h3 class="section-title" style="font-size: 1.25rem; text-align: center; margin-bottom: 1rem;">
+                            <i class="fas fa-chart-line"></i> 商业贷款利率参考
+                        </h3>
+                        <div class="tips-grid">
+                            <button class="tip-item preset-btn" data-rate="3.85">
+                                <div class="tip-icon" style="background: #3498db;">3.85%</div>
+                                <div class="tip-content">
+                                    <h4>LPR基准</h4>
+                                    <p>1年期LPR</p>
+                                </div>
+                            </button>
+                            <button class="tip-item preset-btn" data-rate="4.35">
+                                <div class="tip-icon" style="background: #2ecc71;">4.35%</div>
+                                <div class="tip-content">
+                                    <h4>抵押贷款</h4>
+                                    <p>优质企业</p>
+                                </div>
+                            </button>
+                            <button class="tip-item preset-btn" data-rate="5.6">
+                                <div class="tip-icon" style="background: #f39c12;">5.60%</div>
+                                <div class="tip-content">
+                                    <h4>信用贷款</h4>
+                                    <p>普通企业</p>
+                                </div>
+                            </button>
+                            <button class="tip-item preset-btn" data-rate="7.2">
+                                <div class="tip-icon" style="background: #e74c3c;">7.20%</div>
+                                <div class="tip-content">
+                                    <h4>设备融资</h4>
+                                    <p>中小企业</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 使用说明 -->
+                    <div class="alert alert-info mt-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-lightbulb mr-3"></i>
+                            <div>
+                                <strong>贷款说明：</strong> 
+                                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                    <li><strong>等额本息</strong>：每月还款固定，便于资金规划</li>
+                                    <li><strong>等额本金</strong>：前期还款多，总利息最低</li>
+                                    <li><strong>先息后本</strong>：每月只还利息，到期还本，前期压力小</li>
+                                    <li><strong>实际年化</strong>：考虑手续费后的真实资金成本</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <a href="../../index.html" class="footer-logo">
+                        <i class="fas fa-calculator"></i>
+                        <span>生活计算宝典</span>
+                    </a>
+                    <p class="footer-description">一站式离线计算工具集合，为您的生活带来便利。</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">专业工具</h4>
+                    <a href="mortgage.html" class="footer-link">房贷计算器</a>
+                    <a href="business-loan.html" class="footer-link">商业贷款计算</a>
+                    <a href="tax-planning.html" class="footer-link">税务规划工具</a>
+                    <a href="roi.html" class="footer-link">投资回报分析</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">快速链接</h4>
+                    <a href="../../pages/professional.html" class="footer-link">返回专业工具</a>
+                    <a href="../../pages/tools.html" class="footer-link">所有工具</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 生活计算宝典 · 商业贷款计算</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 移动端底部导航 -->
+    <nav class="mobile-bottom-nav">
+        <a href="../../index.html" class="nav-item"><i class="fas fa-home nav-icon"></i><span class="nav-label">首页</span></a>
+        <a href="../../pages/shopping.html" class="nav-item"><i class="fas fa-shopping-cart nav-icon"></i><span class="nav-label">购物</span></a>
+        <a href="../../pages/professional.html" class="nav-item active"><i class="fas fa-briefcase nav-icon"></i><span class="nav-label">专业</span></a>
+        <a href="../../pages/tools.html" class="nav-item"><i class="fas fa-th nav-icon"></i><span class="nav-label">全部</span></a>
+        <a href="#" class="nav-item" id="mobileMenuBtn"><i class="fas fa-ellipsis-h nav-icon"></i><span class="nav-label">更多</span></a>
+    </nav>
+
+    <style>
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .summary-card {
+            padding: 1rem;
+            border-radius: var(--radius);
+            text-align: center;
+            color: white;
+        }
+        .summary-card.monthly {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+        .summary-card.interest {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+        .summary-card.total {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+        .summary-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+        .summary-amount {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        .schedule-table th {
+            background: var(--bg-secondary);
+            padding: 0.75rem;
+            text-align: center;
+            border-bottom: 2px solid var(--border-light);
+        }
+        .schedule-table td {
+            padding: 0.5rem 0.75rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .schedule-table tr:hover {
+            background: var(--bg-secondary);
+        }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        .comparison-item {
+            padding: 1rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            text-align: center;
+        }
+        .comparison-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        .comparison-value {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        .comparison-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .cashflow-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .cashflow-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .cashflow-label {
+            width: 100px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        .cashflow-bar-container {
+            flex: 1;
+            height: 2rem;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+        .cashflow-bar {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 0.5rem;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 1.5rem;
+        }
+        .tab {
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border: none;
+            background: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            flex: 1;
+            text-align: center;
+        }
+        .tab:hover {
+            color: var(--primary);
+        }
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        .preset-btn {
+            cursor: pointer;
+            transition: all var(--transition);
+            border: 1px solid var(--border-light);
+            background: var(--bg-primary);
+            width: 100%;
+            text-align: left;
+        }
+        .preset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+    </style>
+
+    <script>
+        // 格式化金额
+        function formatMoney(amount) {
+            return amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        }
+        
+        // 获取当前还款方式
+        function getCurrentType() {
+            return document.querySelector('#loanTabs .tab.active').dataset.type;
+        }
+        
+        // 计算等额本息
+        function calculateEqualLoan(amount, months, rate, fees) {
+            const monthlyRate = rate / 100 / 12;
+            
+            // 月供公式
+            const monthlyPayment = amount * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1);
+            
+            const totalPayment = monthlyPayment * months;
+            const totalInterest = totalPayment - amount;
+            
+            // 考虑手续费后的实际年化
+            const netAmount = amount - fees;
+            let actualApr;
+            if (netAmount > 0) {
+                // 使用迭代法近似计算实际利率
+                let guess = rate / 100;
+                for (let i = 0; i < 20; i++) {
+                    const f = netAmount * guess / 12 * Math.pow(1 + guess / 12, months) / (Math.pow(1 + guess / 12, months) - 1) * months - totalPayment;
+                    const df = netAmount * months * (Math.pow(1 + guess / 12, months) * (1 + guess / 12) * (Math.pow(1 + guess / 12, months) * (guess / 12) - (Math.pow(1 + guess / 12, months) - 1)) / (Math.pow(guess / 12, 2) * Math.pow(1 + guess / 12, months)));
+                    guess = guess - f / df;
+                }
+                actualApr = guess * 100;
+            } else {
+                actualApr = rate;
+            }
+            
+            // 生成还款计划
+            const schedule = [];
+            let remaining = amount;
+            for (let i = 1; i <= Math.min(12, months); i++) {
+                const interest = remaining * monthlyRate;
+                const principal = monthlyPayment - interest;
+                remaining -= principal;
+                
+                schedule.push({
+                    period: i,
+                    payment: monthlyPayment,
+                    principal: principal,
+                    interest: interest,
+                    remaining: Math.max(remaining, 0)
+                });
+            }
+            
+            return {
+                monthlyPayment,
+                totalInterest,
+                totalPayment,
+                schedule,
+                actualApr: actualApr || rate,
+                months
+            };
+        }
+        
+        // 计算等额本金
+        function calculatePrincipalLoan(amount, months, rate, fees) {
+            const monthlyRate = rate / 100 / 12;
+            const principalPerMonth = amount / months;
+            
+            let totalInterest = 0;
+            let firstPayment, lastPayment;
+            const schedule = [];
+            
+            for (let i = 1; i <= months; i++) {
+                const remaining = amount - (i - 1) * principalPerMonth;
+                const interest = remaining * monthlyRate;
+                const payment = principalPerMonth + interest;
+                
+                totalInterest += interest;
+                
+                if (i === 1) firstPayment = payment;
+                if (i === months) lastPayment = payment;
+                
+                if (i <= 12) {
+                    schedule.push({
+                        period: i,
+                        payment: payment,
+                        principal: principalPerMonth,
+                        interest: interest,
+                        remaining: remaining - principalPerMonth
+                    });
+                }
+            }
+            
+            const totalPayment = amount + totalInterest;
+            const monthlyDecrease = (firstPayment - lastPayment) / (months - 1);
+            
+            // 考虑手续费后的实际年化
+            const netAmount = amount - fees;
+            let actualApr = rate;
+            if (netAmount > 0) {
+                // 简化计算，使用平均占用资金
+                const avgAmount = (amount + netAmount) / 2;
+                actualApr = (totalInterest / avgAmount) * 12 / months * 100;
+            }
+            
+            return {
+                firstPayment,
+                lastPayment,
+                totalInterest,
+                totalPayment,
+                monthlyDecrease,
+                schedule,
+                actualApr,
+                months
+            };
+        }
+        
+        // 计算先息后本
+        function calculateInterestLoan(amount, months, rate, fees, frequency) {
+            const monthlyRate = rate / 100 / 12;
+            const periodsPerYear = frequency === 'monthly' ? 12 : (frequency === 'quarterly' ? 4 : 1);
+            const periodRate = rate / 100 / periodsPerYear;
+            const periods = Math.ceil(months / (12 / periodsPerYear));
+            
+            const periodInterest = amount * periodRate;
+            const totalInterest = periodInterest * periods;
+            const totalPayment = amount + totalInterest;
+            
+            // 生成还款计划
+            const schedule = [];
+            let remaining = amount;
+            
+            for (let i = 1; i <= Math.min(12, periods); i++) {
+                const isLast = (i === periods);
+                schedule.push({
+                    period: i,
+                    payment: isLast ? periodInterest + amount : periodInterest,
+                    principal: isLast ? amount : 0,
+                    interest: periodInterest,
+                    remaining: isLast ? 0 : amount
+                });
+            }
+            
+            // 实际年化
+            const netAmount = amount - fees;
+            let actualApr = rate;
+            if (netAmount > 0) {
+                actualApr = (totalInterest / netAmount) * 12 / months * 100;
+            }
+            
+            return {
+                periodInterest,
+                totalInterest,
+                totalPayment,
+                schedule,
+                actualApr,
+                periods,
+                frequency
+            };
+        }
+        
+        // 更新显示
+        function calculate() {
+            const type = getCurrentType();
+            let amount = parseFloat(document.getElementById('loanAmount').value) * 10000;
+            let term = parseFloat(document.getElementById('loanTerm').value);
+            const termUnit = document.getElementById('termUnit').value;
+            const rate = parseFloat(document.getElementById('interestRate').value);
+            const fees = parseFloat(document.getElementById('fees').value) || 0;
+            
+            const errorMsg = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            
+            // 验证输入
+            if (isNaN(amount) || amount <= 0) {
+                errorText.textContent = '请输入有效的贷款金额';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            if (isNaN(term) || term <= 0) {
+                errorText.textContent = '请输入有效的贷款期限';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            if (isNaN(rate) || rate <= 0) {
+                errorText.textContent = '请输入有效的年利率';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            // 转换为月数
+            const months = termUnit === 'years' ? term * 12 : term;
+            
+            errorMsg.style.display = 'none';
+            
+            let result;
+            let monthlyLabel = '每月还款';
+            
+            if (type === 'equal') {
+                result = calculateEqualLoan(amount, months, rate, fees);
+                document.getElementById('principalInfo').style.display = 'none';
+                document.getElementById('interestInfo').style.display = 'none';
+                monthlyLabel = '每月还款';
+            } else if (type === 'principal') {
+                result = calculatePrincipalLoan(amount, months, rate, fees);
+                document.getElementById('principalInfo').style.display = 'block';
+                document.getElementById('interestInfo').style.display = 'none';
+                monthlyLabel = '首月还款';
+                
+                document.getElementById('firstPayment').textContent = formatMoney(result.firstPayment) + ' 元';
+                document.getElementById('lastPayment').textContent = formatMoney(result.lastPayment) + ' 元';
+                document.getElementById('monthlyDecrease').textContent = formatMoney(result.monthlyDecrease) + ' 元';
+            } else {
+                const frequency = document.getElementById('paymentFrequency').value;
+                result = calculateInterestLoan(amount, months, rate, fees, frequency);
+                document.getElementById('principalInfo').style.display = 'none';
+                document.getElementById('interestInfo').style.display = 'block';
+                monthlyLabel = frequency === 'monthly' ? '每月利息' : (frequency === 'quarterly' ? '每季利息' : '每年利息');
+                
+                document.getElementById('periodInterest').textContent = formatMoney(result.periodInterest) + ' 元';
+                document.getElementById('finalPrincipal').textContent = formatMoney(amount) + ' 元';
+                document.getElementById('paymentFreq').textContent = 
+                    frequency === 'monthly' ? '每月' : (frequency === 'quarterly' ? '每季' : '每年');
+            }
+            
+            // 更新标签
+            document.getElementById('monthlyLabel').textContent = monthlyLabel;
+            
+            // 更新卡片
+            if (type === 'equal') {
+                document.getElementById('monthlyPayment').textContent = formatMoney(result.monthlyPayment) + ' 元';
+            } else if (type === 'principal') {
+                document.getElementById('monthlyPayment').textContent = formatMoney(result.firstPayment) + ' 元';
+            } else {
+                document.getElementById('monthlyPayment').textContent = formatMoney(result.periodInterest) + ' 元';
+            }
+            
+            document.getElementById('totalInterest').textContent = formatMoney(result.totalInterest) + ' 元';
+            document.getElementById('totalPayment').textContent = formatMoney(result.totalPayment) + ' 元';
+            
+            // 更新详细指标
+            document.getElementById('totalLoan').textContent = formatMoney(amount) + ' 元';
+            document.getElementById('annualRate').textContent = rate.toFixed(2) + '%';
+            document.getElementById('loanPeriod').textContent = term + (termUnit === 'years' ? ' 年' : ' 个月');
+            document.getElementById('paymentCount').textContent = months + ' 期';
+            document.getElementById('feeAmount').textContent = formatMoney(fees) + ' 元';
+            document.getElementById('actualApr').textContent = result.actualApr.toFixed(2) + '%';
+            
+            // 生成还款计划表
+            const scheduleBody = document.getElementById('scheduleBody');
+            scheduleBody.innerHTML = result.schedule.map(item => `
+                <tr>
+                    <td>${item.period}</td>
+                    <td>${formatMoney(item.payment)}</td>
+                    <td>${formatMoney(item.principal)}</td>
+                    <td>${formatMoney(item.interest)}</td>
+                    <td>${formatMoney(item.remaining)}</td>
+                </tr>
+            `).join('');
+            
+            // 更新三种方式对比
+            const equalResult = calculateEqualLoan(amount, months, rate, 0);
+            const principalResult = calculatePrincipalLoan(amount, months, rate, 0);
+            const interestResult = calculateInterestLoan(amount, months, rate, 0, 'monthly');
+            
+            document.getElementById('compareEqual').textContent = formatMoney(equalResult.totalInterest) + ' 元';
+            document.getElementById('comparePrincipal').textContent = formatMoney(principalResult.totalInterest) + ' 元';
+            document.getElementById('compareInterest').textContent = formatMoney(interestResult.totalInterest) + ' 元';
+            
+            // 对比建议
+            const advice = document.getElementById('comparisonAdvice');
+            if (principalResult.totalInterest < equalResult.totalInterest && principalResult.totalInterest < interestResult.totalInterest) {
+                advice.textContent = '等额本金总利息最低，适合现金流充裕的企业';
+            } else if (equalResult.totalInterest < interestResult.totalInterest) {
+                advice.textContent = '等额本息月供固定，便于资金规划';
+            } else {
+                advice.textContent = '先息后本前期压力小，适合短期周转';
+            }
+            
+            // 现金流分析
+            const monthlyPayment = type === 'equal' ? result.monthlyPayment : 
+                                  (type === 'principal' ? result.firstPayment : result.periodInterest);
+            const recommendedIncome = monthlyPayment * 2;
+            
+            document.getElementById('cashflowBar').textContent = formatMoney(monthlyPayment) + '元';
+            document.getElementById('cashflowBar').style.width = (monthlyPayment / recommendedIncome * 100) + '%';
+            document.getElementById('incomeBar').textContent = formatMoney(recommendedIncome) + '元';
+            
+            const warning = document.getElementById('cashflowWarning');
+            if (monthlyPayment * 12 > amount * 0.5) {
+                warning.className = 'alert alert-danger';
+                warning.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 警告：月供过高，建议提高收入或降低贷款额';
+            } else if (monthlyPayment * 12 > amount * 0.3) {
+                warning.className = 'alert alert-warning';
+                warning.innerHTML = '<i class="fas fa-exclamation-circle"></i> 提示：月供适中，建议保持充足现金流';
+            } else {
+                warning.className = 'alert alert-success';
+                warning.innerHTML = '<i class="fas fa-check-circle"></i> 月供合理，还款压力较小';
+            }
+        }
+        
+        // 应用预设利率
+        function applyPresetRate(rate) {
+            document.getElementById('interestRate').value = rate;
+            calculate();
+        }
+        
+        // 主题切换
+        function initTheme() {
+            const themeBtn = document.querySelector('.theme-btn');
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                if (themeBtn) themeBtn.querySelector('i').className = 'fas fa-sun';
+            }
+            if (themeBtn) {
+                themeBtn.addEventListener('click', () => {
+                    const current = document.documentElement.getAttribute('data-theme');
+                    const newTheme = current === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    themeBtn.querySelector('i').className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                });
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            
+            // 标签切换
+            document.querySelectorAll('#loanTabs .tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('#loanTabs .tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const type = this.dataset.type;
+                    document.getElementById('interestOnlyOptions').style.display = type === 'interest' ? 'block' : 'none';
+                    
+                    calculate();
+                });
+            });
+            
+            // 计算按钮
+            document.getElementById('calculateBtn').addEventListener('click', calculate);
+            
+            // 输入事件
+            document.querySelectorAll('input, select').forEach(el => {
+                el.addEventListener('input', calculate);
+                el.addEventListener('change', calculate);
+            });
+            
+            // 预设利率
+            document.querySelectorAll('.preset-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const rate = parseFloat(btn.dataset.rate);
+                    applyPresetRate(rate);
+                });
+            });
+            
+            // 显示/隐藏还款计划
+            document.getElementById('toggleSchedule').addEventListener('click', function() {
+                const table = document.getElementById('scheduleTable');
+                if (table.style.display === 'none') {
+                    table.style.display = 'block';
+                    this.innerHTML = '<i class="fas fa-eye-slash"></i> 隐藏明细';
+                } else {
+                    table.style.display = 'none';
+                    this.innerHTML = '<i class="fas fa-table"></i> 显示明细';
+                }
+            });
+            
+            // 初始计算
+            calculate();
+            
+            // 移动端菜单
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            if (menuBtn) {
+                menuBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert('请从顶部导航选择其他工具');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

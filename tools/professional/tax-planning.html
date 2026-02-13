@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>税务规划工具 - 生活计算宝典</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../layout.css">
+    <link rel="stylesheet" href="../../components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+</head>
+<body class="app">
+    <header class="app-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-mobile">
+                    <a href="../../pages/professional.html" class="navbar-back">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div class="navbar-title">税务规划工具</div>
+                    <div></div>
+                </div>
+                
+                <div class="navbar-desktop">
+                    <a href="../../index.html" class="logo">
+                        <i class="fas fa-calculator"></i>
+                        <span class="logo-text">生活计算宝典</span>
+                    </a>
+                    <div class="nav-links">
+                        <a href="../../index.html" class="nav-link">首页</a>
+                        <a href="../../pages/professional.html" class="nav-link active">专业工具</a>
+                        <a href="../../pages/tools.html" class="nav-link">所有工具</a>
+                    </div>
+                    <div class="theme-toggle">
+                        <button class="theme-btn" aria-label="切换主题">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="section">
+            <div class="container">
+                <!-- 面包屑导航 -->
+                <nav class="breadcrumb">
+                    <a href="../../index.html" class="breadcrumb-link">首页</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <a href="../../pages/professional.html" class="breadcrumb-link">专业工具</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <span class="breadcrumb-current">税务规划工具</span>
+                </nav>
+                
+                <!-- 计算器容器 -->
+                <div class="calculator-container">
+                    <div class="calculator-card">
+                        <div class="calculator-header">
+                            <h1 class="calculator-title">税务规划工具</h1>
+                            <p class="calculator-description">
+                                分析不同收入结构下的税负，提供专项附加扣除优化建议，比较个税与经营税。
+                            </p>
+                        </div>
+                        
+                        <!-- 纳税人类型切换 -->
+                        <div class="tabs" id="taxpayerTabs">
+                            <button class="tab active" data-type="employee">工薪族</button>
+                            <button class="tab" data-type="business">个体工商户</button>
+                            <button class="tab" data-type="comparison">税负对比</button>
+                        </div>
+                        
+                        <!-- 工薪族模式 -->
+                        <div id="employeeMode">
+                            <div class="input-group">
+                                <label class="input-label">年收入 (元)</label>
+                                <input type="number" id="employeeIncome" class="input-field" value="240000" min="0" step="10000">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">五险一金 (元/年)</label>
+                                <input type="number" id="employeeSocial" class="input-field" value="36000" min="0" step="1000">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">专项附加扣除 (元/年)</label>
+                                <input type="number" id="employeeDeduction" class="input-field" value="36000" min="0" step="1000">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">年终奖 (元)</label>
+                                <input type="number" id="bonus" class="input-field" value="30000" min="0" step="5000">
+                            </div>
+                            
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="bonusSeparate" checked>
+                                    <span>年终奖单独计税</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- 个体工商户模式 -->
+                        <div id="businessMode" style="display: none;">
+                            <div class="input-group">
+                                <label class="input-label">营业收入 (元)</label>
+                                <input type="number" id="businessRevenue" class="input-field" value="500000" min="0" step="10000">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">成本费用 (元)</label>
+                                <input type="number" id="businessCost" class="input-field" value="300000" min="0" step="10000">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">投资者减除费用 (元/年)</label>
+                                <input type="number" id="businessDeduction" class="input-field" value="60000" min="0" step="6000">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">专项附加扣除 (元/年)</label>
+                                <input type="number" id="businessExtraDeduction" class="input-field" value="36000" min="0" step="1000">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">增值税类型</label>
+                                <select id="vatType" class="input-field">
+                                    <option value="general">一般纳税人 (6%/13%)</option>
+                                    <option value="small" selected>小规模纳税人 (3%/1%)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- 税负对比模式 -->
+                        <div id="comparisonMode" style="display: none;">
+                            <div class="input-group">
+                                <label class="input-label">税前利润 (元)</label>
+                                <input type="number" id="compareProfit" class="input-field" value="500000" min="0" step="10000">
+                            </div>
+                            
+                            <div class="comparison-cards">
+                                <div class="comparison-card">
+                                    <h4>方案一：工资薪金</h4>
+                                    <div class="compare-item">
+                                        <span>个人所得税</span>
+                                        <span id="compareEmployeeTax">78,480 元</span>
+                                    </div>
+                                    <div class="compare-item">
+                                        <span>税后所得</span>
+                                        <span id="compareEmployeeAfter">421,520 元</span>
+                                    </div>
+                                    <div class="compare-item">
+                                        <span>实际税负</span>
+                                        <span id="compareEmployeeRate">15.7%</span>
+                                    </div>
+                                </div>
+                                <div class="comparison-card">
+                                    <h4>方案二：经营所得</h4>
+                                    <div class="compare-item">
+                                        <span>经营所得税</span>
+                                        <span id="compareBusinessTax">39,500 元</span>
+                                    </div>
+                                    <div class="compare-item">
+                                        <span>税后所得</span>
+                                        <span id="compareBusinessAfter">460,500 元</span>
+                                    </div>
+                                    <div class="compare-item">
+                                        <span>实际税负</span>
+                                        <span id="compareBusinessRate">7.9%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-success" id="comparisonAdvice" style="margin-top: 1rem;">
+                                <i class="fas fa-check-circle"></i> 建议选择经营所得，可节税 38,980 元
+                            </div>
+                        </div>
+                        
+                        <!-- 计算按钮 -->
+                        <button class="btn btn-primary btn-block calc-btn" id="calculateBtn">
+                            <i class="fas fa-file-invoice-dollar"></i> 税务分析
+                        </button>
+                        
+                        <!-- 结果展示 - 工薪族模式 -->
+                        <div class="result-display" id="employeeResult" style="display: block;">
+                            <h3 class="result-title"><i class="fas fa-chart-bar"></i> 税务分析结果</h3>
+                            
+                            <!-- 税负概况 -->
+                            <div class="summary-cards">
+                                <div class="summary-card tax">
+                                    <div class="summary-label">应纳税额</div>
+                                    <div class="summary-amount" id="employeeTax">19,080 元</div>
+                                </div>
+                                <div class="summary-card after">
+                                    <div class="summary-label">税后收入</div>
+                                    <div class="summary-amount" id="employeeAfter">214,920 元</div>
+                                </div>
+                                <div class="summary-card rate">
+                                    <div class="summary-label">实际税负</div>
+                                    <div class="summary-amount" id="employeeTaxRate">8.0%</div>
+                                </div>
+                            </div>
+                            
+                            <!-- 收入构成 -->
+                            <div style="margin-top: 1.5rem;">
+                                <h4 style="margin-bottom: 0.5rem;">收入构成</h4>
+                                <div class="pie-chart" id="employeePie">
+                                    <div class="pie-segment" style="--percentage: 67; --color: var(--success);">税后 67%</div>
+                                    <div class="pie-segment" style="--percentage: 25; --color: var(--warning);">五险一金 25%</div>
+                                    <div class="pie-segment" style="--percentage: 8; --color: var(--danger);">个税 8%</div>
+                                </div>
+                            </div>
+                            
+                            <!-- 详细计算 -->
+                            <div style="margin-top: 1.5rem;">
+                                <div class="result-grid">
+                                    <div class="result-item">
+                                        <span class="result-label">应纳税所得额</span>
+                                        <span class="result-value" id="employeeTaxable">108,000 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">适用税率</span>
+                                        <span class="result-value" id="employeeRate">10%</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">速算扣除数</span>
+                                        <span class="result-value" id="employeeQuick">2,520 元</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 年终奖优化建议 -->
+                            <div class="alert alert-info" style="margin-top: 1rem;" id="bonusAdvice">
+                                <i class="fas fa-lightbulb"></i> 建议将 14,400 元作为年终奖单独计税，可节税 1,200 元
+                            </div>
+                            
+                            <!-- 专项附加扣除优化 -->
+                            <div class="alert alert-success" style="margin-top: 1rem;" id="deductionAdvice">
+                                <i class="fas fa-check-circle"></i> 您已充分享受专项附加扣除，如需增加扣除请查看下方说明
+                            </div>
+                        </div>
+                        
+                        <!-- 结果展示 - 个体工商户模式 -->
+                        <div id="businessResult" style="display: none;">
+                            <h3 class="result-title"><i class="fas fa-chart-bar"></i> 经营税务分析</h3>
+                            
+                            <div class="summary-cards">
+                                <div class="summary-card tax">
+                                    <div class="summary-label">个人所得税</div>
+                                    <div class="summary-amount" id="businessTax">23,250 元</div>
+                                </div>
+                                <div class="summary-card vat">
+                                    <div class="summary-label">增值税</div>
+                                    <div class="summary-amount" id="businessVat">5,000 元</div>
+                                </div>
+                                <div class="summary-card after">
+                                    <div class="summary-label">税后利润</div>
+                                    <div class="summary-amount" id="businessAfter">131,750 元</div>
+                                </div>
+                            </div>
+                            
+                            <div class="result-grid" style="margin-top: 1.5rem;">
+                                <div class="result-item">
+                                    <span class="result-label">应纳税所得额</span>
+                                    <span class="result-value" id="businessTaxable">104,000 元</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">适用税率</span>
+                                    <span class="result-value" id="businessRate">20%</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">速算扣除数</span>
+                                    <span class="result-value" id="businessQuick">10,500 元</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">综合税负</span>
+                                    <span class="result-value" id="businessTotalRate">14.1%</span>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-warning" style="margin-top: 1rem;" id="businessAdvice">
+                                <i class="fas fa-exclamation-circle"></i> 建议合理增加成本费用，降低应纳税所得额
+                            </div>
+                        </div>
+                        
+                        <!-- 错误信息 -->
+                        <div class="alert alert-danger" id="errorMessage" style="display: none; margin-top: 1rem;">
+                            <i class="fas fa-exclamation-triangle"></i> <span id="errorText">请输入有效的收入信息</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 专项附加扣除标准 -->
+                    <div class="coupon-tips mt-6">
+                        <h3 class="section-title" style="font-size: 1.25rem; text-align: center; margin-bottom: 1rem;">
+                            <i class="fas fa-list"></i> 专项附加扣除标准
+                        </h3>
+                        <div class="deduction-standards">
+                            <div class="standard-item">
+                                <span class="standard-name">子女教育</span>
+                                <span class="standard-value">1,000元/月/孩</span>
+                            </div>
+                            <div class="standard-item">
+                                <span class="standard-name">继续教育</span>
+                                <span class="standard-value">400元/月</span>
+                            </div>
+                            <div class="standard-item">
+                                <span class="standard-name">住房贷款</span>
+                                <span class="standard-value">1,000元/月</span>
+                            </div>
+                            <div class="standard-item">
+                                <span class="standard-name">住房租金</span>
+                                <span class="standard-value">800-1,500元/月</span>
+                            </div>
+                            <div class="standard-item">
+                                <span class="standard-name">赡养老人</span>
+                                <span class="standard-value">2,000元/月</span>
+                            </div>
+                            <div class="standard-item">
+                                <span class="standard-name">婴幼儿照护</span>
+                                <span class="standard-value">1,000元/月/孩</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 使用说明 -->
+                    <div class="alert alert-info mt-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-lightbulb mr-3"></i>
+                            <div>
+                                <strong>规划建议：</strong> 
+                                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                    <li><strong>年终奖规划</strong>：单独计税或合并计税，选择最优方案</li>
+                                    <li><strong>收入结构</strong>：合理分配工资与经营所得</li>
+                                    <li><strong>扣除项目</strong>：充分利用专项附加扣除</li>
+                                    <li><strong>小微企业</strong>：享受税收优惠政策</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <a href="../../index.html" class="footer-logo">
+                        <i class="fas fa-calculator"></i>
+                        <span>生活计算宝典</span>
+                    </a>
+                    <p class="footer-description">一站式离线计算工具集合，为您的生活带来便利。</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">专业工具</h4>
+                    <a href="income-tax.html" class="footer-link">个人所得税计算</a>
+                    <a href="tax-planning.html" class="footer-link">税务规划工具</a>
+                    <a href="business-loan.html" class="footer-link">商业贷款计算</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">快速链接</h4>
+                    <a href="../../pages/professional.html" class="footer-link">返回专业工具</a>
+                    <a href="../../pages/tools.html" class="footer-link">所有工具</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 生活计算宝典 · 税务规划工具</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 移动端底部导航 -->
+    <nav class="mobile-bottom-nav">
+        <a href="../../index.html" class="nav-item"><i class="fas fa-home nav-icon"></i><span class="nav-label">首页</span></a>
+        <a href="../../pages/shopping.html" class="nav-item"><i class="fas fa-shopping-cart nav-icon"></i><span class="nav-label">购物</span></a>
+        <a href="../../pages/professional.html" class="nav-item active"><i class="fas fa-briefcase nav-icon"></i><span class="nav-label">专业</span></a>
+        <a href="../../pages/tools.html" class="nav-item"><i class="fas fa-th nav-icon"></i><span class="nav-label">全部</span></a>
+        <a href="#" class="nav-item" id="mobileMenuBtn"><i class="fas fa-ellipsis-h nav-icon"></i><span class="nav-label">更多</span></a>
+    </nav>
+
+    <style>
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .summary-card {
+            padding: 1rem;
+            border-radius: var(--radius);
+            text-align: center;
+            color: white;
+        }
+        .summary-card.tax {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+        .summary-card.after {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+        .summary-card.rate {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+        .summary-card.vat {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+        .summary-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+        .summary-amount {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        .pie-chart {
+            display: flex;
+            height: 2rem;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        .pie-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: var(--color);
+            width: calc(var(--percentage) * 1%);
+        }
+        .comparison-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .comparison-card {
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+        }
+        .comparison-card h4 {
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--primary);
+        }
+        .compare-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding: 0.25rem 0;
+            border-bottom: 1px dashed var(--border-light);
+        }
+        .deduction-standards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .standard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+        }
+        .standard-name {
+            color: var(--text-secondary);
+        }
+        .standard-value {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 1.5rem;
+        }
+        .tab {
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border: none;
+            background: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            flex: 1;
+            text-align: center;
+        }
+        .tab:hover {
+            color: var(--primary);
+        }
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        .checkbox-group {
+            margin: 1rem 0;
+        }
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+    </style>
+
+    <script>
+        // 个人所得税税率表（全年）
+        const taxBrackets = [
+            { min: 0, max: 36000, rate: 0.03, quick: 0 },
+            { min: 36000, max: 144000, rate: 0.10, quick: 2520 },
+            { min: 144000, max: 300000, rate: 0.20, quick: 16920 },
+            { min: 300000, max: 420000, rate: 0.25, quick: 31920 },
+            { min: 420000, max: 660000, rate: 0.30, quick: 52920 },
+            { min: 660000, max: 960000, rate: 0.35, quick: 85920 },
+            { min: 960000, max: Infinity, rate: 0.45, quick: 181920 }
+        ];
+        
+        // 经营所得税率表
+        const businessTaxBrackets = [
+            { min: 0, max: 30000, rate: 0.05, quick: 0 },
+            { min: 30000, max: 90000, rate: 0.10, quick: 1500 },
+            { min: 90000, max: 300000, rate: 0.20, quick: 10500 },
+            { min: 300000, max: 500000, rate: 0.30, quick: 40500 },
+            { min: 500000, max: Infinity, rate: 0.35, quick: 65500 }
+        ];
+        
+        // 格式化金额
+        function formatMoney(amount) {
+            return amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        }
+        
+        // 计算个人所得税
+        function calculateIndividualTax(income, social, deduction, bonus, bonusSeparate) {
+            const threshold = 60000; // 起征点 5000*12
+            
+            let totalTax = 0;
+            let bonusTax = 0;
+            let taxableIncome = 0;
+            let rate = 0;
+            let quick = 0;
+            
+            if (bonusSeparate && bonus > 0) {
+                // 年终奖单独计税
+                const bonusMonth = bonus / 12;
+                for (const bracket of taxBrackets) {
+                    if (bonusMonth > bracket.min && bonusMonth <= bracket.max) {
+                        bonusTax = bonus * bracket.rate - bracket.quick * (bonus / 12 / bracket.max);
+                        break;
+                    }
+                }
+                
+                // 工资部分计税
+                taxableIncome = Math.max(0, income - social - threshold - deduction);
+            } else {
+                // 全部合并计税
+                taxableIncome = Math.max(0, income + bonus - social - threshold - deduction);
+            }
+            
+            // 查找适用税率
+            for (const bracket of taxBrackets) {
+                if (taxableIncome > bracket.min && taxableIncome <= bracket.max) {
+                    rate = bracket.rate * 100;
+                    quick = bracket.quick;
+                    totalTax = taxableIncome * bracket.rate - bracket.quick + bonusTax;
+                    break;
+                }
+            }
+            
+            const afterTax = income + bonus - social - totalTax;
+            const taxRate = (totalTax / (income + bonus)) * 100;
+            
+            return {
+                taxable: taxableIncome,
+                tax: totalTax,
+                afterTax,
+                rate,
+                quick,
+                taxRate,
+                bonusTax
+            };
+        }
+        
+        // 计算经营所得税
+        function calculateBusinessTax(revenue, cost, deduction, extraDeduction, vatType) {
+            const profit = revenue - cost;
+            const taxable = Math.max(0, profit - deduction - extraDeduction);
+            
+            // 查找适用税率
+            let rate = 0;
+            let quick = 0;
+            let tax = 0;
+            
+            for (const bracket of businessTaxBrackets) {
+                if (taxable > bracket.min && taxable <= bracket.max) {
+                    rate = bracket.rate * 100;
+                    quick = bracket.quick;
+                    tax = taxable * bracket.rate - bracket.quick;
+                    break;
+                }
+            }
+            
+            // 增值税（简化计算）
+            let vat = 0;
+            if (vatType === 'small') {
+                vat = revenue * 0.03; // 小规模纳税人3%
+            } else {
+                vat = revenue * 0.06; // 一般纳税人6%
+            }
+            
+            const afterTax = profit - tax - vat;
+            const totalRate = ((tax + vat) / profit) * 100;
+            
+            return {
+                taxable,
+                tax,
+                vat,
+                afterTax,
+                rate,
+                quick,
+                totalRate,
+                profit
+            };
+        }
+        
+        // 更新工薪族显示
+        function updateEmployeeResult() {
+            const income = parseFloat(document.getElementById('employeeIncome').value) || 0;
+            const social = parseFloat(document.getElementById('employeeSocial').value) || 0;
+            const deduction = parseFloat(document.getElementById('employeeDeduction').value) || 0;
+            const bonus = parseFloat(document.getElementById('bonus').value) || 0;
+            const bonusSeparate = document.getElementById('bonusSeparate').checked;
+            
+            const result = calculateIndividualTax(income, social, deduction, bonus, bonusSeparate);
+            
+            document.getElementById('employeeTax').textContent = formatMoney(result.tax) + ' 元';
+            document.getElementById('employeeAfter').textContent = formatMoney(result.afterTax) + ' 元';
+            document.getElementById('employeeTaxRate').textContent = result.taxRate.toFixed(1) + '%';
+            document.getElementById('employeeTaxable').textContent = formatMoney(result.taxable) + ' 元';
+            document.getElementById('employeeRate').textContent = result.rate.toFixed(1) + '%';
+            document.getElementById('employeeQuick').textContent = formatMoney(result.quick) + ' 元';
+            
+            // 更新饼图
+            const total = income + bonus;
+            const afterPercent = (result.afterTax / total) * 100;
+            const socialPercent = (social / total) * 100;
+            const taxPercent = (result.tax / total) * 100;
+            
+            const pie = document.getElementById('employeePie');
+            pie.innerHTML = `
+                <div class="pie-segment" style="width: ${afterPercent}%; background: var(--success);">税后 ${afterPercent.toFixed(1)}%</div>
+                <div class="pie-segment" style="width: ${socialPercent}%; background: var(--warning);">五险一金 ${socialPercent.toFixed(1)}%</div>
+                <div class="pie-segment" style="width: ${taxPercent}%; background: var(--danger);">个税 ${taxPercent.toFixed(1)}%</div>
+            `;
+            
+            // 年终奖优化建议
+            const bonusAdvice = document.getElementById('bonusAdvice');
+            if (bonus > 0) {
+                // 计算最优年终奖方案
+                const combined = calculateIndividualTax(income, social, deduction, bonus, false);
+                const separate = calculateIndividualTax(income, social, deduction, bonus, true);
+                
+                if (combined.tax < separate.tax) {
+                    bonusAdvice.innerHTML = `<i class="fas fa-lightbulb"></i> 建议将年终奖合并计税，可节税 ${formatMoney(separate.tax - combined.tax)} 元`;
+                    bonusAdvice.className = 'alert alert-success';
+                } else if (separate.tax < combined.tax) {
+                    bonusAdvice.innerHTML = `<i class="fas fa-lightbulb"></i> 建议将年终奖单独计税，可节税 ${formatMoney(combined.tax - separate.tax)} 元`;
+                    bonusAdvice.className = 'alert alert-success';
+                } else {
+                    bonusAdvice.innerHTML = `<i class="fas fa-info-circle"></i> 两种计税方式税负相同`;
+                    bonusAdvice.className = 'alert alert-info';
+                }
+            } else {
+                bonusAdvice.innerHTML = `<i class="fas fa-info-circle"></i> 未填写年终奖，无需优化`;
+                bonusAdvice.className = 'alert alert-info';
+            }
+            
+            // 专项附加扣除优化
+            const deductionAdvice = document.getElementById('deductionAdvice');
+            const maxDeduction = 12 * (1000 + 400 + 1000 + 1500 + 2000 + 1000); // 约8万
+            if (deduction < maxDeduction * 0.8) {
+                deductionAdvice.innerHTML = `<i class="fas fa-exclamation-circle"></i> 您的专项附加扣除较低，建议充分享受扣除政策`;
+                deductionAdvice.className = 'alert alert-warning';
+            } else {
+                deductionAdvice.innerHTML = `<i class="fas fa-check-circle"></i> 您已充分享受专项附加扣除`;
+                deductionAdvice.className = 'alert alert-success';
+            }
+        }
+        
+        // 更新个体户显示
+        function updateBusinessResult() {
+            const revenue = parseFloat(document.getElementById('businessRevenue').value) || 0;
+            const cost = parseFloat(document.getElementById('businessCost').value) || 0;
+            const deduction = parseFloat(document.getElementById('businessDeduction').value) || 0;
+            const extraDeduction = parseFloat(document.getElementById('businessExtraDeduction').value) || 0;
+            const vatType = document.getElementById('vatType').value;
+            
+            const result = calculateBusinessTax(revenue, cost, deduction, extraDeduction, vatType);
+            
+            document.getElementById('businessTax').textContent = formatMoney(result.tax) + ' 元';
+            document.getElementById('businessVat').textContent = formatMoney(result.vat) + ' 元';
+            document.getElementById('businessAfter').textContent = formatMoney(result.afterTax) + ' 元';
+            document.getElementById('businessTaxable').textContent = formatMoney(result.taxable) + ' 元';
+            document.getElementById('businessRate').textContent = result.rate.toFixed(1) + '%';
+            document.getElementById('businessQuick').textContent = formatMoney(result.quick) + ' 元';
+            document.getElementById('businessTotalRate').textContent = result.totalRate.toFixed(1) + '%';
+            
+            // 建议
+            const advice = document.getElementById('businessAdvice');
+            if (result.profit <= 0) {
+                advice.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 警告：经营亏损，无需缴纳所得税`;
+                advice.className = 'alert alert-danger';
+            } else if (result.taxable < 50000) {
+                advice.innerHTML = `<i class="fas fa-check-circle"></i> 税负较低，建议保持当前经营模式`;
+                advice.className = 'alert alert-success';
+            } else {
+                advice.innerHTML = `<i class="fas fa-exclamation-circle"></i> 建议合理增加成本费用，或考虑注册小微企业享受税收优惠`;
+                advice.className = 'alert alert-warning';
+            }
+        }
+        
+        // 更新税负对比
+        function updateComparison() {
+            const profit = parseFloat(document.getElementById('compareProfit').value) || 0;
+            
+            // 方案一：工资薪金
+            const employeeResult = calculateIndividualTax(profit, 0, 0, 0, true);
+            
+            // 方案二：经营所得
+            const businessResult = calculateBusinessTax(profit, 0, 60000, 0, 'small');
+            
+            document.getElementById('compareEmployeeTax').textContent = formatMoney(employeeResult.tax) + ' 元';
+            document.getElementById('compareEmployeeAfter').textContent = formatMoney(profit - employeeResult.tax) + ' 元';
+            document.getElementById('compareEmployeeRate').textContent = (employeeResult.tax / profit * 100).toFixed(1) + '%';
+            
+            document.getElementById('compareBusinessTax').textContent = formatMoney(businessResult.tax) + ' 元';
+            document.getElementById('compareBusinessAfter').textContent = formatMoney(profit - businessResult.tax) + ' 元';
+            document.getElementById('compareBusinessRate').textContent = (businessResult.tax / profit * 100).toFixed(1) + '%';
+            
+            const advice = document.getElementById('comparisonAdvice');
+            if (employeeResult.tax < businessResult.tax) {
+                const save = businessResult.tax - employeeResult.tax;
+                advice.innerHTML = `<i class="fas fa-check-circle"></i> 建议选择工资薪金，可节税 ${formatMoney(save)} 元`;
+                advice.className = 'alert alert-success';
+            } else if (businessResult.tax < employeeResult.tax) {
+                const save = employeeResult.tax - businessResult.tax;
+                advice.innerHTML = `<i class="fas fa-check-circle"></i> 建议选择经营所得，可节税 ${formatMoney(save)} 元`;
+                advice.className = 'alert alert-success';
+            } else {
+                advice.innerHTML = `<i class="fas fa-info-circle"></i> 两种方案税负相同`;
+                advice.className = 'alert alert-info';
+            }
+        }
+        
+        // 计算
+        function calculate() {
+            const type = document.querySelector('#taxpayerTabs .tab.active').dataset.type;
+            
+            if (type === 'employee') {
+                updateEmployeeResult();
+            } else if (type === 'business') {
+                updateBusinessResult();
+            } else {
+                updateComparison();
+            }
+        }
+        
+        // 主题切换
+        function initTheme() {
+            const themeBtn = document.querySelector('.theme-btn');
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                if (themeBtn) themeBtn.querySelector('i').className = 'fas fa-sun';
+            }
+            if (themeBtn) {
+                themeBtn.addEventListener('click', () => {
+                    const current = document.documentElement.getAttribute('data-theme');
+                    const newTheme = current === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    themeBtn.querySelector('i').className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                });
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            
+            // 标签切换
+            document.querySelectorAll('#taxpayerTabs .tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('#taxpayerTabs .tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const type = this.dataset.type;
+                    document.getElementById('employeeMode').style.display = type === 'employee' ? 'block' : 'none';
+                    document.getElementById('businessMode').style.display = type === 'business' ? 'block' : 'none';
+                    document.getElementById('comparisonMode').style.display = type === 'comparison' ? 'block' : 'none';
+                    
+                    document.getElementById('employeeResult').style.display = type === 'employee' ? 'block' : 'none';
+                    document.getElementById('businessResult').style.display = type === 'business' ? 'block' : 'none';
+                    
+                    calculate();
+                });
+            });
+            
+            // 计算按钮
+            document.getElementById('calculateBtn').addEventListener('click', calculate);
+            
+            // 输入事件
+            document.querySelectorAll('input, select').forEach(el => {
+                el.addEventListener('input', calculate);
+                el.addEventListener('change', calculate);
+            });
+            
+            // 初始计算
+            calculate();
+            
+            // 移动端菜单
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            if (menuBtn) {
+                menuBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert('请从顶部导航选择其他工具');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商业折扣模型 - 生活计算宝典</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../layout.css">
+    <link rel="stylesheet" href="../../components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+</head>
+<body class="app">
+    <header class="app-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-mobile">
+                    <a href="../../pages/professional.html" class="navbar-back">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div class="navbar-title">商业折扣模型</div>
+                    <div></div>
+                </div>
+                
+                <div class="navbar-desktop">
+                    <a href="../../index.html" class="logo">
+                        <i class="fas fa-calculator"></i>
+                        <span class="logo-text">生活计算宝典</span>
+                    </a>
+                    <div class="nav-links">
+                        <a href="../../index.html" class="nav-link">首页</a>
+                        <a href="../../pages/professional.html" class="nav-link active">专业工具</a>
+                        <a href="../../pages/tools.html" class="nav-link">所有工具</a>
+                    </div>
+                    <div class="theme-toggle">
+                        <button class="theme-btn" aria-label="切换主题">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="section">
+            <div class="container">
+                <!-- 面包屑导航 -->
+                <nav class="breadcrumb">
+                    <a href="../../index.html" class="breadcrumb-link">首页</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <a href="../../pages/professional.html" class="breadcrumb-link">专业工具</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <span class="breadcrumb-current">商业折扣模型</span>
+                </nav>
+                
+                <!-- 计算器容器 -->
+                <div class="calculator-container">
+                    <div class="calculator-card">
+                        <div class="calculator-header">
+                            <h1 class="calculator-title">商业折扣模型</h1>
+                            <p class="calculator-description">
+                                分析不同折扣策略对利润的影响，支持批量折扣、阶梯折扣、满减优惠。
+                            </p>
+                        </div>
+                        
+                        <!-- 折扣类型切换 -->
+                        <div class="tabs" id="discountTabs">
+                            <button class="tab active" data-type="single">单品折扣</button>
+                            <button class="tab" data-type="bulk">批量折扣</button>
+                            <button class="tab" data-type="tiered">阶梯折扣</button>
+                            <button class="tab" data-type="fullcut">满减优惠</button>
+                        </div>
+                        
+                        <!-- 基础信息 (所有模式共用) -->
+                        <div class="input-group">
+                            <label class="input-label">商品原价 (元)</label>
+                            <input type="number" id="originalPrice" class="input-field" value="100" min="0" step="10">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">成本价 (元)</label>
+                            <input type="number" id="costPrice" class="input-field" value="60" min="0" step="5">
+                        </div>
+                        
+                        <!-- 单品折扣模式 -->
+                        <div id="singleMode">
+                            <div class="input-group">
+                                <label class="input-label">折扣率 (%)</label>
+                                <input type="number" id="discountRate" class="input-field" value="20" min="0" max="100" step="1">
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label">预计销量 (件)</label>
+                                <input type="number" id="singleQuantity" class="input-field" value="100" min="1" step="10">
+                            </div>
+                        </div>
+                        
+                        <!-- 批量折扣模式 -->
+                        <div id="bulkMode" style="display: none;">
+                            <div class="input-group">
+                                <label class="input-label">批量折扣率 (%)</label>
+                                <input type="number" id="bulkDiscountRate" class="input-field" value="15" min="0" max="100" step="1">
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label">最低购买量 (件)</label>
+                                <input type="number" id="minQuantity" class="input-field" value="50" min="1" step="10">
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label">实际购买量 (件)</label>
+                                <input type="number" id="actualQuantity" class="input-field" value="80" min="1" step="10">
+                            </div>
+                        </div>
+                        
+                        <!-- 阶梯折扣模式 -->
+                        <div id="tieredMode" style="display: none;">
+                            <h4 style="margin: 1rem 0 0.5rem;">设置阶梯折扣</h4>
+                            <div class="tiered-items" id="tieredItems">
+                                <div class="tiered-item">
+                                    <input type="number" class="tiered-min" placeholder="最低量" value="1">
+                                    <span>件</span>
+                                    <input type="number" class="tiered-rate" placeholder="折扣%" value="0">
+                                    <span>%</span>
+                                    <button class="remove-tier" style="display: none;"><i class="fas fa-times"></i></button>
+                                </div>
+                                <div class="tiered-item">
+                                    <input type="number" class="tiered-min" placeholder="最低量" value="50">
+                                    <span>件</span>
+                                    <input type="number" class="tiered-rate" placeholder="折扣%" value="10">
+                                    <span>%</span>
+                                    <button class="remove-tier"><i class="fas fa-times"></i></button>
+                                </div>
+                                <div class="tiered-item">
+                                    <input type="number" class="tiered-min" placeholder="最低量" value="100">
+                                    <span>件</span>
+                                    <input type="number" class="tiered-rate" placeholder="折扣%" value="20">
+                                    <span>%</span>
+                                    <button class="remove-tier"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline btn-sm" id="addTierBtn" style="margin-top: 0.5rem;">
+                                <i class="fas fa-plus"></i> 添加阶梯
+                            </button>
+                            <div class="input-group" style="margin-top: 1rem;">
+                                <label class="input-label">购买数量 (件)</label>
+                                <input type="number" id="tieredQuantity" class="input-field" value="80" min="1" step="10">
+                            </div>
+                        </div>
+                        
+                        <!-- 满减优惠模式 -->
+                        <div id="fullcutMode" style="display: none;">
+                            <div class="input-group">
+                                <label class="input-label">满减条件 (满X元)</label>
+                                <input type="number" id="fullcutThreshold" class="input-field" value="300" min="0" step="50">
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label">减免金额 (减Y元)</label>
+                                <input type="number" id="fullcutAmount" class="input-field" value="30" min="0" step="10">
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label">购买数量 (件)</label>
+                                <input type="number" id="fullcutQuantity" class="input-field" value="4" min="1" step="1">
+                            </div>
+                        </div>
+                        
+                        <!-- 计算按钮 -->
+                        <button class="btn btn-primary btn-block calc-btn" id="calculateBtn">
+                            <i class="fas fa-chart-line"></i> 分析折扣
+                        </button>
+                        
+                        <!-- 结果展示 -->
+                        <div class="result-display" id="resultSection" style="display: block;">
+                            <h3 class="result-title"><i class="fas fa-chart-bar"></i> 折扣分析结果</h3>
+                            
+                            <!-- 关键指标卡片 -->
+                            <div class="summary-cards">
+                                <div class="summary-card revenue">
+                                    <div class="summary-label">营业收入</div>
+                                    <div class="summary-amount" id="revenue">8,000 元</div>
+                                </div>
+                                <div class="summary-card profit">
+                                    <div class="summary-label">毛利润</div>
+                                    <div class="summary-amount" id="profit">3,200 元</div>
+                                </div>
+                                <div class="summary-card margin">
+                                    <div class="summary-label">毛利率</div>
+                                    <div class="summary-amount" id="margin">40.0%</div>
+                                </div>
+                            </div>
+                            
+                            <!-- 详细对比 -->
+                            <div style="margin-top: 1.5rem;">
+                                <h4 style="margin-bottom: 0.5rem;">折扣前后对比</h4>
+                                <div class="comparison-grid">
+                                    <div class="comparison-item">
+                                        <div class="comparison-label">折后单价</div>
+                                        <div class="comparison-value" id="discountedPrice">80.00 元</div>
+                                        <div class="comparison-diff" id="priceDiff">-20.0%</div>
+                                    </div>
+                                    <div class="comparison-item">
+                                        <div class="comparison-label">总折扣金额</div>
+                                        <div class="comparison-value" id="totalDiscount">2,000 元</div>
+                                        <div class="comparison-diff" id="discountDiff">-20.0%</div>
+                                    </div>
+                                    <div class="comparison-item">
+                                        <div class="comparison-label">单位利润</div>
+                                        <div class="comparison-value" id="unitProfit">20.00 元</div>
+                                        <div class="comparison-diff" id="profitDiff">-50.0%</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 盈亏平衡分析 -->
+                            <div style="margin-top: 1.5rem; padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius);">
+                                <h4 style="margin-bottom: 0.5rem;">盈亏平衡分析</h4>
+                                <div class="result-grid">
+                                    <div class="result-item">
+                                        <span class="result-label">保本销量</span>
+                                        <span class="result-value" id="breakevenQuantity">75 件</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">当前销量</span>
+                                        <span class="result-value" id="currentQuantity">100 件</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">安全边际</span>
+                                        <span class="result-value" id="safetyMargin">25 件</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">安全边际率</span>
+                                        <span class="result-value" id="safetyMarginRate">25.0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 折扣敏感度分析 -->
+                            <div style="margin-top: 1.5rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                    <h4>折扣敏感度分析</h4>
+                                    <button class="btn btn-outline btn-sm" id="toggleSensitivity">
+                                        <i class="fas fa-chart-line"></i> 显示分析
+                                    </button>
+                                </div>
+                                <div id="sensitivityTable" style="display: none; overflow-x: auto;">
+                                    <table class="sensitivity-table">
+                                        <thead>
+                                            <tr>
+                                                <th>折扣率</th>
+                                                <th>折后单价</th>
+                                                <th>单位利润</th>
+                                                <th>毛利率</th>
+                                                <th>保本销量</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="sensitivityBody">
+                                            <!-- 动态生成 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- 建议提示 -->
+                            <div class="alert alert-success" style="margin-top: 1rem;" id="suggestion">
+                                <i class="fas fa-check-circle"></i> 当前折扣方案可行，毛利率40%，安全边际充足
+                            </div>
+                            
+                            <!-- 错误信息 -->
+                            <div class="alert alert-danger" id="errorMessage" style="display: none; margin-top: 1rem;">
+                                <i class="fas fa-exclamation-triangle"></i> <span id="errorText">请输入有效的数值</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 折扣策略参考 -->
+                    <div class="coupon-tips mt-6">
+                        <h3 class="section-title" style="font-size: 1.25rem; text-align: center; margin-bottom: 1rem;">
+                            <i class="fas fa-lightbulb"></i> 折扣策略参考
+                        </h3>
+                        <div class="tips-grid">
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #3498db;">1</div>
+                                <div class="tip-content">
+                                    <h4>单品折扣</h4>
+                                    <p>适用于清仓、引流</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #2ecc71;">2</div>
+                                <div class="tip-content">
+                                    <h4>批量折扣</h4>
+                                    <p>提高客单价</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #f39c12;">3</div>
+                                <div class="tip-content">
+                                    <h4>阶梯折扣</h4>
+                                    <p>激励多买</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon" style="background: #e74c3c;">4</div>
+                                <div class="tip-content">
+                                    <h4>满减优惠</h4>
+                                    <p>提升连带率</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 使用说明 -->
+                    <div class="alert alert-info mt-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-lightbulb mr-3"></i>
+                            <div>
+                                <strong>分析说明：</strong> 
+                                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                    <li><strong>营业收入</strong> = 折后单价 × 销量</li>
+                                    <li><strong>毛利润</strong> = 营业收入 - 总成本</li>
+                                    <li><strong>保本销量</strong> = 固定成本? 此处简化为覆盖成本的销量</li>
+                                    <li><strong>安全边际</strong> = 实际销量 - 保本销量</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <a href="../../index.html" class="footer-logo">
+                        <i class="fas fa-calculator"></i>
+                        <span>生活计算宝典</span>
+                    </a>
+                    <p class="footer-description">一站式离线计算工具集合，为您的生活带来便利。</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">专业工具</h4>
+                    <a href="mortgage.html" class="footer-link">房贷计算器</a>
+                    <a href="income-tax.html" class="footer-link">个人所得税计算</a>
+                    <a href="discount-model.html" class="footer-link">商业折扣模型</a>
+                    <a href="roi.html" class="footer-link">投资回报分析</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">快速链接</h4>
+                    <a href="../../pages/professional.html" class="footer-link">返回专业工具</a>
+                    <a href="../../pages/tools.html" class="footer-link">所有工具</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 生活计算宝典 · 商业折扣模型</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 移动端底部导航 -->
+    <nav class="mobile-bottom-nav">
+        <a href="../../index.html" class="nav-item"><i class="fas fa-home nav-icon"></i><span class="nav-label">首页</span></a>
+        <a href="../../pages/shopping.html" class="nav-item"><i class="fas fa-shopping-cart nav-icon"></i><span class="nav-label">购物</span></a>
+        <a href="../../pages/professional.html" class="nav-item active"><i class="fas fa-briefcase nav-icon"></i><span class="nav-label">专业</span></a>
+        <a href="../../pages/tools.html" class="nav-item"><i class="fas fa-th nav-icon"></i><span class="nav-label">全部</span></a>
+        <a href="#" class="nav-item" id="mobileMenuBtn"><i class="fas fa-ellipsis-h nav-icon"></i><span class="nav-label">更多</span></a>
+    </nav>
+
+    <style>
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .summary-card {
+            padding: 1rem;
+            border-radius: var(--radius);
+            text-align: center;
+            color: white;
+        }
+        .summary-card.revenue {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+        .summary-card.profit {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+        .summary-card.margin {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+        .summary-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+        .summary-amount {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        .comparison-item {
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            text-align: center;
+        }
+        .comparison-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        .comparison-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        .comparison-diff {
+            font-size: 0.875rem;
+        }
+        .comparison-diff.positive {
+            color: var(--success);
+        }
+        .comparison-diff.negative {
+            color: var(--danger);
+        }
+        .tiered-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tiered-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .tiered-item input {
+            width: 80px;
+            padding: 0.5rem;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        .remove-tier {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+        .sensitivity-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        .sensitivity-table th {
+            background: var(--bg-secondary);
+            padding: 0.75rem;
+            text-align: center;
+            border-bottom: 2px solid var(--border-light);
+        }
+        .sensitivity-table td {
+            padding: 0.5rem 0.75rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .sensitivity-table tr:hover {
+            background: var(--bg-secondary);
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+        .tab {
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border: none;
+            background: none;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+            cursor: pointer;
+            flex: 1;
+        }
+        .tab:hover {
+            color: var(--primary);
+        }
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        .preset-btn {
+            cursor: pointer;
+            transition: all var(--transition);
+            border: 1px solid var(--border-light);
+            background: var(--bg-primary);
+            width: 100%;
+            text-align: left;
+        }
+        .preset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+    </style>
+
+    <script>
+        // 格式化金额
+        function formatMoney(amount) {
+            return amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        }
+        
+        // 获取当前模式
+        function getCurrentMode() {
+            return document.querySelector('#discountTabs .tab.active').dataset.type;
+        }
+        
+        // 计算单品折扣
+        function calculateSingleMode(originalPrice, costPrice) {
+            const discountRate = parseFloat(document.getElementById('discountRate').value) / 100;
+            const quantity = parseFloat(document.getElementById('singleQuantity').value);
+            
+            const discountedPrice = originalPrice * (1 - discountRate);
+            const revenue = discountedPrice * quantity;
+            const totalCost = costPrice * quantity;
+            const profit = revenue - totalCost;
+            const margin = revenue > 0 ? (profit / revenue) * 100 : 0;
+            
+            // 保本销量 = 固定成本? 这里简化为覆盖成本的销量
+            const breakevenQuantity = Math.ceil(costPrice / discountedPrice * quantity);
+            const safetyMargin = quantity - breakevenQuantity;
+            const safetyMarginRate = quantity > 0 ? (safetyMargin / quantity) * 100 : 0;
+            
+            return {
+                discountedPrice,
+                revenue,
+                profit,
+                margin,
+                totalDiscount: originalPrice * discountRate * quantity,
+                unitProfit: discountedPrice - costPrice,
+                breakevenQuantity,
+                safetyMargin,
+                safetyMarginRate,
+                quantity
+            };
+        }
+        
+        // 计算批量折扣
+        function calculateBulkMode(originalPrice, costPrice) {
+            const discountRate = parseFloat(document.getElementById('bulkDiscountRate').value) / 100;
+            const minQuantity = parseFloat(document.getElementById('minQuantity').value);
+            const actualQuantity = parseFloat(document.getElementById('actualQuantity').value);
+            
+            // 是否满足批量条件
+            const applies = actualQuantity >= minQuantity;
+            const effectiveDiscountRate = applies ? discountRate : 0;
+            
+            const discountedPrice = originalPrice * (1 - effectiveDiscountRate);
+            const revenue = discountedPrice * actualQuantity;
+            const totalCost = costPrice * actualQuantity;
+            const profit = revenue - totalCost;
+            const margin = revenue > 0 ? (profit / revenue) * 100 : 0;
+            
+            const breakevenQuantity = Math.ceil(costPrice / discountedPrice * actualQuantity);
+            const safetyMargin = actualQuantity - breakevenQuantity;
+            
+            return {
+                discountedPrice,
+                revenue,
+                profit,
+                margin,
+                totalDiscount: originalPrice * effectiveDiscountRate * actualQuantity,
+                unitProfit: discountedPrice - costPrice,
+                breakevenQuantity,
+                safetyMargin,
+                applies,
+                quantity: actualQuantity
+            };
+        }
+        
+        // 计算阶梯折扣
+        function calculateTieredMode(originalPrice, costPrice) {
+            const tieredItems = document.querySelectorAll('.tiered-item');
+            const quantity = parseFloat(document.getElementById('tieredQuantity').value);
+            
+            // 找出适用的折扣率
+            let applicableRate = 0;
+            for (const item of tieredItems) {
+                const min = parseFloat(item.querySelector('.tiered-min').value);
+                const rate = parseFloat(item.querySelector('.tiered-rate').value) / 100;
+                
+                if (quantity >= min && rate > applicableRate) {
+                    applicableRate = rate;
+                }
+            }
+            
+            const discountedPrice = originalPrice * (1 - applicableRate);
+            const revenue = discountedPrice * quantity;
+            const totalCost = costPrice * quantity;
+            const profit = revenue - totalCost;
+            const margin = revenue > 0 ? (profit / revenue) * 100 : 0;
+            
+            const breakevenQuantity = Math.ceil(costPrice / discountedPrice * quantity);
+            const safetyMargin = quantity - breakevenQuantity;
+            
+            return {
+                discountedPrice,
+                revenue,
+                profit,
+                margin,
+                totalDiscount: originalPrice * applicableRate * quantity,
+                unitProfit: discountedPrice - costPrice,
+                breakevenQuantity,
+                safetyMargin,
+                quantity
+            };
+        }
+        
+        // 计算满减优惠
+        function calculateFullcutMode(originalPrice, costPrice) {
+            const threshold = parseFloat(document.getElementById('fullcutThreshold').value);
+            const cutAmount = parseFloat(document.getElementById('fullcutAmount').value);
+            const quantity = parseFloat(document.getElementById('fullcutQuantity').value);
+            
+            const subtotal = originalPrice * quantity;
+            
+            // 计算满减次数
+            const cutTimes = Math.floor(subtotal / threshold);
+            const totalCut = cutTimes * cutAmount;
+            
+            const revenue = subtotal - totalCut;
+            const totalCost = costPrice * quantity;
+            const profit = revenue - totalCost;
+            const margin = revenue > 0 ? (profit / revenue) * 100 : 0;
+            
+            const avgDiscountedPrice = revenue / quantity;
+            const unitProfit = avgDiscountedPrice - costPrice;
+            
+            const breakevenQuantity = Math.ceil(costPrice / avgDiscountedPrice * quantity);
+            const safetyMargin = quantity - breakevenQuantity;
+            
+            return {
+                discountedPrice: avgDiscountedPrice,
+                revenue,
+                profit,
+                margin,
+                totalDiscount: totalCut,
+                unitProfit,
+                breakevenQuantity,
+                safetyMargin,
+                quantity,
+                cutTimes
+            };
+        }
+        
+        // 更新显示
+        function calculate() {
+            const mode = getCurrentMode();
+            const originalPrice = parseFloat(document.getElementById('originalPrice').value);
+            const costPrice = parseFloat(document.getElementById('costPrice').value);
+            
+            const errorMsg = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            
+            // 验证输入
+            if (isNaN(originalPrice) || originalPrice <= 0) {
+                errorText.textContent = '请输入有效的商品原价';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            if (isNaN(costPrice) || costPrice <= 0) {
+                errorText.textContent = '请输入有效的成本价';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            if (costPrice >= originalPrice) {
+                errorText.textContent = '成本价不能高于或等于原价';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            errorMsg.style.display = 'none';
+            
+            let result;
+            switch (mode) {
+                case 'single':
+                    result = calculateSingleMode(originalPrice, costPrice);
+                    break;
+                case 'bulk':
+                    result = calculateBulkMode(originalPrice, costPrice);
+                    break;
+                case 'tiered':
+                    result = calculateTieredMode(originalPrice, costPrice);
+                    break;
+                case 'fullcut':
+                    result = calculateFullcutMode(originalPrice, costPrice);
+                    break;
+            }
+            
+            // 更新显示
+            document.getElementById('revenue').textContent = formatMoney(result.revenue) + ' 元';
+            document.getElementById('profit').textContent = formatMoney(result.profit) + ' 元';
+            document.getElementById('margin').textContent = result.margin.toFixed(1) + '%';
+            
+            document.getElementById('discountedPrice').textContent = formatMoney(result.discountedPrice) + ' 元';
+            document.getElementById('totalDiscount').textContent = formatMoney(result.totalDiscount) + ' 元';
+            document.getElementById('unitProfit').textContent = formatMoney(result.unitProfit) + ' 元';
+            
+            // 折扣比例
+            const discountPercent = ((originalPrice - result.discountedPrice) / originalPrice * 100);
+            document.getElementById('priceDiff').textContent = `-${discountPercent.toFixed(1)}%`;
+            document.getElementById('priceDiff').className = 'comparison-diff negative';
+            
+            document.getElementById('discountDiff').textContent = `-${(result.totalDiscount / (originalPrice * result.quantity) * 100).toFixed(1)}%`;
+            document.getElementById('discountDiff').className = 'comparison-diff negative';
+            
+            const profitPercent = ((result.unitProfit - (originalPrice - costPrice)) / (originalPrice - costPrice) * 100);
+            document.getElementById('profitDiff').textContent = profitPercent.toFixed(1) + '%';
+            document.getElementById('profitDiff').className = profitPercent < 0 ? 'comparison-diff negative' : 'comparison-diff positive';
+            
+            // 盈亏平衡
+            document.getElementById('breakevenQuantity').textContent = result.breakevenQuantity + ' 件';
+            document.getElementById('currentQuantity').textContent = result.quantity + ' 件';
+            document.getElementById('safetyMargin').textContent = result.safetyMargin + ' 件';
+            document.getElementById('safetyMarginRate').textContent = result.safetyMarginRate.toFixed(1) + '%';
+            
+            // 建议
+            const suggestion = document.getElementById('suggestion');
+            if (result.margin < 0) {
+                suggestion.className = 'alert alert-danger';
+                suggestion.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 警告：当前折扣方案导致亏损，请调整折扣率';
+            } else if (result.margin < 10) {
+                suggestion.className = 'alert alert-warning';
+                suggestion.innerHTML = '<i class="fas fa-exclamation-circle"></i> 提示：毛利率较低，建议优化折扣策略';
+            } else if (result.safetyMargin < 0) {
+                suggestion.className = 'alert alert-warning';
+                suggestion.innerHTML = '<i class="fas fa-exclamation-circle"></i> 提示：销量未达保本点，存在亏损风险';
+            } else {
+                suggestion.className = 'alert alert-success';
+                suggestion.innerHTML = '<i class="fas fa-check-circle"></i> 当前折扣方案可行，毛利率充足';
+            }
+            
+            // 生成敏感度分析
+            generateSensitivityAnalysis(originalPrice, costPrice);
+        }
+        
+        // 生成敏感度分析
+        function generateSensitivityAnalysis(originalPrice, costPrice) {
+            const tbody = document.getElementById('sensitivityBody');
+            let rows = '';
+            
+            for (let rate = 0; rate <= 50; rate += 5) {
+                const discountRate = rate / 100;
+                const discountedPrice = originalPrice * (1 - discountRate);
+                const unitProfit = discountedPrice - costPrice;
+                const margin = (unitProfit / discountedPrice) * 100;
+                const breakeven = Math.ceil(costPrice / discountedPrice);
+                
+                rows += `<tr>
+                    <td>${rate}%</td>
+                    <td>${formatMoney(discountedPrice)}</td>
+                    <td>${formatMoney(unitProfit)}</td>
+                    <td>${margin.toFixed(1)}%</td>
+                    <td>${breakeven} 件</td>
+                </tr>`;
+            }
+            
+            tbody.innerHTML = rows;
+        }
+        
+        // 添加阶梯
+        function addTier() {
+            const container = document.getElementById('tieredItems');
+            const newItem = document.createElement('div');
+            newItem.className = 'tiered-item';
+            newItem.innerHTML = `
+                <input type="number" class="tiered-min" placeholder="最低量" value="200">
+                <span>件</span>
+                <input type="number" class="tiered-rate" placeholder="折扣%" value="25">
+                <span>%</span>
+                <button class="remove-tier"><i class="fas fa-times"></i></button>
+            `;
+            container.appendChild(newItem);
+            
+            // 添加删除事件
+            newItem.querySelector('.remove-tier').addEventListener('click', function() {
+                newItem.remove();
+            });
+        }
+        
+        // 主题切换
+        function initTheme() {
+            const themeBtn = document.querySelector('.theme-btn');
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                if (themeBtn) themeBtn.querySelector('i').className = 'fas fa-sun';
+            }
+            if (themeBtn) {
+                themeBtn.addEventListener('click', () => {
+                    const current = document.documentElement.getAttribute('data-theme');
+                    const newTheme = current === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    themeBtn.querySelector('i').className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                });
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            
+            // 标签切换
+            document.querySelectorAll('#discountTabs .tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('#discountTabs .tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const mode = this.dataset.type;
+                    document.getElementById('singleMode').style.display = mode === 'single' ? 'block' : 'none';
+                    document.getElementById('bulkMode').style.display = mode === 'bulk' ? 'block' : 'none';
+                    document.getElementById('tieredMode').style.display = mode === 'tiered' ? 'block' : 'none';
+                    document.getElementById('fullcutMode').style.display = mode === 'fullcut' ? 'block' : 'none';
+                    
+                    calculate();
+                });
+            });
+            
+            // 计算按钮
+            document.getElementById('calculateBtn').addEventListener('click', calculate);
+            
+            // 输入事件
+            document.querySelectorAll('input').forEach(el => {
+                el.addEventListener('input', calculate);
+            });
+            
+            // 添加阶梯
+            document.getElementById('addTierBtn').addEventListener('click', addTier);
+            
+            // 初始删除按钮事件
+            document.querySelectorAll('.remove-tier').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.closest('.tiered-item').remove();
+                    calculate();
+                });
+            });
+            
+            // 显示/隐藏敏感度分析
+            document.getElementById('toggleSensitivity').addEventListener('click', function() {
+                const table = document.getElementById('sensitivityTable');
+                if (table.style.display === 'none') {
+                    table.style.display = 'block';
+                    this.innerHTML = '<i class="fas fa-eye-slash"></i> 隐藏分析';
+                } else {
+                    table.style.display = 'none';
+                    this.innerHTML = '<i class="fas fa-chart-line"></i> 显示分析';
+                }
+            });
+            
+            // 初始计算
+            calculate();
+            
+            // 移动端菜单
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            if (menuBtn) {
+                menuBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert('请从顶部导航选择其他工具');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

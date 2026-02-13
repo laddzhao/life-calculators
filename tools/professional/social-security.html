@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社保公积金计算 - 生活计算宝典</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../layout.css">
+    <link rel="stylesheet" href="../../components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+</head>
+<body class="app">
+    <header class="app-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-mobile">
+                    <a href="../../pages/professional.html" class="navbar-back">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div class="navbar-title">社保公积金计算</div>
+                    <div></div>
+                </div>
+                
+                <div class="navbar-desktop">
+                    <a href="../../index.html" class="logo">
+                        <i class="fas fa-calculator"></i>
+                        <span class="logo-text">生活计算宝典</span>
+                    </a>
+                    <div class="nav-links">
+                        <a href="../../index.html" class="nav-link">首页</a>
+                        <a href="../../pages/professional.html" class="nav-link active">专业工具</a>
+                        <a href="../../pages/tools.html" class="nav-link">所有工具</a>
+                    </div>
+                    <div class="theme-toggle">
+                        <button class="theme-btn" aria-label="切换主题">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="section">
+            <div class="container">
+                <!-- 面包屑导航 -->
+                <nav class="breadcrumb">
+                    <a href="../../index.html" class="breadcrumb-link">首页</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <a href="../../pages/professional.html" class="breadcrumb-link">专业工具</a>
+                    <span class="breadcrumb-divider"><i class="fas fa-chevron-right"></i></span>
+                    <span class="breadcrumb-current">社保公积金计算</span>
+                </nav>
+                
+                <!-- 计算器容器 -->
+                <div class="calculator-container">
+                    <div class="calculator-card">
+                        <div class="calculator-header">
+                            <h1 class="calculator-title">社保公积金计算器</h1>
+                            <p class="calculator-description">
+                                根据缴费基数和比例，计算个人和单位缴纳的社保公积金明细。
+                            </p>
+                        </div>
+                        
+                        <!-- 地区选择 -->
+                        <div class="input-group">
+                            <label class="input-label">选择城市</label>
+                            <select id="citySelect" class="input-field">
+                                <option value="beijing">北京</option>
+                                <option value="shanghai" selected>上海</option>
+                                <option value="guangzhou">广州</option>
+                                <option value="shenzhen">深圳</option>
+                                <option value="hangzhou">杭州</option>
+                                <option value="nanjing">南京</option>
+                                <option value="chengdu">成都</option>
+                                <option value="wuhan">武汉</option>
+                                <option value="custom">自定义比例</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 缴费基数 -->
+                        <div class="input-group">
+                            <label class="input-label">缴费基数 (元)</label>
+                            <input type="number" id="baseAmount" class="input-field" value="10000" min="0" step="500">
+                        </div>
+                        
+                        <!-- 基数上下限提示 -->
+                        <div class="alert alert-info" style="padding: 0.5rem; margin-bottom: 1rem; font-size: 0.875rem;" id="baseRange">
+                            上海2026年缴费基数范围: 7,310 - 36,549 元
+                        </div>
+                        
+                        <!-- 自定义比例区域 (默认隐藏) -->
+                        <div id="customRates" style="display: none;">
+                            <h4 style="margin: 1rem 0 0.5rem;">自定义缴费比例 (%)</h4>
+                            <div class="rates-grid">
+                                <div class="rate-item">
+                                    <label>养老保险 (个人)</label>
+                                    <input type="number" id="customPensionPersonal" class="rate-input" value="8" min="0" max="100" step="0.1">
+                                </div>
+                                <div class="rate-item">
+                                    <label>养老保险 (单位)</label>
+                                    <input type="number" id="customPensionCompany" class="rate-input" value="16" min="0" max="100" step="0.1">
+                                </div>
+                                <div class="rate-item">
+                                    <label>医疗保险 (个人)</label>
+                                    <input type="number" id="customMedicalPersonal" class="rate-input" value="2" min="0" max="100" step="0.1">
+                                </div>
+                                <div class="rate-item">
+                                    <label>医疗保险 (单位)</label>
+                                    <input type="number" id="customMedicalCompany" class="rate-input" value="9.5" min="0" max="100" step="0.1">
+                                </div>
+                                <div class="rate-item">
+                                    <label>失业保险 (个人)</label>
+                                    <input type="number" id="customUnemploymentPersonal" class="rate-input" value="0.5" min="0" max="100" step="0.1">
+                                </div>
+                                <div class="rate-item">
+                                    <label>失业保险 (单位)</label>
+                                    <input type="number" id="customUnemploymentCompany" class="rate-input" value="0.5" min="0" max="100" step="0.1">
+                                </div>
+                                <div class="rate-item">
+                                    <label>工伤保险 (单位)</label>
+                                    <input type="number" id="customInjuryCompany" class="rate-input" value="0.2" min="0" max="100" step="0.1">
+                                </div>
+                                <div class="rate-item">
+                                    <label>生育保险 (单位)</label>
+                                    <input type="number" id="customMaternityCompany" class="rate-input" value="1" min="0" max="100" step="0.1">
+                                </div>
+                                <div class="rate-item">
+                                    <label>住房公积金 (个人)</label>
+                                    <input type="number" id="customFundPersonal" class="rate-input" value="7" min="0" max="100" step="0.1">
+                                </div>
+                                <div class="rate-item">
+                                    <label>住房公积金 (单位)</label>
+                                    <input type="number" id="customFundCompany" class="rate-input" value="7" min="0" max="100" step="0.1">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 公积金比例选择 -->
+                        <div class="input-group">
+                            <label class="input-label">公积金缴存比例</label>
+                            <select id="fundRate" class="input-field">
+                                <option value="5">5%</option>
+                                <option value="6">6%</option>
+                                <option value="7" selected>7%</option>
+                                <option value="8">8%</option>
+                                <option value="9">9%</option>
+                                <option value="10">10%</option>
+                                <option value="11">11%</option>
+                                <option value="12">12%</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 补充公积金 -->
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="hasSupplemental">
+                                <span>缴纳补充公积金 (5%)</span>
+                            </label>
+                        </div>
+                        
+                        <!-- 计算按钮 -->
+                        <button class="btn btn-primary btn-block calc-btn" id="calculateBtn">
+                            <i class="fas fa-calculator"></i> 计算缴费明细
+                        </button>
+                        
+                        <!-- 结果展示 -->
+                        <div class="result-display" id="resultSection" style="display: block;">
+                            <h3 class="result-title"><i class="fas fa-chart-bar"></i> 缴费明细</h3>
+                            
+                            <!-- 汇总卡片 -->
+                            <div class="summary-cards">
+                                <div class="summary-card personal">
+                                    <div class="summary-label">个人缴纳</div>
+                                    <div class="summary-amount" id="personalTotal">1,750.00 元</div>
+                                    <div class="summary-percent">占基数 17.5%</div>
+                                </div>
+                                <div class="summary-card company">
+                                    <div class="summary-label">单位缴纳</div>
+                                    <div class="summary-amount" id="companyTotal">3,420.00 元</div>
+                                    <div class="summary-percent">占基数 34.2%</div>
+                                </div>
+                                <div class="summary-card total">
+                                    <div class="summary-label">合计缴纳</div>
+                                    <div class="summary-amount" id="totalAmount">5,170.00 元</div>
+                                    <div class="summary-percent">占基数 51.7%</div>
+                                </div>
+                            </div>
+                            
+                            <!-- 详细表格 -->
+                            <div style="margin-top: 1.5rem; overflow-x: auto;">
+                                <table class="contribution-table">
+                                    <thead>
+                                        <tr>
+                                            <th>项目</th>
+                                            <th>个人缴纳</th>
+                                            <th>比例</th>
+                                            <th>单位缴纳</th>
+                                            <th>比例</th>
+                                            <th>合计</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="contributionBody">
+                                        <!-- 动态生成 -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <!-- 税前列支提示 -->
+                            <div class="alert alert-success" style="margin-top: 1rem;" id="taxInfo">
+                                <i class="fas fa-info-circle"></i> 个人缴纳部分可在个人所得税前扣除，每月可节税 <span id="taxSave">525.00</span> 元
+                            </div>
+                            
+                            <!-- 公积金余额预测 -->
+                            <div style="margin-top: 1.5rem;">
+                                <h4 style="margin-bottom: 0.5rem;">公积金余额预测</h4>
+                                <div class="result-grid">
+                                    <div class="result-item">
+                                        <span class="result-label">1年后余额</span>
+                                        <span class="result-value" id="fundYear1">62,040 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">3年后余额</span>
+                                        <span class="result-value" id="fundYear3">186,120 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">5年后余额</span>
+                                        <span class="result-value" id="fundYear5">310,200 元</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">10年后余额</span>
+                                        <span class="result-value" id="fundYear10">620,400 元</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 错误信息 -->
+                            <div class="alert alert-danger" id="errorMessage" style="display: none; margin-top: 1rem;">
+                                <i class="fas fa-exclamation-triangle"></i> <span id="errorText">请输入有效的缴费基数</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 基数预设 -->
+                    <div class="coupon-tips mt-6">
+                        <h3 class="section-title" style="font-size: 1.25rem; text-align: center; margin-bottom: 1rem;">
+                            <i class="fas fa-bolt"></i> 常用基数预设
+                        </h3>
+                        <div class="tips-grid">
+                            <button class="tip-item preset-btn" data-base="5000">
+                                <div class="tip-icon" style="background: #3498db;">5k</div>
+                                <div class="tip-content">
+                                    <h4>最低档</h4>
+                                    <p>基数 5,000元</p>
+                                </div>
+                            </button>
+                            <button class="tip-item preset-btn" data-base="10000">
+                                <div class="tip-icon" style="background: #2ecc71;">10k</div>
+                                <div class="tip-content">
+                                    <h4>常见档</h4>
+                                    <p>基数 10,000元</p>
+                                </div>
+                            </button>
+                            <button class="tip-item preset-btn" data-base="20000">
+                                <div class="tip-icon" style="background: #f39c12;">20k</div>
+                                <div class="tip-content">
+                                    <h4>中高档</h4>
+                                    <p>基数 20,000元</p>
+                                </div>
+                            </button>
+                            <button class="tip-item preset-btn" data-base="30000">
+                                <div class="tip-icon" style="background: #e74c3c;">30k</div>
+                                <div class="tip-content">
+                                    <h4>封顶档</h4>
+                                    <p>基数 30,000元</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 使用说明 -->
+                    <div class="alert alert-info mt-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-lightbulb mr-3"></i>
+                            <div>
+                                <strong>计算说明：</strong> 
+                                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                    <li><strong>缴费基数</strong>：根据上年度月平均工资确定，有上下限</li>
+                                    <li><strong>养老保险</strong>：个人8%，单位16%</li>
+                                    <li><strong>医疗保险</strong>：个人2%，单位9.5%</li>
+                                    <li><strong>失业保险</strong>：个人0.5%，单位0.5%</li>
+                                    <li><strong>住房公积金</strong>：5%-12%，个人和单位同比例</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <a href="../../index.html" class="footer-logo">
+                        <i class="fas fa-calculator"></i>
+                        <span>生活计算宝典</span>
+                    </a>
+                    <p class="footer-description">一站式离线计算工具集合，为您的生活带来便利。</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">专业工具</h4>
+                    <a href="mortgage.html" class="footer-link">房贷计算器</a>
+                    <a href="income-tax.html" class="footer-link">个人所得税计算</a>
+                    <a href="social-security.html" class="footer-link">社保公积金计算</a>
+                    <a href="roi.html" class="footer-link">投资回报分析</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">快速链接</h4>
+                    <a href="../../pages/professional.html" class="footer-link">返回专业工具</a>
+                    <a href="../../pages/tools.html" class="footer-link">所有工具</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 生活计算宝典 · 社保公积金计算</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 移动端底部导航 -->
+    <nav class="mobile-bottom-nav">
+        <a href="../../index.html" class="nav-item"><i class="fas fa-home nav-icon"></i><span class="nav-label">首页</span></a>
+        <a href="../../pages/shopping.html" class="nav-item"><i class="fas fa-shopping-cart nav-icon"></i><span class="nav-label">购物</span></a>
+        <a href="../../pages/professional.html" class="nav-item active"><i class="fas fa-briefcase nav-icon"></i><span class="nav-label">专业</span></a>
+        <a href="../../pages/tools.html" class="nav-item"><i class="fas fa-th nav-icon"></i><span class="nav-label">全部</span></a>
+        <a href="#" class="nav-item" id="mobileMenuBtn"><i class="fas fa-ellipsis-h nav-icon"></i><span class="nav-label">更多</span></a>
+    </nav>
+
+    <style>
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .summary-card {
+            padding: 1rem;
+            border-radius: var(--radius);
+            text-align: center;
+            color: white;
+        }
+        .summary-card.personal {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+        .summary-card.company {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+        .summary-card.total {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+        .summary-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+        .summary-amount {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .summary-percent {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+        .contribution-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        .contribution-table th {
+            background: var(--bg-secondary);
+            padding: 0.75rem;
+            text-align: center;
+            border-bottom: 2px solid var(--border-light);
+        }
+        .contribution-table td {
+            padding: 0.5rem 0.75rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .contribution-table tr:hover {
+            background: var(--bg-secondary);
+        }
+        .rates-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        .rate-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .rate-item label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .rate-input {
+            padding: 0.5rem;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        .checkbox-group {
+            margin: 1rem 0;
+        }
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+        .checkbox-label input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+            cursor: pointer;
+        }
+        .preset-btn {
+            cursor: pointer;
+            transition: all var(--transition);
+            border: 1px solid var(--border-light);
+            background: var(--bg-primary);
+            width: 100%;
+            text-align: left;
+        }
+        .preset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+    </style>
+
+    <script>
+        // 各城市社保比例数据
+        const cityRates = {
+            beijing: {
+                name: '北京',
+                baseMin: 5360,
+                baseMax: 28221,
+                pension: { personal: 8, company: 16 },
+                medical: { personal: 2, company: 9.8 },
+                unemployment: { personal: 0.2, company: 0.8 },
+                injury: { company: 0.4 },
+                maternity: { company: 0.8 }
+            },
+            shanghai: {
+                name: '上海',
+                baseMin: 7310,
+                baseMax: 36549,
+                pension: { personal: 8, company: 16 },
+                medical: { personal: 2, company: 9.5 },
+                unemployment: { personal: 0.5, company: 0.5 },
+                injury: { company: 0.2 },
+                maternity: { company: 1 }
+            },
+            guangzhou: {
+                name: '广州',
+                baseMin: 4588,
+                baseMax: 22941,
+                pension: { personal: 8, company: 14 },
+                medical: { personal: 2, company: 5.5 },
+                unemployment: { personal: 0.2, company: 0.32 },
+                injury: { company: 0.16 },
+                maternity: { company: 0.85 }
+            },
+            shenzhen: {
+                name: '深圳',
+                baseMin: 2360,
+                baseMax: 34860,
+                pension: { personal: 8, company: 14 },
+                medical: { personal: 2, company: 6.2 },
+                unemployment: { personal: 0.3, company: 0.7 },
+                injury: { company: 0.14 },
+                maternity: { company: 0.45 }
+            },
+            hangzhou: {
+                name: '杭州',
+                baseMin: 3957,
+                baseMax: 19783,
+                pension: { personal: 8, company: 14 },
+                medical: { personal: 2, company: 9.5 },
+                unemployment: { personal: 0.5, company: 0.5 },
+                injury: { company: 0.2 },
+                maternity: { company: 1 }
+            },
+            nanjing: {
+                name: '南京',
+                baseMin: 4250,
+                baseMax: 21258,
+                pension: { personal: 8, company: 16 },
+                medical: { personal: 2, company: 9 },
+                unemployment: { personal: 0.5, company: 0.5 },
+                injury: { company: 0.4 },
+                maternity: { company: 0.8 }
+            },
+            chengdu: {
+                name: '成都',
+                baseMin: 3726,
+                baseMax: 18630,
+                pension: { personal: 8, company: 16 },
+                medical: { personal: 2, company: 7.5 },
+                unemployment: { personal: 0.4, company: 0.6 },
+                injury: { company: 0.2 },
+                maternity: { company: 0.6 }
+            },
+            wuhan: {
+                name: '武汉',
+                baseMin: 3740,
+                baseMax: 18699,
+                pension: { personal: 8, company: 16 },
+                medical: { personal: 2, company: 8 },
+                unemployment: { personal: 0.3, company: 0.7 },
+                injury: { company: 0.2 },
+                maternity: { company: 0.7 }
+            }
+        };
+        
+        // 格式化金额
+        function formatMoney(amount) {
+            return amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        }
+        
+        // 获取当前比例
+        function getRates() {
+            const city = document.getElementById('citySelect').value;
+            const fundRate = parseFloat(document.getElementById('fundRate').value) / 100;
+            const hasSupplemental = document.getElementById('hasSupplemental').checked;
+            
+            if (city === 'custom') {
+                // 自定义比例
+                return {
+                    pension: {
+                        personal: parseFloat(document.getElementById('customPensionPersonal').value) / 100,
+                        company: parseFloat(document.getElementById('customPensionCompany').value) / 100
+                    },
+                    medical: {
+                        personal: parseFloat(document.getElementById('customMedicalPersonal').value) / 100,
+                        company: parseFloat(document.getElementById('customMedicalCompany').value) / 100
+                    },
+                    unemployment: {
+                        personal: parseFloat(document.getElementById('customUnemploymentPersonal').value) / 100,
+                        company: parseFloat(document.getElementById('customUnemploymentCompany').value) / 100
+                    },
+                    injury: {
+                        company: parseFloat(document.getElementById('customInjuryCompany').value) / 100
+                    },
+                    maternity: {
+                        company: parseFloat(document.getElementById('customMaternityCompany').value) / 100
+                    },
+                    fund: {
+                        personal: fundRate,
+                        company: fundRate
+                    },
+                    supplemental: hasSupplemental ? 0.05 : 0
+                };
+            } else {
+                // 城市预设比例
+                const rates = cityRates[city];
+                return {
+                    pension: {
+                        personal: rates.pension.personal / 100,
+                        company: rates.pension.company / 100
+                    },
+                    medical: {
+                        personal: rates.medical.personal / 100,
+                        company: rates.medical.company / 100
+                    },
+                    unemployment: {
+                        personal: rates.unemployment.personal / 100,
+                        company: rates.unemployment.company / 100
+                    },
+                    injury: {
+                        company: rates.injury.company / 100
+                    },
+                    maternity: {
+                        company: rates.maternity.company / 100
+                    },
+                    fund: {
+                        personal: fundRate,
+                        company: fundRate
+                    },
+                    supplemental: hasSupplemental ? 0.05 : 0
+                };
+            }
+        }
+        
+        // 计算缴费
+        function calculate() {
+            const base = parseFloat(document.getElementById('baseAmount').value);
+            const city = document.getElementById('citySelect').value;
+            const rates = getRates();
+            
+            const errorMsg = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            
+            // 验证基数
+            if (isNaN(base) || base <= 0) {
+                errorText.textContent = '请输入有效的缴费基数';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            // 检查基数范围（非自定义模式）
+            if (city !== 'custom') {
+                const cityData = cityRates[city];
+                if (base < cityData.baseMin || base > cityData.baseMax) {
+                    errorText.textContent = `基数应在 ${formatMoney(cityData.baseMin)} - ${formatMoney(cityData.baseMax)} 元之间`;
+                    errorMsg.style.display = 'block';
+                    return;
+                }
+            }
+            
+            errorMsg.style.display = 'none';
+            
+            // 计算各项缴费
+            const items = [];
+            let personalTotal = 0;
+            let companyTotal = 0;
+            
+            // 养老保险
+            const pensionPersonal = base * rates.pension.personal;
+            const pensionCompany = base * rates.pension.company;
+            personalTotal += pensionPersonal;
+            companyTotal += pensionCompany;
+            items.push({
+                name: '养老保险',
+                personal: pensionPersonal,
+                personalRate: rates.pension.personal * 100,
+                company: pensionCompany,
+                companyRate: rates.pension.company * 100
+            });
+            
+            // 医疗保险
+            const medicalPersonal = base * rates.medical.personal;
+            const medicalCompany = base * rates.medical.company;
+            personalTotal += medicalPersonal;
+            companyTotal += medicalCompany;
+            items.push({
+                name: '医疗保险',
+                personal: medicalPersonal,
+                personalRate: rates.medical.personal * 100,
+                company: medicalCompany,
+                companyRate: rates.medical.company * 100
+            });
+            
+            // 失业保险
+            const unemploymentPersonal = base * rates.unemployment.personal;
+            const unemploymentCompany = base * rates.unemployment.company;
+            personalTotal += unemploymentPersonal;
+            companyTotal += unemploymentCompany;
+            items.push({
+                name: '失业保险',
+                personal: unemploymentPersonal,
+                personalRate: rates.unemployment.personal * 100,
+                company: unemploymentCompany,
+                companyRate: rates.unemployment.company * 100
+            });
+            
+            // 工伤保险
+            const injuryCompany = base * rates.injury.company;
+            companyTotal += injuryCompany;
+            items.push({
+                name: '工伤保险',
+                personal: 0,
+                personalRate: 0,
+                company: injuryCompany,
+                companyRate: rates.injury.company * 100
+            });
+            
+            // 生育保险
+            const maternityCompany = base * rates.maternity.company;
+            companyTotal += maternityCompany;
+            items.push({
+                name: '生育保险',
+                personal: 0,
+                personalRate: 0,
+                company: maternityCompany,
+                companyRate: rates.maternity.company * 100
+            });
+            
+            // 住房公积金
+            const fundPersonal = base * rates.fund.personal;
+            const fundCompany = base * rates.fund.company;
+            personalTotal += fundPersonal;
+            companyTotal += fundCompany;
+            items.push({
+                name: '住房公积金',
+                personal: fundPersonal,
+                personalRate: rates.fund.personal * 100,
+                company: fundCompany,
+                companyRate: rates.fund.company * 100
+            });
+            
+            // 补充公积金
+            if (rates.supplemental > 0) {
+                const suppPersonal = base * rates.supplemental;
+                const suppCompany = base * rates.supplemental;
+                personalTotal += suppPersonal;
+                companyTotal += suppCompany;
+                items.push({
+                    name: '补充公积金',
+                    personal: suppPersonal,
+                    personalRate: rates.supplemental * 100,
+                    company: suppCompany,
+                    companyRate: rates.supplemental * 100
+                });
+            }
+            
+            const totalAmount = personalTotal + companyTotal;
+            
+            // 更新汇总卡片
+            document.getElementById('personalTotal').textContent = formatMoney(personalTotal) + ' 元';
+            document.getElementById('companyTotal').textContent = formatMoney(companyTotal) + ' 元';
+            document.getElementById('totalAmount').textContent = formatMoney(totalAmount) + ' 元';
+            
+            document.querySelector('.summary-card.personal .summary-percent').textContent = 
+                `占基数 ${((personalTotal / base) * 100).toFixed(1)}%`;
+            document.querySelector('.summary-card.company .summary-percent').textContent = 
+                `占基数 ${((companyTotal / base) * 100).toFixed(1)}%`;
+            document.querySelector('.summary-card.total .summary-percent').textContent = 
+                `占基数 ${((totalAmount / base) * 100).toFixed(1)}%`;
+            
+            // 更新表格
+            const tbody = document.getElementById('contributionBody');
+            tbody.innerHTML = items.map(item => `
+                <tr>
+                    <td>${item.name}</td>
+                    <td>${item.personal > 0 ? formatMoney(item.personal) : '-'}</td>
+                    <td>${item.personalRate > 0 ? item.personalRate.toFixed(1) + '%' : '-'}</td>
+                    <td>${formatMoney(item.company)}</td>
+                    <td>${item.companyRate.toFixed(1)}%</td>
+                    <td>${formatMoney(item.personal + item.company)}</td>
+                </tr>
+            `).join('');
+            
+            // 计算节税金额（假设个税税率20%）
+            const taxSave = personalTotal * 0.2;
+            document.getElementById('taxSave').textContent = formatMoney(taxSave) + ' 元';
+            
+            // 计算公积金余额预测
+            const monthlyFund = fundPersonal + fundCompany + (rates.supplemental > 0 ? suppPersonal + suppCompany : 0);
+            const yearlyFund = monthlyFund * 12;
+            
+            document.getElementById('fundYear1').textContent = formatMoney(yearlyFund) + ' 元';
+            document.getElementById('fundYear3').textContent = formatMoney(yearlyFund * 3) + ' 元';
+            document.getElementById('fundYear5').textContent = formatMoney(yearlyFund * 5) + ' 元';
+            document.getElementById('fundYear10').textContent = formatMoney(yearlyFund * 10) + ' 元';
+        }
+        
+        // 更新城市基数范围提示
+        function updateCityRange() {
+            const city = document.getElementById('citySelect').value;
+            const rangeDiv = document.getElementById('baseRange');
+            const customRates = document.getElementById('customRates');
+            
+            if (city === 'custom') {
+                rangeDiv.style.display = 'none';
+                customRates.style.display = 'block';
+            } else {
+                rangeDiv.style.display = 'block';
+                customRates.style.display = 'none';
+                const cityData = cityRates[city];
+                rangeDiv.textContent = `${cityData.name} 2026年缴费基数范围: ${formatMoney(cityData.baseMin)} - ${formatMoney(cityData.baseMax)} 元`;
+            }
+        }
+        
+        // 应用预设基数
+        function applyPreset(base) {
+            document.getElementById('baseAmount').value = base;
+            calculate();
+        }
+        
+        // 主题切换
+        function initTheme() {
+            const themeBtn = document.querySelector('.theme-btn');
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                if (themeBtn) themeBtn.querySelector('i').className = 'fas fa-sun';
+            }
+            if (themeBtn) {
+                themeBtn.addEventListener('click', () => {
+                    const current = document.documentElement.getAttribute('data-theme');
+                    const newTheme = current === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    themeBtn.querySelector('i').className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                });
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            
+            // 城市切换
+            document.getElementById('citySelect').addEventListener('change', () => {
+                updateCityRange();
+                calculate();
+            });
+            
+            // 计算按钮
+            document.getElementById('calculateBtn').addEventListener('click', calculate);
+            
+            // 输入事件
+            document.querySelectorAll('input, select').forEach(el => {
+                el.addEventListener('input', calculate);
+                el.addEventListener('change', calculate);
+            });
+            
+            // 预设按钮
+            document.querySelectorAll('.preset-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const base = parseFloat(btn.dataset.base);
+                    applyPreset(base);
+                });
+            });
+            
+            // 初始化城市范围
+            updateCityRange();
+            
+            // 初始计算
+            calculate();
+            
+            // 移动端菜单
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            if (menuBtn) {
+                menuBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert('请从顶部导航选择其他工具');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
