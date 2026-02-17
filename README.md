@@ -4,9 +4,9 @@
 
 一个完全在浏览器中运行、无需网络连接的实用计算工具集合。所有计算均在您的设备本地完成，保障数据100%私密安全。
 
-![https://laddzhao.github.io/life-calculators](https://github.com/laddzhao/life-calculators/blob/main/life-calculators.jpeg)  
+![https://zlyup.github.io/life-calculators](https://github.com/zlyup/life-calculators/blob/main/life-calculators.jpeg)  
 
-**在线体验**：[https://laddzhao.github.io/life-calculators/](https://laddzhao.github.io/life-calculators/)
+**在线体验**：[https://zlyup.github.io/life-calculators/](https://zlyup.github.io/life-calculators/)
 
 ## ✨ 功能特色
 
@@ -81,8 +81,8 @@ life-calculators/
 本项目基于 **MIT 许可证** 开源。详细信息请查看项目根目录的 `LICENSE` 文件。
 
 ## 🔗 相关链接
-- **在线网站**：[https://laddzhao.github.io/life-calculators/](https://laddzhao.github.io/life-calculators/)
-- **项目仓库**：[Gitee](https://gitee.com/zhaolinyang/life-calculators) | [GitHub](https://github.com/laddzhao/life-calculators)
+- **在线网站**：[https://zlyup.github.io/life-calculators/](https://zlyup.github.io/life-calculators/)
+- **项目仓库**：[Gitee](https://gitee.com/zhaolinyang/life-calculators) | [GitHub](https://github.com/zlyup/life-calculators)
 
 ---
 
